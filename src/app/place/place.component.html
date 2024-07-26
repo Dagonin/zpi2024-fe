@@ -1,7 +1,15 @@
 <p>place works!</p>
 {{place.id}}
 
-<div id="map">
+<div id="mapp">
     <button (click)="centerMap()" id="refreshButton">Reset mapy</button>
 </div>
 
+
+<div>Nasi pracownicy:</div>
+<mat-list>
+    <mat-list-item *ngFor="let barber of barbers; let i = index">
+        <span matListItemTitle>{{barber.name}} {{barber.surname}}</span>
+        <span matListItemLine>{{barber.phone_number}} {{barber.rating}}</span>
+    </mat-list-item>
+</mat-list>

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, QueryList, ViewChild, viewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChild, viewChild, ViewChildren } from '@angular/core';
 import {MatListModule} from '@angular/material/list';
 import * as L from 'leaflet';
 import { Place } from '../classes/place/place';
@@ -23,8 +23,8 @@ L.Icon.Default.imagePath = 'assets/leaflet/';
   templateUrl: './map.component.html',
   styleUrl: './map.component.css'
 })
-export class MapComponent implements OnInit, AfterViewInit {
-  private map!: L.Map
+export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
+  map!: L.Map
   
 
   places: Place[] = [];
@@ -37,6 +37,7 @@ export class MapComponent implements OnInit, AfterViewInit {
   constructor(private cdr: ChangeDetectorRef, private placeService: PlaceService) { }
 
   ngOnInit() {
+    if(this.map != undefined){this.map.remove();};
     this.places = this.placeService.getPlaces();
     this.places.forEach(place =>{
       let mark = L.marker(place.coords)
@@ -48,6 +49,8 @@ export class MapComponent implements OnInit, AfterViewInit {
     this.initializeMap();
     this.addMarkers();
     this.centerMap();
+    
+    this.map.invalidateSize()
   }
 
 
@@ -59,7 +62,6 @@ export class MapComponent implements OnInit, AfterViewInit {
 
 
   private addMarkers() {
-    // Add your markers to the map
     this.markers.forEach((marker,i) => {
       marker.addTo(this.map).on('click', () => this.markerClick(marker,i));
         }
@@ -117,5 +119,10 @@ export class MapComponent implements OnInit, AfterViewInit {
   zoomOnCoords(coords : [number,number]){
     this.map.setView({lat: coords[0],lng: coords[1]}, 13);
   }
+
+  ngOnDestroy(): void {
+    this.map.remove();
+  }
+  
 
 }

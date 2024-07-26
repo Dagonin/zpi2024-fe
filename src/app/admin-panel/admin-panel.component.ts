@@ -20,6 +20,7 @@ import { BarberService } from '../classes/barber/barber.service';
 })
 export class AdminPanelComponent implements OnInit {
   readonly panelOpenState = signal(false);
+  readonly panelOpenStateBarbers = signal(false);
 
   places: Place[] = [];
   barbers: Barber[] = [];

@@ -9,6 +9,18 @@
         <mat-list-item *ngFor="let place of places; let i = index">
             <span matListItemTitle>{{place.city}}</span>
             <span matListItemLine>{{place.street}}</span>
+            <mat-expansion-panel (opened)="panelOpenStateBarbers.set(true)" (closed)="panelOpenStateBarbers.set(false)">
+              <mat-expansion-panel-header>
+                <mat-panel-title> Pracownicy </mat-panel-title>
+              </mat-expansion-panel-header>
+              <mat-list>
+                <mat-list-item *ngFor="let barber of place.barbers; let i = index">
+                    <span matListItemTitle>{{barber.name}} {{barber.surname}}</span>
+                    <span matListItemLine>{{barber.phone_number}} {{barber.rating}}</span>
+                </mat-list-item>
+            </mat-list>
+            </mat-expansion-panel>
+            
         </mat-list-item>
     </mat-list>
     </mat-expansion-panel>

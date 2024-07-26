@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, Observable, switchMap } from 'rxjs';
 import { Place } from '../classes/place/place';
@@ -6,15 +6,19 @@ import { PlaceService } from '../classes/place/place.service';
 import L from 'leaflet';
 import { BarberService } from '../classes/barber/barber.service';
 import { Barber } from '../classes/barber/barber';
+import { CommonModule } from '@angular/common';
+import { MatListModule } from '@angular/material/list';
 
 @Component({
   selector: 'app-place',
   standalone: true,
-  imports: [],
+  imports: [CommonModule,
+    MatListModule
+  ],
   templateUrl: './place.component.html',
   styleUrl: './place.component.css'
 })
-export class PlaceComponent implements OnInit {
+export class PlaceComponent implements OnInit, OnDestroy {
 
   private map!: L.Map
   place!: Place;
@@ -35,6 +39,7 @@ export class PlaceComponent implements OnInit {
   }
 
   ngAfterViewInit() {
+    
     this.initializeMap();
     this.addMarkers();
     this.centerMap();
@@ -43,11 +48,12 @@ export class PlaceComponent implements OnInit {
 
   ngOnDestroy() {
     this.sub.unsubscribe();
+    this.map.remove();
   }
 
   private initializeMap() {
     const baseMapURl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-    this.map = L.map('map');
+    this.map = L.map('mapp');
     L.tileLayer(baseMapURl).addTo(this.map);
   }
 
@@ -64,5 +70,7 @@ export class PlaceComponent implements OnInit {
   zoomOnCoords(coords : [number,number]){
     this.map.setView({lat: coords[0],lng: coords[1]}, 16);
   }
+
   
+
 }
