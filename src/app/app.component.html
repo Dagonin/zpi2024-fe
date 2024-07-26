@@ -8,7 +8,12 @@
       <mat-button-toggle [routerLink]="'/'">Strona główna</mat-button-toggle>
       <mat-button-toggle *ngIf="!isAuthenticated" [routerLink]="'/login'">Zaloguj się</mat-button-toggle>
       <mat-button-toggle *ngIf="!isAuthenticated" [routerLink]="'/register'">Załóż konto</mat-button-toggle>
+      <mat-button-toggle *ngIf="isAuthenticated" [routerLink]="'/history'">Historia wizyt</mat-button-toggle>
+      <mat-button-toggle *ngIf="isAuthenticated" [routerLink]="'/profile'">Twój profil</mat-button-toggle>
       <mat-button-toggle [routerLink]="'/contact'">Kontakt</mat-button-toggle>
+
+      <mat-button-toggle *ngIf="userRole=='admin'" [routerLink]="'/adm_panel'">Panel Admina</mat-button-toggle>
+
     </mat-button-toggle-group>
   </section>
   <button *ngIf="isAuthenticated" (click)="logout()" mat-stroked-button>Wyloguj</button>

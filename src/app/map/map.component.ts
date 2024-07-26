@@ -2,9 +2,12 @@ import { CommonModule } from '@angular/common';
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, QueryList, ViewChild, viewChild, ViewChildren } from '@angular/core';
 import {MatListModule} from '@angular/material/list';
 import * as L from 'leaflet';
-import { Place } from './place';
+import { Place } from '../classes/place/place';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import {MatButtonModule} from '@angular/material/button';
 import { P } from '@angular/cdk/keycodes';
+import { PlaceService } from '../classes/place/place.service';
+import { RouterLink } from '@angular/router';
 L.Icon.Default.imagePath = 'assets/leaflet/';
 
 @Component({
@@ -13,7 +16,9 @@ L.Icon.Default.imagePath = 'assets/leaflet/';
   imports: [
     MatListModule,
     CommonModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatButtonModule,
+    RouterLink
   ],
   templateUrl: './map.component.html',
   styleUrl: './map.component.css'
@@ -22,23 +27,21 @@ export class MapComponent implements OnInit, AfterViewInit {
   private map!: L.Map
   
 
-  places: Place[] = [
-    new Place('Kraków', '30-610', 'Konstantego Jelskiego 11', [49.99919, 19.94411],false),
-    new Place('Katowice', '40-526', 'Meteorologów 13', [50.24043, 19.01211],false),
-    new Place('Wrocław', '51-670', 'Edwarda Dembowskiego', [51.10656, 17.09845],false)
-  ];
+  places: Place[] = [];
 
-  markers: L.Marker[] = [
-    L.marker([49.99919, 19.94411]), // 11, Konstantego Jelskiego, Kraków, województwo małopolskie, 30-610, Polska
-    L.marker([50.24043, 19.01211]), // 13, Meteorologów, Katowice, Górnośląsko-Zagłębiowska Metropolia, województwo śląskie, 40-526, Polska
-    L.marker([51.10656, 17.09845]) ,// 60, Edwarda Dembowskiego, Wrocław, województwo dolnośląskie, 51-670, Polska
-  ];
+  markers: L.Marker[] = [];
 
-  
+  checkedPlace: string = '';  
 
-  constructor(private cdr: ChangeDetectorRef) { }
+
+  constructor(private cdr: ChangeDetectorRef, private placeService: PlaceService) { }
 
   ngOnInit() {
+    this.places = this.placeService.getPlaces();
+    this.places.forEach(place =>{
+      let mark = L.marker(place.coords)
+      this.markers.push(mark);
+    })
   }
 
   ngAfterViewInit() {
@@ -82,7 +85,12 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   updatePlaceCheckedState(index: number, state: boolean) {
     this.places.forEach((place, i) => {
-      place.checked = (i === index) ? state : false;
+      if(i === index){
+        place.checked = state;
+        this.checkedPlace = place.id;
+      }else{
+        place.checked = false;
+      }
     });
     this.cdr.detectChanges();
   }

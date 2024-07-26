@@ -1,0 +1,26 @@
+<p>admin-panel works!</p>
+
+<mat-accordion>
+    <mat-expansion-panel hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title> Lokale </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-list>
+        <mat-list-item *ngFor="let place of places; let i = index">
+            <span matListItemTitle>{{place.city}}</span>
+            <span matListItemLine>{{place.street}}</span>
+        </mat-list-item>
+    </mat-list>
+    </mat-expansion-panel>
+    <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
+      <mat-expansion-panel-header>
+        <mat-panel-title> Pracownicy </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-list>
+        <mat-list-item *ngFor="let barber of barbers; let i = index">
+            <span matListItemTitle>{{barber.name}} {{barber.surname}}</span>
+            <span matListItemLine>{{barber.phone_number}} {{barber.rating}}</span>
+        </mat-list-item>
+    </mat-list>
+    </mat-expansion-panel>
+  </mat-accordion>

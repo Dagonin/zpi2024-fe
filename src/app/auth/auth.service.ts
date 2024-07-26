@@ -13,11 +13,17 @@ export class AuthService {
   private isAuthenticatedSubject: BehaviorSubject<boolean>;
   public isAuthenticated$: Observable<boolean>;
 
+  private userRoleSubject: BehaviorSubject<string>;
+  public userRole$: Observable<string>;
+
   constructor(private http: HttpClient, private router:Router
   ) {
     const isLoggedIn = this.isLoggedIn();
+    const getRole = this.getRole();
     this.isAuthenticatedSubject = new BehaviorSubject<boolean>(isLoggedIn);
     this.isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
+    this.userRoleSubject = new BehaviorSubject<string>(getRole);
+    this.userRole$ = this.userRoleSubject.asObservable();
    }
 
 
@@ -33,21 +39,38 @@ export class AuthService {
     //   }));
 
     if(data.login === "admin" && data.password === "admin123"){
-      localStorage.setItem('authUser', 'true');
+      localStorage.setItem('authUser', data.login);
+      localStorage.setItem('role', 'admin');
       this.isAuthenticatedSubject.next(true);
+      this.userRoleSubject.next('admin');
       return true;
     }
+    
+    if(data.login === "user1" && data.password === "useruser"){
+      localStorage.setItem('authUser', data.login);
+      localStorage.setItem('role', 'user');
+      this.isAuthenticatedSubject.next(true);
+      this.userRoleSubject.next('user');
+      return true;
+    }
+
     return false;
   }
 
   logout() {
     localStorage.removeItem('authUser');
+    localStorage.removeItem('role');
     this.isAuthenticatedSubject.next(false);
+    this.userRoleSubject.next('');
     this.router.navigate(['']);
   }
 
   isLoggedIn() {
     return localStorage.getItem('authUser') !== null;
+  }
+
+  getRole() : string{
+    return localStorage.getItem('role') as string
   }
 
 }

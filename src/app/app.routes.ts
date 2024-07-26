@@ -8,6 +8,11 @@ import { MainPageComponent } from './main-page/main-page.component';
 import { MapComponent } from './map/map.component';
 import { authGuard } from './auth/auth.guard';
 import { negateAuthGuard } from './auth/negate-auth.guard';
+import { ProfileComponent } from './profile/profile.component';
+import { HistoryComponent } from './history/history.component';
+import { AdminPanelComponent } from './admin-panel/admin-panel.component';
+import { adminGuard } from './auth/admin.guard';
+import { PlaceComponent } from './place/place.component';
 
 export const routes: Routes = [{
         path: 'login',
@@ -20,6 +25,21 @@ export const routes: Routes = [{
     },{
         path: 'contact',
         component: ContactComponent
+    },{
+        path: 'profile',
+        canActivate: [authGuard],
+        component: ProfileComponent
+    },{
+        path: 'history',
+        canActivate: [authGuard],
+        component: HistoryComponent,
+    },{
+        path: 'place/:placeid',
+        component: PlaceComponent,
+    },{
+        path: 'adm_panel',
+        canActivate: [authGuard, adminGuard],
+        component: AdminPanelComponent,
     },{
         path: '',
         component: MapComponent

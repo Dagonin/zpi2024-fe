@@ -32,14 +32,23 @@ import { Subscription } from 'rxjs';
 export class AppComponent implements OnInit {
   title = 'inz';
   isAuthenticated: boolean = false;
+  userRole: string = '';
   private authSubscription!: Subscription;
+  private roleSubscription!: Subscription;
 
   constructor(private authService: AuthService){}
 
   ngOnInit(): void {
+    this.userRole = this.authService.getRole();
+    console.log(this.userRole)
     this.authSubscription = this.authService.isAuthenticated$.subscribe(
       (isAuthenticated) => {
         this.isAuthenticated = isAuthenticated;
+      }
+    );
+    this.roleSubscription = this.authService.userRole$.subscribe(
+      (userRole) => {
+        this.userRole = userRole;
       }
     );
   }
@@ -53,4 +62,5 @@ export class AppComponent implements OnInit {
       this.authSubscription.unsubscribe();
     }
   }
+
 }
