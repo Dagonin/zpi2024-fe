@@ -1,0 +1,24 @@
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <p>
+          <mat-form-field appearance="fill">
+            <mat-label>Login</mat-label>
+            <input formControlName="login" matInput>
+            <mat-error *ngIf="loginForm.get('login')?.invalid">{{errorMessage(loginForm.get('login')?.errors,'Login')}}</mat-error>
+          </mat-form-field>
+        </p>
+        <p>
+          <mat-form-field appearance="fill">
+            <mat-label>Hasło</mat-label>
+            <input formControlName="password" type="password" matInput>
+              <mat-error *ngIf="loginForm.get('password')?.invalid">{{errorMessage(loginForm.get('password')?.errors,'Hasło')}}</mat-error>
+          </mat-form-field>
+        </p>
+        
+        <div class="example-button-row">
+          <button mat-stroked-button>Login</button>
+        </div>
+      
+      </form>
+{{loginForm.value | json}}
+

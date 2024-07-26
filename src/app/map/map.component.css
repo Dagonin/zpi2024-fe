@@ -1,0 +1,20 @@
+#map{
+    height: 55vh;
+    width: 55vw;
+}
+
+#refreshButton {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 10px;
+    z-index: 5000;
+  }
+
+img[selected='true']{
+    filter: hue-rotate(120deg);
+}
+
+.sel{
+    filter: hue-rotate(120deg);
+}
