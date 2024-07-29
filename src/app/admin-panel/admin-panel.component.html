@@ -46,7 +46,7 @@
           Gdzie pracuje
           <mat-icon>work</mat-icon>
         </button>
-        <button mat-button>
+        <button mat-button (click)="openDialogContact(barber)">
           Kontakt
           <mat-icon> contact_phone</mat-icon>
         </button>
@@ -55,6 +55,10 @@
           <mat-icon>create</mat-icon>
         </button>
         <button mat-button>
+          Historia
+          <mat-icon>assignment</mat-icon>
+        </button>
+        <button mat-button (click)="openDialogDelete()">
           Usun
           <mat-icon>delete</mat-icon>
         </button>

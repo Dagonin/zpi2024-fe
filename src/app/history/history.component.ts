@@ -5,7 +5,7 @@ import { MatListModule } from '@angular/material/list';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
-import { RatingDialogComponent } from '../dialogs/rating-dialog.component';
+import { RatingDialogComponent } from '../dialogs/rating-dialog/rating-dialog.component';
 
 @Component({
   selector: 'app-history',
