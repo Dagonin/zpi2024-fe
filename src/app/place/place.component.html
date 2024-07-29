@@ -13,3 +13,13 @@
         <span matListItemLine>{{barber.phone_number}} {{barber.rating}}</span>
     </mat-list-item>
 </mat-list>
+
+
+
+<mat-form-field>
+    <mat-label>Choose a date</mat-label>
+    <input [min]="minDate" [max]="maxDate" matInput [matDatepicker]="picker">
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>

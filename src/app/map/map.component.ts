@@ -42,6 +42,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.places.forEach(place =>{
       let mark = L.marker(place.coords)
       this.markers.push(mark);
+      place.checked = false;
     })
   }
 

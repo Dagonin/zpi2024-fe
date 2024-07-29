@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map, Observable, switchMap } from 'rxjs';
+import { map, min, Observable, switchMap } from 'rxjs';
 import { Place } from '../classes/place/place';
 import { PlaceService } from '../classes/place/place.service';
 import L from 'leaflet';
@@ -8,12 +8,23 @@ import { BarberService } from '../classes/barber/barber.service';
 import { Barber } from '../classes/barber/barber';
 import { CommonModule } from '@angular/common';
 import { MatListModule } from '@angular/material/list';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import {MatInputModule} from '@angular/material/input';
 
 @Component({
   selector: 'app-place',
   standalone: true,
-  imports: [CommonModule,
-    MatListModule
+  providers: [
+    provideNativeDateAdapter()
+  ],
+  imports: [
+    CommonModule,
+    MatListModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   templateUrl: './place.component.html',
   styleUrl: './place.component.css'
@@ -25,6 +36,9 @@ export class PlaceComponent implements OnInit, OnDestroy {
   private sub: any;
   marker!: L.Marker;
   barbers: Barber[] = [];
+  minDate! : Date;
+  maxDate! : Date;
+
 
   constructor(private route: ActivatedRoute, private placeService: PlaceService, private barberService: BarberService) {}
 
@@ -32,9 +46,12 @@ export class PlaceComponent implements OnInit, OnDestroy {
     this.sub = this.route.params.subscribe(params => {
     this.place = this.placeService.getPlace(params['placeid']);
     console.log(this.place);
+    this.barbers = this.barberService.getBarbers();
 
-      // load barber list of this place
-      this.barbers = this.barberService.getBarbers();
+    this.minDate = new Date();
+    this.maxDate = new Date();
+    this.maxDate.setDate(this.maxDate.getDate() + 15);
+
     });
   }
 

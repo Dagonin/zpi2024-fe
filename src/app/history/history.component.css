@@ -1,0 +1,15 @@
+
+
+
+bar-rating.star {
+    --br-font-size: 34px;
+    --br-active-color: #ed7b67;
+    --br-inactive-color: #d2d2d2;
+    --br-width: 10px;
+    --br-height: 50px;
+  }
+  
+  bar-rating.bar {
+    --br-active-color: #17c9c9;
+  }
+  

@@ -14,9 +14,9 @@ export class VisitService  {
   private barberService = inject(BarberService);
 
   visits : Visit[] = [
-    new Visit('1',new Date(),this.placeService.getPlace('1'),this.barberService.getBarber('1'),4,40),
-    new Visit('1',new Date(),this.placeService.getPlace('1'),this.barberService.getBarber('1'),4,40),
-    new Visit('1',new Date(),this.placeService.getPlace('1'),this.barberService.getBarber('1'),4,40),
+    new Visit('1',new Date(),this.placeService.getPlace('1'),this.barberService.getBarber('1'),40),
+    new Visit('1',new Date(),this.placeService.getPlace('1'),this.barberService.getBarber('1'),40),
+    new Visit('1',new Date(),this.placeService.getPlace('1'),this.barberService.getBarber('1'),40),
   ];
 
 

@@ -3,6 +3,20 @@
 <mat-list>
     <mat-list-item *ngFor="let visit of visits; let i = index">
         <span matListItemTitle>{{visit.date}}</span>
-        <span matListItemLine>{{visit.place}}</span>
+        <span matListItemLine>{{visit.place.city}}</span>
+        <span matListItemLine>{{visit.barber.name}} {{visit.barber.surname}} {{visit.barber.rating}}
+            <button (click)="openDialog()" *ngIf="!visit.rating" mat-button>Oceń</button>
+        </span>
+
     </mat-list-item>
 </mat-list>
+
+<!-- <div class="stars container">
+    <div class="row">
+      <div class="col-md-4">
+        <section>
+          <bar-rating theme="stars" class="star" [(rate)]="cssRate" [max]="5"></bar-rating>
+        </section>
+      </div>
+    </div>
+  </div> -->
