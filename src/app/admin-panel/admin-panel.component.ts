@@ -6,6 +6,8 @@ import { Barber } from '../classes/barber/barber';
 import { MatListModule } from '@angular/material/list';
 import { PlaceService } from '../classes/place/place.service';
 import { BarberService } from '../classes/barber/barber.service';
+import {MatIconModule} from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-admin-panel',
@@ -13,7 +15,9 @@ import { BarberService } from '../classes/barber/barber.service';
   imports: [
     MatExpansionModule,
     CommonModule,
-    MatListModule
+    MatListModule,
+    MatIconModule,
+    MatButtonModule
   ],
   templateUrl: './admin-panel.component.html',
   styleUrl: './admin-panel.component.css'
