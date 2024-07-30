@@ -3,29 +3,22 @@
 <mat-dialog-content>
   <!-- Numer telefonu: {{data.phone_number}} -->
   <mat-form-field class="example-form-field">
-    <mat-label>Imie</mat-label>
-    <input formControlName="name" matInput type="text" [placeholder]="data.name">
+    <mat-label>Miasto</mat-label>
+    <input formControlName="city" matInput type="text" [placeholder]="data.city">
   </mat-form-field>
 </mat-dialog-content>
 
 <mat-dialog-content>
 <mat-form-field class="example-form-field">
-  <mat-label>Nazwisko</mat-label>
-  <input formControlName="surname" matInput type="text" [placeholder]="data.surname">
+  <mat-label>Ulica</mat-label>
+  <input formControlName="street" matInput type="text" [placeholder]="data.street">
 </mat-form-field>
 </mat-dialog-content>
 
 <mat-dialog-content>
-  <mat-form-field class="example-form-field">
-    <mat-label>Numer telefonu</mat-label>
-    <input formControlName="phone_number" matInput type="number">
-  </mat-form-field>
-  </mat-dialog-content>
-
-  <mat-dialog-content>
     <mat-form-field class="example-form-field">
-      <mat-label>Wypłata</mat-label>
-      <input formControlName="wage" matInput type="number" >
+      <mat-label>Kod pocztowy</mat-label>
+      <input formControlName="zipCode" matInput type="text" [placeholder]="data.zipCode">
     </mat-form-field>
     </mat-dialog-content>
 

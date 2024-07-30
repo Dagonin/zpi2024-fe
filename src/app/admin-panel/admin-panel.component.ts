@@ -14,6 +14,9 @@ import { DeleteDialogComponent } from '../dialogs/delete-dialog/delete-dialog.co
 import { EditBarberDialogComponent } from '../dialogs/edit-barber-dialog/edit-barber-dialog.component';
 import { VisitsDialogComponent } from '../dialogs/visits-dialog/visits-dialog.component';
 import { PlacesDialogComponent } from '../dialogs/places-dialog/places-dialog.component';
+import { AddBarberComponent } from '../dialogs/add-barber/add-barber.component';
+import { EditPlaceComponent } from '../dialogs/edit-place/edit-place.component';
+import { AddPlaceDialogComponent } from '../dialogs/add-place-dialog/add-place-dialog.component';
 
 @Component({
   selector: 'app-admin-panel',
@@ -48,9 +51,15 @@ export class AdminPanelComponent implements OnInit {
     });
   }
 
-  openDialogEdit(barber: Barber){
+  openDialogEditBarber(barber: Barber){
     this.dialog.open(EditBarberDialogComponent,{
       data: barber,
+    })
+  }
+
+  openDialogEditPlace(place: Place){
+    this.dialog.open(EditPlaceComponent,{
+      data: place
     })
   }
 
@@ -70,6 +79,14 @@ export class AdminPanelComponent implements OnInit {
     this.dialog.open(PlacesDialogComponent,{
       data: this.places
     })
+  }
+
+  openDialogAddBarber(){
+    this.dialog.open(AddBarberComponent)
+  }
+
+  openDialogAddPlace(){
+    this.dialog.open(AddPlaceDialogComponent)
   }
 
   ngOnInit(): void {
