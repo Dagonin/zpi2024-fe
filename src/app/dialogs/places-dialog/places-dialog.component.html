@@ -1,0 +1,10 @@
+<h2 mat-dialog-title>Ocena:</h2>
+    
+<mat-dialog-content *ngFor="let place of data; let i = index">
+    {{place.city}}
+    <mat-divider></mat-divider>
+  </mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Zamknij</button>
+</mat-dialog-actions>
+

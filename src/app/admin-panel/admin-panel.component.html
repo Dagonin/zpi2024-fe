@@ -42,7 +42,7 @@
           Kalendarz
           <mat-icon>today</mat-icon>
         </button>
-        <button mat-button>
+        <button mat-button (click)="openDialogPlaces()">
           Gdzie pracuje
           <mat-icon>work</mat-icon>
         </button>
@@ -50,11 +50,11 @@
           Kontakt
           <mat-icon> contact_phone</mat-icon>
         </button>
-        <button mat-button>
+        <button mat-button (click)="openDialogEdit(barber)">
           Edytuj
           <mat-icon>create</mat-icon>
         </button>
-        <button mat-button>
+        <button mat-button (click)="openDialogHistory()">
           Historia
           <mat-icon>assignment</mat-icon>
         </button>

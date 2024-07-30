@@ -11,6 +11,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { ContactInfoDialogComponent } from '../dialogs/contact-info-dialog/contact-info-dialog.component';
 import { DeleteDialogComponent } from '../dialogs/delete-dialog/delete-dialog.component';
+import { EditBarberDialogComponent } from '../dialogs/edit-barber-dialog/edit-barber-dialog.component';
+import { VisitsDialogComponent } from '../dialogs/visits-dialog/visits-dialog.component';
+import { PlacesDialogComponent } from '../dialogs/places-dialog/places-dialog.component';
 
 @Component({
   selector: 'app-admin-panel',
@@ -43,7 +46,13 @@ export class AdminPanelComponent implements OnInit {
     this.dialog.open(ContactInfoDialogComponent, {
       data: barber,
     });
-}
+  }
+
+  openDialogEdit(barber: Barber){
+    this.dialog.open(EditBarberDialogComponent,{
+      data: barber,
+    })
+  }
 
   openDialogDelete(){
     const dialogRef = this.dialog.open(DeleteDialogComponent);
@@ -51,6 +60,16 @@ export class AdminPanelComponent implements OnInit {
       console.log('The dialog was closed');
       console.log(confirmed);
     });
+  }
+
+  openDialogHistory(){
+    this.dialog.open(VisitsDialogComponent)
+  }
+
+  openDialogPlaces(){
+    this.dialog.open(PlacesDialogComponent,{
+      data: this.places
+    })
   }
 
   ngOnInit(): void {
