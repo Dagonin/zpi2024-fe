@@ -12,6 +12,7 @@ import { HistoryComponent } from './history/history.component';
 import { AdminPanelComponent } from './admin-panel/admin-panel.component';
 import { adminGuard } from './auth/admin.guard';
 import { PlaceComponent } from './place/place.component';
+import { employeeGuard } from './auth/employee.guard';
 
 export const routes: Routes = [{
         path: 'login',
@@ -43,7 +44,7 @@ export const routes: Routes = [{
             import('./place/place.component').then((c)=>c.PlaceComponent),
     },{
         path: 'adm_panel',
-        canActivate: [authGuard, adminGuard],
+        canActivate: [authGuard, employeeGuard],
         loadComponent:()=>
             import('./admin-panel/admin-panel.component').then((c)=>c.AdminPanelComponent),
     },{

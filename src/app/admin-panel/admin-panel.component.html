@@ -5,7 +5,7 @@
     <mat-expansion-panel-header>
       <mat-panel-title> Lokale </mat-panel-title>
     </mat-expansion-panel-header>
-    <button mat-stroked-button (click)="openDialogAddPlace()">
+    <button *ngIf="userRole=='admin'" mat-stroked-button (click)="openDialogAddPlace()">
       Dodaj
       <mat-icon>add_circle</mat-icon>
     </button>
@@ -27,11 +27,11 @@
               Raporty
               <mat-icon>insert_chart</mat-icon>
             </button>
-            <button mat-button (click)="openDialogEditPlace(node.item)">
+            <button *ngIf="userRole=='admin'" mat-button (click)="openDialogEditPlace(node.item)">
               Edytuj
               <mat-icon>create</mat-icon>
             </button>
-            <button mat-button (click)="openDialogDelete()">
+            <button *ngIf="userRole=='admin'" mat-button (click)="openDialogDelete()">
               Usuń
               <mat-icon>delete</mat-icon>
             </button>
@@ -43,7 +43,7 @@
     <mat-expansion-panel-header>
       <mat-panel-title> Pracownicy </mat-panel-title>
     </mat-expansion-panel-header>
-    <button mat-stroked-button (click)="openDialogAddBarber()">
+    <button *ngIf="userRole=='admin'" mat-stroked-button (click)="openDialogAddBarber()">
       Dodaj
       <mat-icon>add_circle</mat-icon>
     </button>
@@ -63,7 +63,7 @@
           Kontakt
           <mat-icon> contact_phone</mat-icon>
         </button>
-        <button mat-button (click)="openDialogEditBarber(barber)">
+        <button *ngIf="userRole=='admin'" mat-button (click)="openDialogEditBarber(barber)">
           Edytuj
           <mat-icon>create</mat-icon>
         </button>
@@ -71,7 +71,7 @@
           Historia
           <mat-icon>assignment</mat-icon>
         </button>
-        <button mat-button (click)="openDialogDelete()">
+        <button *ngIf="userRole=='admin'" mat-button (click)="openDialogDelete()">
           Usun
           <mat-icon>delete</mat-icon>
         </button>

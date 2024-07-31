@@ -20,6 +20,8 @@ import { AddPlaceDialogComponent } from '../dialogs/add-place-dialog/add-place-d
 import { DynamicDatabase, DynamicDataSource, DynamicFlatNode } from './admin-panel-places';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeModule } from '@angular/material/tree';
+import { Subscription } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-admin-panel',
@@ -39,6 +41,11 @@ export class AdminPanelComponent implements OnInit {
   readonly panelOpenState = signal(false);
   readonly panelOpenStateBarbers = signal(false);
 
+  isAuthenticated: boolean = false;
+  userRole: string = '';
+  private authSubscription!: Subscription;
+  private roleSubscription!: Subscription;
+
   places: Place[] = [];
   barbers: Barber[] = [];
 
@@ -56,7 +63,8 @@ export class AdminPanelComponent implements OnInit {
     private placeService: PlaceService,
     private barberService: BarberService,
     public dialog: MatDialog,
-    private database: DynamicDatabase
+    private database: DynamicDatabase,
+    private authService: AuthService
   ){
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
     this.dataSource = new DynamicDataSource(this.treeControl, database);
@@ -113,5 +121,17 @@ export class AdminPanelComponent implements OnInit {
   ngOnInit(): void {
     this.places = this.placeService.getPlaces();
     this.barbers = this.barberService.getBarbers(); 
+    this.userRole = this.authService.getRole();
+    console.log(this.userRole)
+    this.authSubscription = this.authService.isAuthenticated$.subscribe(
+      (isAuthenticated) => {
+        this.isAuthenticated = isAuthenticated;
+      }
+    );
+    this.roleSubscription = this.authService.userRole$.subscribe(
+      (userRole) => {
+        this.userRole = userRole;
+      }
+    );
   }
 }

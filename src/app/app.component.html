@@ -12,7 +12,7 @@
       <mat-button-toggle *ngIf="isAuthenticated" [routerLink]="'/profile'">Twój profil</mat-button-toggle>
       <mat-button-toggle [routerLink]="'/contact'">Kontakt</mat-button-toggle>
 
-      <mat-button-toggle *ngIf="userRole=='admin'" [routerLink]="'/adm_panel'">Panel Admina</mat-button-toggle>
+      <mat-button-toggle *ngIf="userRole=='admin' || userRole=='employee'" [routerLink]="'/adm_panel'">Panel Admina</mat-button-toggle>
 
     </mat-button-toggle-group>
   </section>

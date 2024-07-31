@@ -46,6 +46,14 @@ export class AuthService {
       return true;
     }
     
+    if(data.login === "employee" && data.password === "employee"){
+      localStorage.setItem('authUser', data.login);
+      localStorage.setItem('role', 'employee');
+      this.isAuthenticatedSubject.next(true);
+      this.userRoleSubject.next('employee');
+      return true;
+    }
+
     if(data.login === "user1" && data.password === "useruser"){
       localStorage.setItem('authUser', data.login);
       localStorage.setItem('role', 'user');
