@@ -14,9 +14,12 @@ import { DeleteDialogComponent } from '../dialogs/delete-dialog/delete-dialog.co
 import { EditBarberDialogComponent } from '../dialogs/edit-barber-dialog/edit-barber-dialog.component';
 import { VisitsDialogComponent } from '../dialogs/visits-dialog/visits-dialog.component';
 import { PlacesDialogComponent } from '../dialogs/places-dialog/places-dialog.component';
-import { AddBarberComponent } from '../dialogs/add-barber/add-barber.component';
-import { EditPlaceComponent } from '../dialogs/edit-place/edit-place.component';
+import { AddBarberDialogComponent } from '../dialogs/add-barber-dialog/add-barber-dialog.component';
+import { EditPlaceDialogComponent } from '../dialogs/edit-place-dialog/edit-place-dialog.component';
 import { AddPlaceDialogComponent } from '../dialogs/add-place-dialog/add-place-dialog.component';
+import { DynamicDatabase, DynamicDataSource, DynamicFlatNode } from './admin-panel-places';
+import { FlatTreeControl } from '@angular/cdk/tree';
+import { MatTreeModule } from '@angular/material/tree';
 
 @Component({
   selector: 'app-admin-panel',
@@ -26,8 +29,9 @@ import { AddPlaceDialogComponent } from '../dialogs/add-place-dialog/add-place-d
     CommonModule,
     MatListModule,
     MatIconModule,
-    MatButtonModule
-  ],
+    MatButtonModule,
+    MatTreeModule
+],
   templateUrl: './admin-panel.component.html',
   styleUrl: './admin-panel.component.css'
 })
@@ -38,11 +42,27 @@ export class AdminPanelComponent implements OnInit {
   places: Place[] = [];
   barbers: Barber[] = [];
 
+  treeControl: FlatTreeControl<DynamicFlatNode>;
+
+  dataSource: DynamicDataSource;
+
+  getLevel = (node: DynamicFlatNode) => node.level;
+
+  isExpandable = (node: DynamicFlatNode) => node.expandable;
+
+  hasChild = (_: number, _nodeData: DynamicFlatNode) => _nodeData.expandable;
+
   constructor(
     private placeService: PlaceService,
     private barberService: BarberService,
-    public dialog: MatDialog
-  ){}
+    public dialog: MatDialog,
+    private database: DynamicDatabase
+  ){
+    this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
+    this.dataSource = new DynamicDataSource(this.treeControl, database);
+
+    this.dataSource.data = database.initialData();
+  }
 
 
   openDialogContact(barber : Barber) {
@@ -58,7 +78,8 @@ export class AdminPanelComponent implements OnInit {
   }
 
   openDialogEditPlace(place: Place){
-    this.dialog.open(EditPlaceComponent,{
+    console.log(place)
+    this.dialog.open(EditPlaceDialogComponent,{
       data: place
     })
   }
@@ -82,7 +103,7 @@ export class AdminPanelComponent implements OnInit {
   }
 
   openDialogAddBarber(){
-    this.dialog.open(AddBarberComponent)
+    this.dialog.open(AddBarberDialogComponent)
   }
 
   openDialogAddPlace(){

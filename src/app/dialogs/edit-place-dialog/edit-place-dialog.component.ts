@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { Place } from '../../classes/place/place';
 
 @Component({
-  selector: 'app-edit-place',
+  selector: 'app-edit-place-dialog',
   standalone: true,
   imports: [
     MatDialogTitle,
@@ -22,10 +22,10 @@ import { Place } from '../../classes/place/place';
     CommonModule,
     ReactiveFormsModule
   ],
-  templateUrl: './edit-place.component.html',
-  styleUrl: './edit-place.component.css'
+  templateUrl: './edit-place-dialog.component.html',
+  styleUrl: './edit-place-dialog.component.css'
 })
-export class EditPlaceComponent {
+export class EditPlaceDialogComponent {
 
   protected editForm = new FormGroup({
     city: new FormControl('',Validators.required),

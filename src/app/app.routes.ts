@@ -16,35 +16,43 @@ import { PlaceComponent } from './place/place.component';
 export const routes: Routes = [{
         path: 'login',
         canActivate:[negateAuthGuard],
-        component: LoginComponent
+        loadComponent:()=>
+            import('./login/login.component').then((c)=>c.LoginComponent),
     },{
         path: 'register',
         canActivate:[negateAuthGuard],
-        component: RegisterComponent
+        loadComponent:()=>
+            import('./register/register.component').then((c)=>c.RegisterComponent),
     },{
         path: 'contact',
-        component: ContactComponent
+        loadComponent:()=>
+            import('./contact/contact.component').then((c)=>c.ContactComponent),
     },{
         path: 'profile',
         canActivate: [authGuard],
-        component: ProfileComponent
+        loadComponent:()=>
+            import('./profile/profile.component').then((c)=>c.ProfileComponent),
     },{
         path: 'history',
         canActivate: [authGuard],
-        component: HistoryComponent,
+        loadComponent:()=>
+            import('./history/history.component').then((c)=>c.HistoryComponent),
     },{
         path: 'place/:placeid',
-        component: PlaceComponent,
+        loadComponent:()=>
+            import('./place/place.component').then((c)=>c.PlaceComponent),
     },{
         path: 'adm_panel',
         canActivate: [authGuard, adminGuard],
-        component: AdminPanelComponent,
+        loadComponent:()=>
+            import('./admin-panel/admin-panel.component').then((c)=>c.AdminPanelComponent),
     },{
         path: '',
         component: MapComponent
     },{
         path: '404',
-        component: PageNotFoundComponent
+        loadComponent:()=>
+            import('./page-not-found/page-not-found.component').then((c)=>c.PageNotFoundComponent),
     },{
         path: '**',
         redirectTo: '404',

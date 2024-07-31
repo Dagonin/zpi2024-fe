@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { PhoneNumberValidator } from '../../validators/phone-number-validator';
 
 @Component({
-  selector: 'app-add-barber',
+  selector: 'app-add-barber-dialog',
   standalone: true,
   imports: [
     MatDialogTitle,
@@ -22,10 +22,10 @@ import { PhoneNumberValidator } from '../../validators/phone-number-validator';
     CommonModule,
     ReactiveFormsModule
   ],
-  templateUrl: './add-barber.component.html',
-  styleUrl: './add-barber.component.css'
+  templateUrl: './add-barber-dialog.component.html',
+  styleUrl: './add-barber-dialog.component.css'
 })
-export class AddBarberComponent {
+export class AddBarberDialogComponent {
   protected addForm = new FormGroup({
     name: new FormControl('', [Validators.required]),
     surname: new FormControl('',[Validators.required]),

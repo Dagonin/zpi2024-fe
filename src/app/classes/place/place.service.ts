@@ -24,6 +24,32 @@ export class PlaceService {
     return this.places;
   }
 
+  getPlacesCities(){
+    let placeCities : string[] = [];
+    this.places.forEach(place=>{
+      placeCities.push(place.city)
+    })
+    return placeCities;
+  }
+
+  getPlaceBarbers(id: string){
+       // return place with correct id
+    return this.places[1].barbers;
+  }
+
+  getPlaceTreeBarbers(){
+    let dataTree = new Map<string, string[]>();
+    this.places.forEach(place=>{
+      let barberList : string[] = [];
+      place.barbers.forEach(barber=>{
+        barberList.push((barber.name + ' ' + barber.surname));
+        
+      })
+      dataTree.set(place.city,barberList)
+    })
+    return dataTree;
+  }
+
   getPlace(id: string){
     // return place with correct id
     return this.places[1]

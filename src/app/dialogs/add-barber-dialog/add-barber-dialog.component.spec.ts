@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddBarberComponent } from './add-barber.component';
+import { AddBarberDialogComponent } from './add-barber-dialog.component';
 
-describe('AddBarberComponent', () => {
-  let component: AddBarberComponent;
-  let fixture: ComponentFixture<AddBarberComponent>;
+describe('AddBarberDialogComponent', () => {
+  let component: AddBarberDialogComponent;
+  let fixture: ComponentFixture<AddBarberDialogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AddBarberComponent]
+      imports: [AddBarberDialogComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AddBarberComponent);
+    fixture = TestBed.createComponent(AddBarberDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
