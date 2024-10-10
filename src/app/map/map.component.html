@@ -1,8 +1,13 @@
+<div id="body">
+
+
+
 <div id="map">
     <button (click)="centerMap()" id="refreshButton">Reset mapy</button>
 </div>
 
 
+<div id="locals">
 
 <h3>Lokale:</h3>
 <mat-button-toggle-group appearance="legacy">
@@ -17,3 +22,7 @@
 <div class="example-button-row">
     <button [disabled]="checkedPlace===''" [routerLink]="'/place/'+checkedPlace" mat-stroked-button>Umów się w lokalu</button>
   </div>
+
+</div>
+
+</div>

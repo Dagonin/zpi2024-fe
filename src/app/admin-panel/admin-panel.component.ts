@@ -20,7 +20,6 @@ import { AddPlaceDialogComponent } from '../dialogs/add-place-dialog/add-place-d
 import { DynamicDatabase, DynamicDataSource, DynamicFlatNode } from './admin-panel-places';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeModule } from '@angular/material/tree';
-import { Subscription } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 
 @Component({
@@ -41,10 +40,7 @@ export class AdminPanelComponent implements OnInit {
   readonly panelOpenState = signal(false);
   readonly panelOpenStateBarbers = signal(false);
 
-  isAuthenticated: boolean = false;
-  userRole: string = '';
-  private authSubscription!: Subscription;
-  private roleSubscription!: Subscription;
+  userRole = localStorage.getItem('role');
 
   places: Place[] = [];
   barbers: Barber[] = [];
@@ -122,16 +118,5 @@ export class AdminPanelComponent implements OnInit {
     this.places = this.placeService.getPlaces();
     this.barbers = this.barberService.getBarbers(); 
     this.userRole = this.authService.getRole();
-    console.log(this.userRole)
-    this.authSubscription = this.authService.isAuthenticated$.subscribe(
-      (isAuthenticated) => {
-        this.isAuthenticated = isAuthenticated;
-      }
-    );
-    this.roleSubscription = this.authService.userRole$.subscribe(
-      (userRole) => {
-        this.userRole = userRole;
-      }
-    );
   }
 }

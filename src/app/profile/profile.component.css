@@ -1,0 +1,15 @@
+
+
+#body{
+    padding: 1rem;
+    display: flex;
+}
+
+#profile{
+    width: 30vw;
+}
+
+#loyality_card{
+    background-color: bisque;
+    width: 50vw;
+}

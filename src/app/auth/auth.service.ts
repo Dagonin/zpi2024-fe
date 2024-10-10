@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 export class AuthService {
 
   // baseUrl = 'http://localhost:3000/api';
-
+  private encryptionKEY = 'asdasdasdasdas'
   private isAuthenticatedSubject: BehaviorSubject<boolean>;
   public isAuthenticated$: Observable<boolean>;
 
@@ -33,6 +33,7 @@ export class AuthService {
   }
 
   login(data: any) {
+    console.log(data)
     // return this.httpClient.post(`${this.baseUrl}/login`, data)
     //   .pipe(tap((result) => {
     //     localStorage.setItem('authUser', JSON.stringify(result));

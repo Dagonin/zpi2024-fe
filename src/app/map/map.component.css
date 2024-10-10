@@ -1,6 +1,16 @@
+#body{
+    display: inline-flex;
+    padding: 1rem;
+}
+
 #map{
     height: 55vh;
     width: 55vw;
+}
+
+#locals{
+    padding: 1rem;
+    width: 40vw;
 }
 
 #refreshButton {
