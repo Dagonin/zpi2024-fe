@@ -1,21 +1,23 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AsyncPipe, CommonModule, JsonPipe } from '@angular/common';
+import { Component, forwardRef } from '@angular/core';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIcon } from '@angular/material/icon';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { FormErrorsService } from '../form-errors/form-errors.service';
 import { RegisterService } from './register.service';
 import { PhoneNumberValidator } from '../validators/phone-number-validator';
 import { RouterLink } from '@angular/router';
+import { MyTelInput } from '../phone-input/phone-input.component';
+
 
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [    
+  imports: [
     MatFormFieldModule,
     MatInputModule,
     MatIcon,
@@ -24,7 +26,12 @@ import { RouterLink } from '@angular/router';
     CommonModule,
     MatSidenavModule,
     RouterLink,
-    ],
+    FormsModule,
+    forwardRef(() => MyTelInput),
+    AsyncPipe,
+    JsonPipe,
+    
+],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
@@ -35,7 +42,8 @@ export class RegisterComponent {
     email: new FormControl('',[Validators.required, Validators.email]),
     phone_number: new FormControl('',[Validators.required,PhoneNumberValidator()]),
     password: new FormControl('',[Validators.required,Validators.minLength(8)]),
-    passwordRepeat: new FormControl('',[Validators.required,Validators.minLength(8)])
+    passwordRepeat: new FormControl('',[Validators.required,Validators.minLength(8)]),
+    area: new FormControl('',[Validators.required,Validators.minLength(2),Validators.maxLength(3)])
   },{updateOn: 'blur'})
 
   opened: boolean = false;

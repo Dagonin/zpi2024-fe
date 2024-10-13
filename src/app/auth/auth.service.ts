@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
+import { RSAHelper } from './rsa-helper';
 
 @Injectable({
   providedIn: 'root'
@@ -9,12 +10,13 @@ import { Router } from '@angular/router';
 export class AuthService {
 
   // baseUrl = 'http://localhost:3000/api';
-  private encryptionKEY = 'asdasdasdasdas'
+
   private isAuthenticatedSubject: BehaviorSubject<boolean>;
   public isAuthenticated$: Observable<boolean>;
 
   private userRoleSubject: BehaviorSubject<string>;
   public userRole$: Observable<string>;
+  private rsa_helper: RSAHelper;
 
   constructor(private http: HttpClient, private router:Router
   ) {
@@ -24,6 +26,7 @@ export class AuthService {
     this.isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
     this.userRoleSubject = new BehaviorSubject<string>(getRole);
     this.userRole$ = this.userRoleSubject.asObservable();
+    this.rsa_helper = new RSAHelper();
    }
 
 
@@ -34,6 +37,8 @@ export class AuthService {
 
   login(data: any) {
     console.log(data)
+    console.log(this.rsa_helper.encryptWithPublicKey(data.password))
+    
     // return this.httpClient.post(`${this.baseUrl}/login`, data)
     //   .pipe(tap((result) => {
     //     localStorage.setItem('authUser', JSON.stringify(result));

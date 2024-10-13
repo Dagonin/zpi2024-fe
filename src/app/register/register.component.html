@@ -30,13 +30,25 @@
         </mat-form-field>
       </p>
       
-      <p>
+      <!-- <p>
         <mat-form-field appearance="outline">
           <mat-label>Numer telefonu</mat-label>
           <input  formControlName="phone_number" type="number" matInput>
           <mat-error *ngIf="registerForm.get('phone_number')?.invalid">{{errorMessage(registerForm.get('phone_number')?.errors,'Numer telefonu')}}</mat-error>
         </mat-form-field>
-      </p>
+      </p> -->
+
+
+  
+        <mat-form-field>
+          <mat-label>Phone number</mat-label>
+          <example-tel-input formControlName="phone_number" required></example-tel-input>
+          <mat-icon matSuffix>phone</mat-icon>
+          <mat-hint>Include area code</mat-hint>
+        </mat-form-field>
+
+
+
 
       <div class="example-button-row">
         <button [disabled]="registerForm.invalid" mat-stroked-button>Login</button>
