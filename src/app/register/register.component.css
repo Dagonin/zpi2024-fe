@@ -10,11 +10,11 @@ form p{
     text-align: center;
 }
 
-.example-tel-input-container {
-    display: flex;
+.tel-input-container {
+    display: inline-flex;
   }
   
-  .example-tel-input-element {
+  .tel-input-element {
     border: none;
     background: none;
     padding: 0;
@@ -22,6 +22,14 @@ form p{
     font: inherit;
     text-align: center;
     color: currentcolor;
+  }
+
+  .area{
+    width: 25%;
+  }
+
+  .number{
+    width: 75%;
   }
   
   .example-tel-input-spacer {
