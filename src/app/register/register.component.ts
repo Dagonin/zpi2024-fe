@@ -40,11 +40,11 @@ export class RegisterComponent {
   protected registerForm = new FormGroup({
     login: new FormControl('',[Validators.required, Validators.minLength(5)]),
     email: new FormControl('',[Validators.required, Validators.email]),
-    phone_number: new FormControl('',[Validators.required,PhoneNumberValidator()]),
+    phone_number: new FormControl('',[Validators.required,PhoneNumberValidator(),Validators.minLength(7)]),
     password: new FormControl('',[Validators.required,Validators.minLength(8)]),
     passwordRepeat: new FormControl('',[Validators.required,Validators.minLength(8)]),
     area: new FormControl('',[Validators.required,Validators.minLength(2),Validators.maxLength(3)])
-  })
+  },{updateOn: 'change'})
 
   opened: boolean = false;
 

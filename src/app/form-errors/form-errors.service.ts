@@ -11,6 +11,7 @@ export class FormErrorsService {
 
   errorMessage(vals: Object, name: string){
     let obj = Object(vals);
+    // console.log(obj,vals)
     if(obj['required']){
       return 'To pole jest wymagane';
     }
@@ -22,7 +23,11 @@ export class FormErrorsService {
       return "Adres email nie jest poprawnym adresem email";
     }
     if(obj['PhoneNumber']){
+      console.log("FF")
       return "To nie jest poprawny numer telefonu"
+    }
+    if(obj['area']){
+      return "To nie jest poprawny numer kierunkowy"
     }
 
     console.log(vals)
