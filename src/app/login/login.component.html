@@ -2,6 +2,14 @@
 <div id="background">
   <div id="form">
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <h3>Zaloguj się</h3>
+      <p id="user_toggle">
+        <mat-button-toggle-group formControlName="user_type" aria-label="Font Style" value="user">
+          <mat-button-toggle checked value="user">Klient</mat-button-toggle>
+          <mat-button-toggle value="worker">Pracownik</mat-button-toggle>
+        </mat-button-toggle-group>
+      </p>
+
       <p>
           <mat-form-field appearance="fill">
             <mat-label>Login</mat-label>
@@ -24,7 +32,7 @@
       </form>
 
       <div id="forgotten_password">
-        <a href="">Zapomniałeś hasła?</a>
+        <a [routerLink]="'/forgotten_password'">Zapomniałeś hasła?</a>
       </div>
 
   </div>

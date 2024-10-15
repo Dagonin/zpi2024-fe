@@ -7,8 +7,9 @@ import { MatIcon } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { FormErrorsService } from '../form-errors/form-errors.service';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 
 @Component({
@@ -22,7 +23,9 @@ import { AuthService } from '../auth/auth.service';
     ReactiveFormsModule,
     CommonModule,
     MatSidenavModule,
-    RouterLink
+    RouterLink,
+    MatButtonToggleModule,
+    RouterOutlet
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
@@ -30,6 +33,7 @@ import { AuthService } from '../auth/auth.service';
 export class LoginComponent {
 
   protected loginForm = new FormGroup({
+    user_type: new FormControl(''),
     login: new FormControl('',[Validators.required, Validators.minLength(5)]),
     password: new FormControl('',[Validators.required, Validators.minLength(8)])
   },{updateOn: 'blur'},) 

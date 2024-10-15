@@ -49,6 +49,10 @@ export const routes: Routes = [{
         loadComponent:()=>
             import('./admin-panel/admin-panel.component').then((c)=>c.AdminPanelComponent),
     },{
+        path: 'forgotten_password',
+        loadComponent:()=>
+            import('./forgotten-password/forgotten-password.component').then((c)=>c.ForgottenPasswordComponent),
+    },{
         path: '',
         component: MainPageComponent
     },{
