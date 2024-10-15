@@ -33,4 +33,8 @@ errorMessage(arg0: any,arg1: string) {
 throw new Error('Method not implemented.');
 }
 
+scroll(el: HTMLElement) {
+  el.scrollIntoView({behavior: 'smooth'});
+}
+
 }

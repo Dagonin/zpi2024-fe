@@ -10,4 +10,10 @@
     background-color: steelblue;
   }
 
-  
+  .navBarBtn{
+    --mdc-text-button-label-text-color: red;
+  }
+
+  .mat-button{
+    color: white !important;
+  }

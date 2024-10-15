@@ -1,6 +1,6 @@
 <mat-toolbar>
   <section>
-    <mat-button-toggle-group
+    <!-- <mat-button-toggle-group
       name="favoriteColor"
       aria-label="Favorite Color"
       [hideSingleSelectionIndicator]="true"
@@ -14,9 +14,18 @@
 
       <mat-button-toggle *ngIf="userRole=='admin' || userRole=='employee'" [routerLink]="'/adm_panel'">Panel Admina</mat-button-toggle>
 
-    </mat-button-toggle-group>
+    </mat-button-toggle-group> -->
+
+
+
   </section>
-  <button *ngIf="isAuthenticated" (click)="logout()" mat-stroked-button>Wyloguj</button>
+  <button *ngIf="isAuthenticated" (click)="logout()" mat-raised-button>Wyloguj</button>
+  <button [routerLink]="'/'" mat-raised-button>Strona główna</button>
+  <button *ngIf="!isAuthenticated" [routerLink]="'/login'" mat-raised-button>Zaloguj się</button>
+  <button *ngIf="!isAuthenticated" [routerLink]="'/register'" mat-raised-button>Załóż konto</button>
+  <button *ngIf="isAuthenticated" [routerLink]="'/history'" mat-raised-button>Historia wizyt</button>
+  <button *ngIf="isAuthenticated" [routerLink]="'/profile'" mat-raised-button>Twój profil</button>
+  <button [routerLink]="'/contact'" mat-raised-button>Kontakt</button>
 
 </mat-toolbar>
 <router-outlet></router-outlet>

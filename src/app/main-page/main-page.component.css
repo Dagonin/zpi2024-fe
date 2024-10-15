@@ -14,22 +14,31 @@
     background-image: url('/assets/vintage_barber_shop.jpg');
 }
 
+#main_container{
+    position: absolute;
+    color: wheat;
+    font-size: 40px;
+    margin-left: 60vw;
+    top:400px;
+    width: fit-content;
+    
+}
+
+#main_btn{
+    height: 70px;
+    width: 250px;
+    margin-top: 2rem;
+    font-size: 20px;
+}
+
 #nd-view{
     background: rgb(27,25,57);
     background: linear-gradient(90deg, rgba(27,25,57,1) 0%, rgba(213,118,52,1) 35%, rgba(71,51,1,1) 100%);
 }
 
 #main_h2{
-    position: absolute;
-    color: wheat;
-    font-size: 50px;
-    margin-left: 60vw;
-    top:400px;
-    /* -webkit-text-stroke: 1px black; */
-    width: fit-content;
-    background-color: rgb(0 0 0 / .6);
     padding: 1rem;
-    
+    background-color: rgb(0 0 0 / .6);
 }
 
 #nd_h2{
