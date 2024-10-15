@@ -1,89 +1,92 @@
-<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-  <!-- <p>
-    <mat-form-field appearance="outline">
-      <mat-label>Login</mat-label>
-      <input formControlName="login" type="text" matInput>
-      <mat-error *ngIf="registerForm.get('login')?.invalid">{{errorMessage(registerForm.get('login')?.errors,'Login')}}
-      </mat-error>
-
-    </mat-form-field>
-  </p> -->
-  <p>
-    <mat-form-field appearance="outline">
-      <mat-label>Imię</mat-label>
-      <input formControlName="name" type="text" matInput>
-      <mat-error *ngIf="registerForm.get('name')?.invalid">{{errorMessage(registerForm.get('name')?.errors,'Imie')}}
-      </mat-error>
-
-    </mat-form-field>
-  </p>  <p>
-    <mat-form-field appearance="outline">
-      <mat-label>Nazwisko</mat-label>
-      <input formControlName="surname" type="text" matInput>
-      <mat-error *ngIf="registerForm.get('surname')?.invalid">{{errorMessage(registerForm.get('surname')?.errors,'Nazwisko')}}
-      </mat-error>
-
-    </mat-form-field>
-  </p>
-
-  <p>
-    <mat-form-field appearance="outline">
-      <mat-label>Email</mat-label>
-      <input formControlName="email" type="text" matInput>
-      <mat-error *ngIf="registerForm.get('email')?.invalid">
-        {{errorMessage(registerForm.get('email')?.errors,'Adres email')}}</mat-error>
-
-    </mat-form-field>
-  </p>
-  <p>
-    <mat-form-field appearance="outline">
-      <mat-label>Hasło</mat-label>
-      <input formControlName="password" type="password" matInput>
-      <mat-error *ngIf="registerForm.get('password')?.invalid">
-        {{errorMessage(registerForm.get('password')?.errors,'Hasło')}}</mat-error>
-    </mat-form-field>
-  </p>
-  <p>
-    <mat-form-field appearance="outline">
-      <mat-label>Powtórz hasło</mat-label>
-      <input formControlName="passwordRepeat" type="password" matInput>
-      <mat-error *ngIf="registerForm.get('passwordRepeat')?.invalid">
-        {{errorMessage(registerForm.get('passwordRepeat')?.errors,'Hasło')}}</mat-error>
-    </mat-form-field>
-  </p>
-
-  <!-- <p>
-    <mat-form-field appearance="outline">
+<div id="background">
+  <div id="form"><form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <!-- <p>
+      <mat-form-field appearance="outline">
+        <mat-label>Login</mat-label>
+        <input formControlName="login" type="text" matInput>
+        <mat-error *ngIf="registerForm.get('login')?.invalid">{{errorMessage(registerForm.get('login')?.errors,'Login')}}
+        </mat-error>
+  
+      </mat-form-field>
+    </p> -->
+    <p>
+      <mat-form-field appearance="outline">
+        <mat-label>Imię</mat-label>
+        <input formControlName="name" type="text" matInput>
+        <mat-error *ngIf="registerForm.get('name')?.invalid">{{errorMessage(registerForm.get('name')?.errors,'Imie')}}
+        </mat-error>
+  
+      </mat-form-field>
+    </p>  <p>
+      <mat-form-field appearance="outline">
+        <mat-label>Nazwisko</mat-label>
+        <input formControlName="surname" type="text" matInput>
+        <mat-error *ngIf="registerForm.get('surname')?.invalid">{{errorMessage(registerForm.get('surname')?.errors,'Nazwisko')}}
+        </mat-error>
+  
+      </mat-form-field>
+    </p>
+  
+    <p>
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input formControlName="email" type="text" matInput>
+        <mat-error *ngIf="registerForm.get('email')?.invalid">
+          {{errorMessage(registerForm.get('email')?.errors,'Adres email')}}</mat-error>
+  
+      </mat-form-field>
+    </p>
+    <p>
+      <mat-form-field appearance="outline">
+        <mat-label>Hasło</mat-label>
+        <input formControlName="password" type="password" matInput>
+        <mat-error *ngIf="registerForm.get('password')?.invalid">
+          {{errorMessage(registerForm.get('password')?.errors,'Hasło')}}</mat-error>
+      </mat-form-field>
+    </p>
+    <p>
+      <mat-form-field appearance="outline">
+        <mat-label>Powtórz hasło</mat-label>
+        <input formControlName="passwordRepeat" type="password" matInput>
+        <mat-error *ngIf="registerForm.get('passwordRepeat')?.invalid">
+          {{errorMessage(registerForm.get('passwordRepeat')?.errors,'Hasło')}}</mat-error>
+      </mat-form-field>
+    </p>
+  
+    <!-- <p>
+      <mat-form-field appearance="outline">
+        <mat-label>Numer telefonu</mat-label>
+        <input formControlName="phone_number" type="number" matInput>
+        <mat-error *ngIf="registerForm.get('phone_number')?.invalid">
+          {{errorMessage(registerForm.get('phone_number')?.errors,'Numer telefonu')}}</mat-error>
+      </mat-form-field>
+    </p> -->
+  
+    <mat-form-field appearance="outline" floatLabel="always">
       <mat-label>Numer telefonu</mat-label>
-      <input formControlName="phone_number" type="number" matInput>
-      <mat-error *ngIf="registerForm.get('phone_number')?.invalid">
-        {{errorMessage(registerForm.get('phone_number')?.errors,'Numer telefonu')}}</mat-error>
+      <div role="group" class="tel-input-container">
+        +
+        <input class="tel-input-element area" formControlName="area" size="3" maxLength="3" aria-label="Area code"
+          matInput #area placeholder="48" />
+        -
+        <input class="tel-input-element number" formControlName="phone_number" maxLength="10" size="10"
+          aria-label="Exchange code" matInput #num_id
+          (keyup.backspace)="autoFocusPrev(registerForm.controls.phone_number,area)" (click)="$event.stopPropagation()" />
+      </div>
+      <mat-error *ngIf="registerForm.get('phone_number')?.invalid || registerForm.get('area')?.invalid ">
+        {{errorMessage(registerForm.get('phone_number')?.errors,'Numer telefonu')}}
+      </mat-error>
+      <!-- <mat-error *ngIf="registerForm.get('area')?.invalid">
+        {{errorMessage(registerForm.get('area')?.errors,'Numer Kierunkowy')}}
+      </mat-error> -->
+  
+  
     </mat-form-field>
-  </p> -->
-
-  <mat-form-field appearance="outline" floatLabel="always">
-    <mat-label>Numer telefonu</mat-label>
-    <div role="group" class="tel-input-container">
-      +
-      <input class="tel-input-element area" formControlName="area" size="3" maxLength="3" aria-label="Area code"
-        matInput #area placeholder="48" />
-      -
-      <input class="tel-input-element number" formControlName="phone_number" maxLength="10" size="10"
-        aria-label="Exchange code" matInput #num_id
-        (keyup.backspace)="autoFocusPrev(registerForm.controls.phone_number,area)" (click)="$event.stopPropagation()" />
+  
+    <div class="example-button-row">
+      <button mat-stroked-button>Login</button>
     </div>
-    <mat-error *ngIf="registerForm.get('phone_number')?.invalid || registerForm.get('area')?.invalid ">
-      {{errorMessage(registerForm.get('phone_number')?.errors,'Numer telefonu')}}
-    </mat-error>
-    <!-- <mat-error *ngIf="registerForm.get('area')?.invalid">
-      {{errorMessage(registerForm.get('area')?.errors,'Numer Kierunkowy')}}
-    </mat-error> -->
-
-
-  </mat-form-field>
-
-  <div class="example-button-row">
-    <button mat-stroked-button>Login</button>
+  
+  </form>
   </div>
-
-</form>
+</div>

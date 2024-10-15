@@ -1,4 +1,6 @@
 
+<div id="background">
+  <div id="form">
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <p>
           <mat-form-field appearance="fill">
@@ -20,5 +22,13 @@
         </div>
       
       </form>
+
+      <div id="forgotten_password">
+        <a href="">Zapomniałeś hasła?</a>
+      </div>
+
+  </div>
 {{loginForm.value | json}}
+
+</div>
 
