@@ -3,7 +3,7 @@
   }
   
   mat-toolbar{
-    background-color: rgb(113, 150, 180);
+    background-color:black;
   }
   mat-button-toggle{
     background-color: steelblue;

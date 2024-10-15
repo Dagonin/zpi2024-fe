@@ -23,14 +23,13 @@ export class FormErrorsService {
       return "Adres email nie jest poprawnym adresem email";
     }
     if(obj['PhoneNumber']){
-      console.log("FF")
       return "To nie jest poprawny numer telefonu"
     }
     if(obj['area']){
       return "To nie jest poprawny numer kierunkowy"
     }
 
-    console.log(vals)
+    // console.log(vals)
     return '';
   }
 

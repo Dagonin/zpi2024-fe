@@ -1,0 +1,75 @@
+*{
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.view{
+    width: 100%;
+    height: 105vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#main-view{
+    background-image: url('/assets/vintage_barber_shop.jpg');
+}
+
+#nd-view{
+    background: rgb(27,25,57);
+    background: linear-gradient(90deg, rgba(27,25,57,1) 0%, rgba(213,118,52,1) 35%, rgba(71,51,1,1) 100%);
+}
+
+#main_h2{
+    position: absolute;
+    color: wheat;
+    font-size: 50px;
+    margin-left: 60vw;
+    top:400px;
+    /* -webkit-text-stroke: 1px black; */
+    width: fit-content;
+    background-color: rgb(0 0 0 / .6);
+    padding: 1rem;
+    
+}
+
+#nd_h2{
+    position: relative;
+    color: white;
+    font-size: 50px;
+    align-self: center;
+    left: 41%;
+    top: 5%;
+    width: 40vw;
+    
+}
+
+.cols3_container{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(1, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    justify-items: center;
+    height: 50%;
+    margin-top: 10rem;
+}
+
+.cols3{
+    display: inline-block;
+    width: 50%;
+    background-color: black;
+    color: wheat;
+    padding: 1rem;
+    height: 100%;
+}
+
+.cols3 img{
+    display: block;
+    width: 50%;
+}
+
+#footer{
+    height: 43vh;
+    width: 100%;
+    background-color: burlywood;
+}

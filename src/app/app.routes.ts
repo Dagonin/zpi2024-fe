@@ -13,6 +13,7 @@ import { AdminPanelComponent } from './admin-panel/admin-panel.component';
 import { adminGuard } from './auth/admin.guard';
 import { PlaceComponent } from './place/place.component';
 import { employeeGuard } from './auth/employee.guard';
+import { MainPageComponent } from './main-page/main-page.component';
 
 export const routes: Routes = [{
         path: 'login',
@@ -49,7 +50,7 @@ export const routes: Routes = [{
             import('./admin-panel/admin-panel.component').then((c)=>c.AdminPanelComponent),
     },{
         path: '',
-        component: MapComponent
+        component: MainPageComponent
     },{
         path: '404',
         loadComponent:()=>

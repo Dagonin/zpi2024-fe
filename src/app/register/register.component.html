@@ -1,5 +1,5 @@
 <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-  <p>
+  <!-- <p>
     <mat-form-field appearance="outline">
       <mat-label>Login</mat-label>
       <input formControlName="login" type="text" matInput>
@@ -7,7 +7,25 @@
       </mat-error>
 
     </mat-form-field>
+  </p> -->
+  <p>
+    <mat-form-field appearance="outline">
+      <mat-label>Imię</mat-label>
+      <input formControlName="name" type="text" matInput>
+      <mat-error *ngIf="registerForm.get('name')?.invalid">{{errorMessage(registerForm.get('name')?.errors,'Imie')}}
+      </mat-error>
+
+    </mat-form-field>
+  </p>  <p>
+    <mat-form-field appearance="outline">
+      <mat-label>Nazwisko</mat-label>
+      <input formControlName="surname" type="text" matInput>
+      <mat-error *ngIf="registerForm.get('surname')?.invalid">{{errorMessage(registerForm.get('surname')?.errors,'Nazwisko')}}
+      </mat-error>
+
+    </mat-form-field>
   </p>
+
   <p>
     <mat-form-field appearance="outline">
       <mat-label>Email</mat-label>
@@ -48,7 +66,7 @@
     <div role="group" class="tel-input-container">
       +
       <input class="tel-input-element area" formControlName="area" size="3" maxLength="3" aria-label="Area code"
-        matInput #area />
+        matInput #area placeholder="48" />
       -
       <input class="tel-input-element number" formControlName="phone_number" maxLength="10" size="10"
         aria-label="Exchange code" matInput #num_id
@@ -65,7 +83,7 @@
   </mat-form-field>
 
   <div class="example-button-row">
-    <button [disabled]="registerForm.invalid" mat-stroked-button>Login</button>
+    <button mat-stroked-button>Login</button>
   </div>
 
 </form>

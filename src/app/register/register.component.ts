@@ -38,12 +38,13 @@ export class RegisterComponent {
 
 
   protected registerForm = new FormGroup({
-    login: new FormControl('',[Validators.required, Validators.minLength(5)]),
+    name: new FormControl('',[Validators.required, Validators.minLength(1),Validators.maxLength(50)]),
+    surname: new FormControl('',[Validators.minLength(1),Validators.maxLength(50)]),
     email: new FormControl('',[Validators.required, Validators.email]),
     phone_number: new FormControl('',[Validators.required,PhoneNumberValidator(),Validators.minLength(7)]),
     password: new FormControl('',[Validators.required,Validators.minLength(8)]),
     passwordRepeat: new FormControl('',[Validators.required,Validators.minLength(8)]),
-    area: new FormControl('',[Validators.required,Validators.minLength(2),Validators.maxLength(3)])
+    area: new FormControl('',[Validators.maxLength(3)])
   },{updateOn: 'change'})
 
   opened: boolean = false;
@@ -61,7 +62,7 @@ export class RegisterComponent {
     if(this.registerForm.valid){
       console.log(this.registerForm)
       let vals = this.registerForm.getRawValue()
-      console.log(this.registerService.register(vals.login!,vals.password!,vals.passwordRepeat!,vals.email!,vals.phone_number!))
+      console.log(this.registerService.register(vals.password!,vals.passwordRepeat!,vals.email!,vals.phone_number!))
     }
   }
 
