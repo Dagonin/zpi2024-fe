@@ -10,6 +10,7 @@ import { MapComponent } from "./map/map.component";
 import { AuthService } from './auth/auth.service';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +25,8 @@ import { Subscription } from 'rxjs';
     MatCheckboxModule,
     RouterLink,
     MapComponent,
-    CommonModule
+    CommonModule,
+    MatMenuModule
 ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
@@ -33,6 +35,7 @@ export class AppComponent implements OnInit {
   title = 'inz';
   isAuthenticated: boolean = false;
   userRole: string = '';
+  username: string| null = '';
   private authSubscription!: Subscription;
   private roleSubscription!: Subscription;
 
@@ -40,6 +43,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.userRole = this.authService.getRole();
+    
     console.log(this.userRole)
     this.authSubscription = this.authService.isAuthenticated$.subscribe(
       (isAuthenticated) => {
@@ -49,6 +53,7 @@ export class AppComponent implements OnInit {
     this.roleSubscription = this.authService.userRole$.subscribe(
       (userRole) => {
         this.userRole = userRole;
+        this.username = localStorage.getItem('authUser');
       }
     );
   }

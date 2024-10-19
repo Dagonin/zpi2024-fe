@@ -1,20 +1,19 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import { FormErrorsService } from '../../form-errors/form-errors.service';
+import { CommonModule } from '@angular/common';
 import { MatButton } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { Router, RouterLink } from '@angular/router';
-import { FormErrorsService } from '../form-errors/form-errors.service';
 
 @Component({
-  selector: 'app-forgotten-password',
+  selector: 'app-change-password',
   standalone: true,
-  imports: [    
-    MatFormFieldModule,
+  imports: [    MatFormFieldModule,
     MatInputModule,
     MatIcon,
     MatButton,
@@ -23,13 +22,14 @@ import { FormErrorsService } from '../form-errors/form-errors.service';
     MatSidenavModule,
     RouterLink,
     MatButtonToggleModule],
-  templateUrl: './forgotten-password.component.html',
-  styleUrl: './forgotten-password.component.css'
+  templateUrl: './change-password.component.html',
+  styleUrl: './change-password.component.css'
 })
-export class ForgottenPasswordComponent {
-
-  protected forgotten_passwordForm = new FormGroup({
-    email: new FormControl('',[Validators.required,Validators.email])
+export class ChangePasswordComponent {
+  protected change_passwordForm = new FormGroup({
+    old_password: new FormControl('',[Validators.required]),
+    old_password_repeat: new FormControl('',[Validators.required]),
+    new_password: new FormControl('',[Validators.required])
   })
 
 
@@ -48,5 +48,4 @@ export class ForgottenPasswordComponent {
   errorMessage(vals: any, name: string){
     return this.formErrorService.errorMessage(vals,name);
   }
-
 }

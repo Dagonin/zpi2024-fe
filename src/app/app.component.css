@@ -1,6 +1,23 @@
+
+@font-face {
+  font-family: 'Carattere';
+  src: url('/assets/fonts/Carattere-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'NotoSeriflDisplay';
+  src: url('/assets/fonts/NotoSeriflDisplay-regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .example-spacer {
     flex: 1 1 auto;
   }
+  
+
   
   mat-toolbar{
     background-color:black;
@@ -16,4 +33,27 @@
 
   .mat-button{
     color: white !important;
+  }
+
+  #nav_buttons{
+
+    text-align: center;
+  }
+
+  #nav_buttons span{
+    text-align: center;
+    color: goldenrod;
+    font-family: "Carattere";
+    font-weight:700;
+    font-size: 30px;
+    padding: 2rem;
+  }
+
+
+  #logo_icon{
+    width: 50px;
+    height: 50px;
+  }
+  #logo_name{
+    width: 250px;
   }

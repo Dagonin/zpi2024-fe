@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
+import { LoginComponent } from './forms/login/login.component';
+import { RegisterComponent } from './forms/register/register.component';
 import { ContactComponent } from './contact/contact.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AppComponent } from './app.component';
@@ -19,12 +19,12 @@ export const routes: Routes = [{
         path: 'login',
         canActivate:[negateAuthGuard],
         loadComponent:()=>
-            import('./login/login.component').then((c)=>c.LoginComponent),
+            import('./forms/login/login.component').then((c)=>c.LoginComponent),
     },{
         path: 'register',
         canActivate:[negateAuthGuard],
         loadComponent:()=>
-            import('./register/register.component').then((c)=>c.RegisterComponent),
+            import('./forms/register/register.component').then((c)=>c.RegisterComponent),
     },{
         path: 'contact',
         loadComponent:()=>
@@ -51,7 +51,11 @@ export const routes: Routes = [{
     },{
         path: 'forgotten_password',
         loadComponent:()=>
-            import('./forgotten-password/forgotten-password.component').then((c)=>c.ForgottenPasswordComponent),
+            import('./forms/forgotten-password/forgotten-password.component').then((c)=>c.ForgottenPasswordComponent),
+    },{
+        path: 'change_password',
+        loadComponent:()=>
+            import('./forms/change-password/change-password.component').then((c)=>c.ChangePasswordComponent),
     },{
         path: '',
         component: MainPageComponent

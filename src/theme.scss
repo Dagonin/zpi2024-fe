@@ -3,25 +3,33 @@
 @include mat.core();
 
 
-
 $theme: mat.define-theme((
   color: (
-    theme-type: dark,
-    primary: mat.$orange-palette
+    theme-type: light,
+    primary: mat.$orange-palette,
   ),
   typography: (
     brand-family: 'Comic Sans',
     bold-weight: 900
   ),
   density: (
-    scale: -1
+    scale: 0
   )
+));
+
+$test_theme: mat.define-theme((
+  color: (
+    theme-type: dark,
+    primary: mat.$violet-palette,
+  ),
+
 ));
 
 html {
     // Apply the light theme by default
-    @include mat.core-theme($theme);
+    // @include mat.all-component-themes($theme);
     @include mat.button-theme($theme);
+    // @include mat.strong-focus-indicators-theme($test_theme);
   }
 
 

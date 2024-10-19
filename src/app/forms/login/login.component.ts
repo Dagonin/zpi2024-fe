@@ -6,9 +6,9 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import {MatSidenavModule} from '@angular/material/sidenav';
-import { FormErrorsService } from '../form-errors/form-errors.service';
+import { FormErrorsService } from '../../form-errors/form-errors.service';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '../../auth/auth.service';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 

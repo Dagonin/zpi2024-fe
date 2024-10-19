@@ -6,9 +6,9 @@ import { MatFormFieldControl, MatFormFieldModule } from '@angular/material/form-
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { FormErrorsService } from '../form-errors/form-errors.service';
+import { FormErrorsService } from '../../form-errors/form-errors.service';
 import { RegisterService } from './register.service';
-import { PhoneNumberValidator } from '../validators/phone-number-validator';
+import { PhoneNumberValidator } from '../../validators/phone-number-validator';
 import { RouterLink } from '@angular/router';
 import { FocusMonitor } from '@angular/cdk/a11y';
 

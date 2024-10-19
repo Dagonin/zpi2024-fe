@@ -1,31 +1,33 @@
 <mat-toolbar>
-  <section>
-    <!-- <mat-button-toggle-group
-      name="favoriteColor"
-      aria-label="Favorite Color"
-      [hideSingleSelectionIndicator]="true"
-    >
-      <mat-button-toggle [routerLink]="'/'">Strona główna</mat-button-toggle>
-      <mat-button-toggle *ngIf="!isAuthenticated" [routerLink]="'/login'">Zaloguj się</mat-button-toggle>
-      <mat-button-toggle *ngIf="!isAuthenticated" [routerLink]="'/register'">Załóż konto</mat-button-toggle>
-      <mat-button-toggle *ngIf="isAuthenticated" [routerLink]="'/history'">Historia wizyt</mat-button-toggle>
-      <mat-button-toggle *ngIf="isAuthenticated" [routerLink]="'/profile'">Twój profil</mat-button-toggle>
-      <mat-button-toggle [routerLink]="'/contact'">Kontakt</mat-button-toggle>
-
-      <mat-button-toggle *ngIf="userRole=='admin' || userRole=='employee'" [routerLink]="'/adm_panel'">Panel Admina</mat-button-toggle>
-
-    </mat-button-toggle-group> -->
+  <img id="logo_icon" src="/assets/logo_icon.png" alt="">
+  <img id="logo_name" src="/assets/logo_name.png" alt="">
 
 
-
-  </section>
-  <button *ngIf="isAuthenticated" (click)="logout()" mat-raised-button>Wyloguj</button>
+  <!-- <section id="nav_buttons">
   <button [routerLink]="'/'" mat-raised-button>Strona główna</button>
   <button *ngIf="!isAuthenticated" [routerLink]="'/login'" mat-raised-button>Zaloguj się</button>
   <button *ngIf="!isAuthenticated" [routerLink]="'/register'" mat-raised-button>Załóż konto</button>
   <button *ngIf="isAuthenticated" [routerLink]="'/history'" mat-raised-button>Historia wizyt</button>
   <button *ngIf="isAuthenticated" [routerLink]="'/profile'" mat-raised-button>Twój profil</button>
   <button [routerLink]="'/contact'" mat-raised-button>Kontakt</button>
+  </section> -->
 
+  <section class="example-spacer" id="nav_buttons">
+    <span [routerLink]="'/'">Strona główna</span>
+    <span *ngIf="!isAuthenticated" [routerLink]="'/login'" mat-raised-button>Zaloguj się</span>
+    <span *ngIf="!isAuthenticated" [routerLink]="'/register'" mat-raised-button>Załóż konto</span>
+    <span *ngIf="isAuthenticated" [routerLink]="'/history'" mat-raised-button>Historia wizyt</span>
+    <span *ngIf="isAuthenticated" [routerLink]="'/profile'" mat-raised-button>Twój profil</span>
+    <span [routerLink]="'/contact'" mat-raised-button>Kontakt</span>
+  </section>
+
+
+
+
+<button *ngIf="isAuthenticated"  [matMenuTriggerFor]="menu">{{username}}</button>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item [routerLink]="'/change_password'">Zmień hasło</button>
+  <button mat-menu-item (click)="logout()" >Wyloguj się</button>
+</mat-menu>
 </mat-toolbar>
 <router-outlet></router-outlet>

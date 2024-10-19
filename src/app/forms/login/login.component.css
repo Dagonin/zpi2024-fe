@@ -1,0 +1,39 @@
+
+form{
+    width: 100%;
+    text-align: center;
+    margin: auto;
+    padding: 5px;
+}
+
+form p{
+    width: 100%;
+    text-align: center;
+}
+
+#user_toggle{
+    margin-bottom: 3rem;
+}
+
+
+#background{
+    height: 93vh;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url('/assets/login_bg1.jpg');
+}
+
+
+#form{
+    background-color: white;
+    height: 40%;
+    width: 20%;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 2rem;
+    align-content: center;
+}
