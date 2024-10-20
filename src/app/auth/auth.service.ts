@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { BehaviorSubject, Observable, of, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { RSAHelper } from './rsa-helper';
+import { LoginDTO } from '../classes/login/loginDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -29,47 +30,77 @@ export class AuthService {
     this.rsa_helper = new RSAHelper();
    }
 
+   api_url = `http://localhost:8080/api`
 
-  signup(data: any) {
-    // return this.httpClient.post(`${this.baseUrl}/register`, data);
-    return true;
+  // login(data: any) {
+  //   // console.log(data)
+  //   // console.log(this.rsa_helper.encryptWithPublicKey(data.password))
+    
+  //   // return this.httpClient.post(`${this.baseUrl}/login`, data)
+  //   //   .pipe(tap((result) => {
+  //   //     localStorage.setItem('authUser', JSON.stringify(result));
+  //   //   }));
+
+  //   if(data.login === "admin" && data.password === "admin123"){
+  //     localStorage.setItem('authUser', data.login);
+  //     localStorage.setItem('role', 'admin');
+  //     this.isAuthenticatedSubject.next(true);
+  //     this.userRoleSubject.next('admin');
+  //     return true;
+  //   }
+    
+  //   if(data.login === "employee" && data.password === "employee"){
+  //     localStorage.setItem('authUser', data.login);
+  //     localStorage.setItem('role', 'employee');
+  //     this.isAuthenticatedSubject.next(true);
+  //     this.userRoleSubject.next('employee');
+  //     return true;
+  //   }
+
+  //   if(data.login === "user1" && data.password === "useruser"){
+  //     localStorage.setItem('authUser', data.login);
+  //     localStorage.setItem('role', 'user');
+  //     this.isAuthenticatedSubject.next(true);
+  //     this.userRoleSubject.next('user');
+  //     return true;
+  //   }
+
+  //   return false;
+  // }
+
+  login(email: string, password: string): Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    const newLogin : LoginDTO = {
+      email: email,
+      password: password
+    }
+    const httpOptions = 
+    {
+        headers: new HttpHeaders({'Content-Type':'application/json'}),
+        
+    }
+    console.log(newLogin)
+    
+    return this.http.post(`${this.api_url}/customer/login`, newLogin, httpOptions)
+      .pipe(
+        tap((response: any) => {
+          console.log(response)
+          if (response && response.token) {
+            
+            // to sobie sam ustawie 
+
+            // localStorage.setItem('authUser', response.token);
+            // localStorage.setItem('role', response.role); 
+
+            // this.isAuthenticatedSubject.next(true);  
+            // this.userRoleSubject.next(response.role); 
+          }
+        })
+      );
   }
 
-  login(data: any) {
-    console.log(data)
-    console.log(this.rsa_helper.encryptWithPublicKey(data.password))
-    
-    // return this.httpClient.post(`${this.baseUrl}/login`, data)
-    //   .pipe(tap((result) => {
-    //     localStorage.setItem('authUser', JSON.stringify(result));
-    //   }));
 
-    if(data.login === "admin" && data.password === "admin123"){
-      localStorage.setItem('authUser', data.login);
-      localStorage.setItem('role', 'admin');
-      this.isAuthenticatedSubject.next(true);
-      this.userRoleSubject.next('admin');
-      return true;
-    }
-    
-    if(data.login === "employee" && data.password === "employee"){
-      localStorage.setItem('authUser', data.login);
-      localStorage.setItem('role', 'employee');
-      this.isAuthenticatedSubject.next(true);
-      this.userRoleSubject.next('employee');
-      return true;
-    }
-
-    if(data.login === "user1" && data.password === "useruser"){
-      localStorage.setItem('authUser', data.login);
-      localStorage.setItem('role', 'user');
-      this.isAuthenticatedSubject.next(true);
-      this.userRoleSubject.next('user');
-      return true;
-    }
-
-    return false;
-  }
 
   logout() {
     localStorage.removeItem('authUser');

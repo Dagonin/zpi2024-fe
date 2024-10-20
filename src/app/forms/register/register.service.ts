@@ -11,7 +11,7 @@ export class RegisterService {
 
   constructor(private http: HttpClient) { }
 
-  api_url = `http://localhost:8080`
+  api_url = `http://localhost:8080/api`
 
   checkForPasswords(password: string, passwordRepeat: string){
     if(password===passwordRepeat){
@@ -24,26 +24,31 @@ export class RegisterService {
 
 
 
-  register(name: string, password: string,passwordRepeat: string, email: string,surname?: string, phone_number?: string){
+  register(name: string, password: string, email: string, phone_number: string,surname?: string){
     // if(this.checkForPasswords(password,passwordRepeat)){
+    if(!surname){
+      surname = ""
+    }
 
+    
 
     const newCustomer: CustomerDTO = {
-      customerID: null,
-      customerName: 'John',
-      customerSurname: 'Doe',
-      customerDialNumber: '123456789',
-      encryptedCustomerPassword: 'password123',
-      customerEmail: 'john.doe@example.com',
+      customerID: 0, 
+      customerName: name,
+      customerSurname: surname,
+      customerDialNumber: phone_number,
+      encryptedCustomerPassword: password,
+      customerEmail: email,
       serviceCategoryID: 1
     };
-
+    console.log(newCustomer)
       const httpOptions = 
       {
           headers: new HttpHeaders({'Content-Type':'application/json'}),
+          
       }
-    console.log(`${this.api_url}/api/customer/register`)
-    return this.http.post<CustomerDTO>(`${this.api_url}/api/customer/register`,newCustomer,httpOptions)
+    console.log(`${this.api_url}/customer/register`)
+    return this.http.post<string>(`${this.api_url}/customer/register`,newCustomer,httpOptions)
 
     // }
   }

@@ -61,22 +61,24 @@ export class RegisterComponent {
 
 
   onSubmit() {
-    if (this.registerForm.valid) {
+    // if (this.registerForm.valid) {
       const vals = this.registerForm.getRawValue();
-      
+      // const whole_number = vals.area + vals.phone_number;
       // Make sure passwords match before calling the service
       if (vals.password !== vals.passwordRepeat) {
         console.error('Passwords do not match');
         return;
       }
   
+
+      const whole_number = vals.area ? vals.area + vals.phone_number : "+48 " + vals.phone_number;
+
       this.registerService.register(
         vals.name!,
         vals.password!,
-        vals.passwordRepeat!,
         vals.email!,
-        vals.surname!,
-        vals.phone_number!
+        whole_number,
+        vals.surname!
       ).subscribe({
         next: (response: any) => {
           console.log('Registration successful:', response);
@@ -87,9 +89,9 @@ export class RegisterComponent {
           // Handle error (e.g., show an error message to the user)
         }
       });
-    } else {
-      console.error('Form is not valid');
-    }
+    // } else {
+    //   console.error('Form is not valid');
+    // }
   }
 
   errorMessage(vals: any, name: string){

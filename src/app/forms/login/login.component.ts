@@ -47,12 +47,23 @@ export class LoginComponent {
 
   //  Here encrypt password and send credentials to the server
   onSubmit(){
+    const vals = this.loginForm.getRawValue();
     if(this.loginForm.valid){
-      if(this.authService.login(this.loginForm.value)){
-        this.router.navigate([''])
-      }
+
+
+      this.authService.login(vals.login!,vals.password!).subscribe({
+        next: (response) => {
+          // Navigate to another page on success or show a success message
+          console.log('Login successful', response);
+        },
+        error: (error) => {
+          // Handle error, show an error message
+          console.error('Login failed', error);
+        }
+      });
     }
-  }
+    }
+  
 
 
 
