@@ -11,6 +11,8 @@ import { RegisterService } from './register.service';
 import { PhoneNumberValidator } from '../../validators/phone-number-validator';
 import { RouterLink } from '@angular/router';
 import { FocusMonitor } from '@angular/cdk/a11y';
+import { Observable } from 'rxjs';
+import { CustomerDTO } from '../../classes/customer/customerDTO';
 
 
 
@@ -50,7 +52,7 @@ export class RegisterComponent {
   opened: boolean = false;
 
   private readonly _focusMonitor = inject(FocusMonitor);
-  private current_val = "";
+  register_service_answer$! : Observable<CustomerDTO>;
 
   constructor(
     private registerService: RegisterService,
@@ -58,11 +60,35 @@ export class RegisterComponent {
   ){}
 
 
-  onSubmit(){
-    if(this.registerForm.valid){
-      console.log(this.registerForm)
-      let vals = this.registerForm.getRawValue()
-      console.log(this.registerService.register(vals.password!,vals.passwordRepeat!,vals.email!,vals.phone_number!))
+  onSubmit() {
+    if (this.registerForm.valid) {
+      const vals = this.registerForm.getRawValue();
+      
+      // Make sure passwords match before calling the service
+      if (vals.password !== vals.passwordRepeat) {
+        console.error('Passwords do not match');
+        return;
+      }
+  
+      this.registerService.register(
+        vals.name!,
+        vals.password!,
+        vals.passwordRepeat!,
+        vals.email!,
+        vals.surname!,
+        vals.phone_number!
+      ).subscribe({
+        next: (response: any) => {
+          console.log('Registration successful:', response);
+          // Handle success (e.g., navigate to another page or show a success message)
+        },
+        error: (error) => {
+          console.error('Error during registration:', error);
+          // Handle error (e.g., show an error message to the user)
+        }
+      });
+    } else {
+      console.error('Form is not valid');
     }
   }
 
@@ -74,6 +100,7 @@ export class RegisterComponent {
     this.registerForm
   }
 
+  
 
 
   autoFocusPrev(control: AbstractControl, prevElement: HTMLInputElement): void {
