@@ -11,7 +11,7 @@
 
 <h3>Lokale:</h3>
 <mat-button-toggle-group appearance="legacy">
-<mat-list>
+<mat-list class="scrollable-list">
     <mat-list-item *ngFor="let place of places; let i = index">
         <span matListItemTitle>{{place.city}}</span>
         <span matListItemLine>{{place.street}}</span>
@@ -19,6 +19,7 @@
     </mat-list-item>
 </mat-list>
 </mat-button-toggle-group>
+
 <div class="example-button-row">
     <button [disabled]="checkedPlace===''" [routerLink]="'/place/'+checkedPlace" mat-stroked-button>Umów się w lokalu</button>
   </div>

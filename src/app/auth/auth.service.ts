@@ -87,7 +87,7 @@ export class AuthService {
         tap((response: any) => {
           console.log(response)
           if (response && response.token) {
-            
+            console.log("mamy to")
             // to sobie sam ustawie 
 
             // localStorage.setItem('authUser', response.token);
