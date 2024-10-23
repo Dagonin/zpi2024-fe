@@ -2,24 +2,81 @@
 {{place.id}}
 
 <div id="mapp">
-    <button (click)="centerMap()" id="refreshButton">Reset mapy</button>
+  <button (click)="centerMap()" id="refreshButton">Reset mapy</button>
 </div>
 
 
-<div>Nasi pracownicy:</div>
+<div></div>
+
+<!-- <div>Nasi pracownicy:</div>
 <mat-list>
     <mat-list-item *ngFor="let barber of barbers; let i = index">
         <span matListItemTitle>{{barber.name}} {{barber.surname}}</span>
         <span matListItemLine>{{barber.phone_number}} {{barber.rating}}</span>
     </mat-list-item>
-</mat-list>
+</mat-list> -->
 
 
+<mat-stepper linear #stepper>
+  <mat-step [stepControl]="firstFormGroup" [editable]="true">
+    <form [formGroup]="firstFormGroup">
+      <ng-template matStepLabel>Wybierz dzień i usługi</ng-template>
+      <mat-form-field>
+        <mat-label>Wybierz dzień</mat-label>
+        <input formControlName="day" [min]="minDate" [max]="maxDate" matInput [matDatepicker]="picker">
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
 
-<mat-form-field>
-    <mat-label>Choose a date</mat-label>
-    <input [min]="minDate" [max]="maxDate" matInput [matDatepicker]="picker">
-    <mat-hint>MM/DD/YYYY</mat-hint>
-    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
+
+      <mat-selection-list>
+        <mat-list *ngFor="let category of serviceCategories">
+          <mat-checkbox [checked]="isSelected(category)" (change)="onCheckboxChange(category, $event)"
+            [disabled]="isMaxSelected() && !isSelected(category)">
+            {{ category.categoryName }}
+          </mat-checkbox>
+        </mat-list>
+      </mat-selection-list>
+
+      <div>
+        <button (click)="generateTimeSlots()" mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="secondFormGroup" [editable]="true">
+    <form [formGroup]="secondFormGroup">
+      <ng-template matStepLabel>Fill out your address</ng-template>
+      <mat-form-field>
+        <mat-label>Address</mat-label>
+        <input matInput formControlName="day" placeholder="Ex. 1 Main St, New York, NY" required>
+      </mat-form-field>
+      <mat-list class="scrollable-list">
+        <div 
+          *ngFor="let timeSlot of timeSlots; let i = index"
+          class="time-slot"
+          [ngClass]="{
+            'hovered': hoveredIndex !== null && i >= hoveredIndex && i < hoveredIndex + hoverCount,
+            'disabled': timeSlot[2] === true
+          }"
+          (mouseenter)="onMouseEnter(i)"
+          (mouseleave)="onMouseLeave()"
+        >
+          {{timeSlot[0]}}: {{timeSlot[1]}}
+        </div>
+      </mat-list>
+
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Done</ng-template>
+    <p>You are now done.</p>
+    <div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button (click)="stepper.reset()">Reset</button>
+    </div>
+  </mat-step>
+</mat-stepper>

@@ -8,7 +8,6 @@ export class ServiceCategoryService {
 
   constructor() { }
 
-  // This method returns an array of example ServiceCategoryDTO objects
   getExampleServiceCategories(): ServiceCategoryDTO[] {
     const serviceCategories: ServiceCategoryDTO[] = [
       new ServiceCategoryDTO(1, 'Haircut', 'All types of haircuts for men and women.'),
