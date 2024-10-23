@@ -10,7 +10,6 @@ import { LoginDTO } from '../classes/login/loginDTO';
 })
 export class AuthService {
 
-  // baseUrl = 'http://localhost:3000/api';
 
   private isAuthenticatedSubject: BehaviorSubject<boolean>;
   public isAuthenticated$: Observable<boolean>;
@@ -30,7 +29,7 @@ export class AuthService {
     this.rsa_helper = new RSAHelper();
    }
 
-   api_url = `http://localhost:8080/api`
+   api_url = `http://localhost:8080/api/auth`
 
   // login(data: any) {
   //   // console.log(data)

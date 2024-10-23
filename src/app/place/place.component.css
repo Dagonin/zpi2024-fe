@@ -43,3 +43,11 @@
     pointer-events: none;
     opacity: 0.6;
   }
+
+  .invisible{
+    visibility: hidden;
+  }
+
+  .time-slot:has(input:checked){
+    background-color: red;
+  }

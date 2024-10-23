@@ -11,7 +11,7 @@ export class RegisterService {
 
   constructor(private http: HttpClient) { }
 
-  api_url = `http://localhost:8080/api`
+  api_url = `http://localhost:8080/api/auth`
 
   checkForPasswords(password: string, passwordRepeat: string){
     if(password===passwordRepeat){

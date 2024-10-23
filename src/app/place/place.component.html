@@ -60,8 +60,10 @@
           }"
           (mouseenter)="onMouseEnter(i)"
           (mouseleave)="onMouseLeave()"
+          (click)="selectTimeSlots(i)"
         >
           {{timeSlot[0]}}: {{timeSlot[1]}}
+          <input class="invisible" type="checkbox" [checked]="timeSlot[3]">
         </div>
       </mat-list>
 

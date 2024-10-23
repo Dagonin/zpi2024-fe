@@ -54,7 +54,9 @@ export class PlaceComponent implements OnInit, OnDestroy {
 
   startTime : [number,number] = [8,0]
   endTime : [number,number] = [20,15]
-  timeSlots: [number, number, boolean][] = [];
+
+  //          hour    minute  is_disabled is_checked
+  timeSlots: [number, number, boolean,    boolean][] = [];
 
   hoveredIndex: number | null = null;
   hoverCount: number = 5;
@@ -145,16 +147,25 @@ protected timePickerFormGroup = new FormGroup({
   }
   
   generateTimeSlots(){
-    console.log('generator')
     let newTime = this.startTime;
     while(this.isTupleSmaller(newTime,this.endTime)){
-      this.timeSlots.push([newTime[0],newTime[1],false]);
+      this.timeSlots.push([newTime[0],newTime[1],false,false]);
       newTime[1] = (newTime[1] + 15) % 60;
       if(newTime[1] == 0){
         newTime[0] += 1;
       }
-      
     }
+
+    this.disableTimeSlot(4);
+    this.disableTimeSlot(7);
+    this.disableTimeSlot(12);
+    this.disableTimeSlot(33);
+    this.disableTimeSlot(17);
+    this.disableTimeSlot(1);
+  }
+
+  disableTimeSlot(index: number){
+    this.timeSlots[index][2] = true;
   }
 
   isTupleSmaller(a: [number, number], b: [number, number]): boolean {
@@ -173,6 +184,32 @@ onMouseEnter(index: number): void {
 
 onMouseLeave(): void {
   this.hoveredIndex = null;
+}
+
+selectTimeSlots(index: number){
+
+  if(!this.checkIfDisabled(index)){
+    this.timeSlots.forEach(x=>{
+      x[3] = false;
+    })
+  
+    for(let i = 0;i<this.hoverCount;i++){
+      this.timeSlots[index + i][3] = true;
+    }
+  }
+
+
+}
+
+checkIfDisabled(index: number): boolean{
+  let flag = false;
+  for(let i=0;i<this.hoverCount;i++){
+    if(this.timeSlots[index+i][2]==true){
+      flag = true;
+      return flag;
+    }
+  }
+  return flag;
 }
  
 
