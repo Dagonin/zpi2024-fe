@@ -49,5 +49,6 @@
   }
 
   .time-slot:has(input:checked){
-    background-color: red;
+    /* background-color: gold; */
+    border: 4px gold solid;
   }

@@ -46,10 +46,7 @@
   <mat-step [stepControl]="secondFormGroup" [editable]="true">
     <form [formGroup]="secondFormGroup">
       <ng-template matStepLabel>Fill out your address</ng-template>
-      <mat-form-field>
-        <mat-label>Address</mat-label>
-        <input matInput formControlName="day" placeholder="Ex. 1 Main St, New York, NY" required>
-      </mat-form-field>
+
       <mat-list class="scrollable-list">
         <div 
           *ngFor="let timeSlot of timeSlots; let i = index"

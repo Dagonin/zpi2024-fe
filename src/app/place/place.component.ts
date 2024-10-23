@@ -66,7 +66,7 @@ protected firstFormGroup = new FormGroup({
 },{updateOn: 'blur'},) 
 
 protected secondFormGroup = new FormGroup({
-  day: new FormControl('',Validators.required),
+  time_slot: new FormControl(-1,[Validators.required,Validators.min(0)]),
 },{updateOn: 'blur'},) 
 
 protected timePickerFormGroup = new FormGroup({
@@ -196,9 +196,11 @@ selectTimeSlots(index: number){
     for(let i = 0;i<this.hoverCount;i++){
       this.timeSlots[index + i][3] = true;
     }
+
+    this.secondFormGroup.setValue({
+      time_slot: index
+    })
   }
-
-
 }
 
 checkIfDisabled(index: number): boolean{
