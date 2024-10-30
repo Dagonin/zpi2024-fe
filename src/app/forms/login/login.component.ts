@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatButton } from '@angular/material/button';
+import { MatButton, MatButtonModule } from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -10,6 +10,7 @@ import { FormErrorsService } from '../../form-errors/form-errors.service';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatSnackBar, MatSnackBarAction, MatSnackBarActions, MatSnackBarLabel, MatSnackBarRef } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -25,7 +26,8 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     MatSidenavModule,
     RouterLink,
     MatButtonToggleModule,
-    RouterOutlet
+    RouterOutlet,
+    
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
@@ -40,6 +42,8 @@ export class LoginComponent {
 
   
   opened: boolean = false;
+
+  private _snackBar = inject(MatSnackBar);
 
   constructor(private formErrorService: FormErrorsService, private authService: AuthService, private router: Router){
   }
@@ -58,14 +62,22 @@ export class LoginComponent {
         },
         error: (error) => {
           // Handle error, show an error message
-          console.error('Login failed', error);
+          console.log('Login failed', error);
+          this.openSnackBar("Taki użytkownik nie istnieje")
         }
       });
     }
     }
-  
 
+    openSnackBar(text: string) {
+      this._snackBar.open(text,"", {
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+        duration: 5000,
+        panelClass: ['error_snack']
+      });
 
+    }
 
 
 

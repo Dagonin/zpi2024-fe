@@ -1,24 +1,11 @@
-<p>place works!</p>
-{{place.id}}
+
 
 <div id="mapp">
   <button (click)="centerMap()" id="refreshButton">Reset mapy</button>
 </div>
 
-
-<div></div>
-
-<!-- <div>Nasi pracownicy:</div>
-<mat-list>
-    <mat-list-item *ngFor="let barber of barbers; let i = index">
-        <span matListItemTitle>{{barber.name}} {{barber.surname}}</span>
-        <span matListItemLine>{{barber.phone_number}} {{barber.rating}}</span>
-    </mat-list-item>
-</mat-list> -->
-
-
-<mat-stepper linear #stepper>
-  <mat-step [stepControl]="firstFormGroup" [editable]="true">
+<mat-stepper class="stepper" linear #stepper>
+  <mat-step class="mat-step" [stepControl]="firstFormGroup" [editable]="true">
     <form [formGroup]="firstFormGroup">
       <ng-template matStepLabel>Wybierz dzień i usługi</ng-template>
       <mat-form-field>
@@ -43,9 +30,22 @@
       </div>
     </form>
   </mat-step>
-  <mat-step [stepControl]="secondFormGroup" [editable]="true">
+  <mat-step class="mat-step">
+    <ng-template matStepLabel>Wybierz barbera</ng-template>
+    <mat-list>
+      <mat-list-item *ngFor="let barber of barbers; let i = index">
+          <span matListItemTitle>{{barber.name}} {{barber.surname}}</span>
+          <span matListItemLine>{{barber.phone_number}} {{barber.rating}}</span>
+      </mat-list-item>
+  </mat-list>
+  <div>
+    <button mat-button matStepperPrevious>Back</button>
+    <button mat-button matStepperNext>Next</button>
+  </div>
+  </mat-step>
+  <mat-step class="mat-step" [stepControl]="secondFormGroup" [editable]="true">
     <form [formGroup]="secondFormGroup">
-      <ng-template matStepLabel>Fill out your address</ng-template>
+      <ng-template matStepLabel>Wybierz godzinę wizyty</ng-template>
 
       <mat-list class="scrollable-list">
         <div 
@@ -66,16 +66,8 @@
 
       <div>
         <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext>Next</button>
       </div>
     </form>
   </mat-step>
-  <mat-step>
-    <ng-template matStepLabel>Done</ng-template>
-    <p>You are now done.</p>
-    <div>
-      <button mat-button matStepperPrevious>Back</button>
-      <button mat-button (click)="stepper.reset()">Reset</button>
-    </div>
-  </mat-step>
+
 </mat-stepper>

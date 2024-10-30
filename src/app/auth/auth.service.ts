@@ -84,16 +84,15 @@ export class AuthService {
     return this.http.post(`${this.api_url}/customer/login`, newLogin, httpOptions)
       .pipe(
         tap((response: any) => {
-          console.log(response)
-          if (response && response.token) {
-            console.log("mamy to")
-            // to sobie sam ustawie 
+          console.log(response, 'hejj')
+          if (response && response.tokenValue) {
 
-            // localStorage.setItem('authUser', response.token);
-            // localStorage.setItem('role', response.role); 
+            localStorage.setItem('authUser', email);
+            localStorage.setItem('role', 'user'); 
 
-            // this.isAuthenticatedSubject.next(true);  
-            // this.userRoleSubject.next(response.role); 
+            this.isAuthenticatedSubject.next(true);  
+            this.userRoleSubject.next('user'); 
+            this.router.navigate(['']);
           }
         })
       );

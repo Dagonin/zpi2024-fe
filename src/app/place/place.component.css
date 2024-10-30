@@ -1,6 +1,9 @@
+
 #mapp {
-    height: 55vh;
-    width: 55vw;
+    width: 40vw;
+    height: 40%;
+    margin: auto;
+    margin-top: 1rem;
 }
 
 #refreshButton {
@@ -16,7 +19,7 @@
     grid-template-columns: repeat(4, 1fr); 
     gap: 10px;
     
-    max-height: calc(6 * 50px);
+    max-height: calc(7 * 50px);
     overflow-y: auto;
     padding: 10px;
     border: 1px solid #ccc;
@@ -52,3 +55,18 @@
     /* background-color: gold; */
     border: 4px gold solid;
   }
+
+  .stepper{
+    width: 1200px;
+    margin: auto;
+  }
+
+  .mat-step{
+    margin: auto;
+  }
+
+ #bod{
+  display: flex;
+  width: 500px;
+  height: 500px;
+ }

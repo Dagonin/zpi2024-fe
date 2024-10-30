@@ -13,6 +13,8 @@ import { RouterLink } from '@angular/router';
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { Observable } from 'rxjs';
 import { CustomerDTO } from '../../classes/customer/customerDTO';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { control } from 'leaflet';
 
 
 
@@ -59,6 +61,8 @@ export class RegisterComponent {
     private formErrorService : FormErrorsService,  
   ){}
 
+  private _snackBar = inject(MatSnackBar);
+
 
   onSubmit() {
     // if (this.registerForm.valid) {
@@ -67,10 +71,10 @@ export class RegisterComponent {
       // Make sure passwords match before calling the service
       if (vals.password !== vals.passwordRepeat) {
         console.error('Passwords do not match');
+        this.openSnackBar("Hasła nie są identyczne")
         return;
       }
   
-
       const whole_number = vals.area ? vals.area + vals.phone_number : "+48 " + vals.phone_number;
 
       this.registerService.register(
@@ -85,8 +89,11 @@ export class RegisterComponent {
           // Handle success (e.g., navigate to another page or show a success message)
         },
         error: (error) => {
-          console.error('Error during registration:', error);
-          // Handle error (e.g., show an error message to the user)
+          if(error.status == 409){
+            this.openSnackBar("Użytkownik z takim mailem/numerem telefonu już istnieje");
+          }else{
+            this.openSnackBar("Coś poszło nie tak")
+          }
         }
       });
     // } else {
@@ -109,6 +116,16 @@ export class RegisterComponent {
     if (control.value.length < 1) {
       this._focusMonitor.focusVia(prevElement, 'program');
     }
+  }
+
+  openSnackBar(text: string) {
+    this._snackBar.open(text,"", {
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      duration: 5000,
+      panelClass: ['error_snack']
+    });
+
   }
   
 
