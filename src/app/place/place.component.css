@@ -1,3 +1,8 @@
+#place_content{
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
 
 #mapp {
     width: 40vw;
@@ -19,7 +24,7 @@
     grid-template-columns: repeat(4, 1fr); 
     gap: 10px;
     
-    max-height: calc(7 * 50px);
+    max-height: calc(13 * 50px);
     overflow-y: auto;
     padding: 10px;
     border: 1px solid #ccc;
@@ -58,15 +63,9 @@
 
   .stepper{
     width: 1200px;
-    margin: auto;
   }
 
   .mat-step{
     margin: auto;
   }
 
- #bod{
-  display: flex;
-  width: 500px;
-  height: 500px;
- }

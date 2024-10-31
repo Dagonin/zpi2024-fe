@@ -14,9 +14,11 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import {MatInputModule} from '@angular/material/input';
 import { MatStepperModule } from '@angular/material/stepper';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ServiceCategoryService } from '../classes/service/service_category.service';
 import { ServiceCategoryDTO } from '../classes/service/service_categoryDTO';
 import { MatCheckbox } from '@angular/material/checkbox';
+import { ServiceService } from '../classes/service/service.service';
+import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
+import { ServiceDTO } from '../classes/service/serviceDTO';
 
 @Component({
   selector: 'app-place',
@@ -34,6 +36,8 @@ import { MatCheckbox } from '@angular/material/checkbox';
     MatStepperModule,
     ReactiveFormsModule,
     MatCheckbox,
+    MatAccordion,
+    MatExpansionModule
   ],
   templateUrl: './place.component.html',
   styleUrl: './place.component.css'
@@ -48,9 +52,14 @@ export class PlaceComponent implements OnInit, OnDestroy {
   minDate! : Date;
   maxDate! : Date;
 
-  serviceCategories : ServiceCategoryDTO[] = [];
+  serviceCategories ! : ServiceCategoryDTO[];
+
   maxSelection = 3
-  selectedCategories: number[] = [];
+  selectedServices: ServiceDTO[] = [];
+
+  visitTime!: number;
+  visitPrice!: number;
+
 
   startTime : [number,number] = [8,0]
   endTime : [number,number] = [20,15]
@@ -59,10 +68,13 @@ export class PlaceComponent implements OnInit, OnDestroy {
   timeSlots: [number, number, boolean,    boolean][] = [];
 
   hoveredIndex: number | null = null;
-  hoverCount: number = 5;
 
-protected firstFormGroup = new FormGroup({
+protected dateFormGroup = new FormGroup({
   day: new FormControl('',Validators.required),
+},{updateOn: 'blur'},) 
+
+protected servicesFormGroup = new FormGroup({
+  services: new FormControl(''),
 },{updateOn: 'blur'},) 
 
 protected secondFormGroup = new FormGroup({
@@ -74,7 +86,7 @@ protected timePickerFormGroup = new FormGroup({
 })
 
 
-  constructor(private route: ActivatedRoute, private placeService: PlaceService, private barberService: BarberService, private serviceCategory : ServiceCategoryService) {}
+  constructor(private route: ActivatedRoute, private placeService: PlaceService, private barberService: BarberService, private serviceService: ServiceService) {}
 
 
   ngOnInit(): void {
@@ -86,7 +98,10 @@ protected timePickerFormGroup = new FormGroup({
     this.minDate = new Date();
     this.maxDate = new Date();
     this.maxDate.setDate(this.maxDate.getDate() + 15);
-    this.serviceCategories = this.serviceCategory.getExampleServiceCategories();
+    // this.serviceCategories = this.serviceCategory.getExampleServiceCategories();
+    
+    this.getServices()
+
     });
   }
 
@@ -125,27 +140,44 @@ protected timePickerFormGroup = new FormGroup({
 
 
 
-  onCheckboxChange(category: ServiceCategoryDTO, event: any): void {
+  onCheckboxChange(service: ServiceDTO, event: any): void {
     if (event.checked) {
-      if (this.selectedCategories.length < this.maxSelection) {
-        this.selectedCategories.push(category.serviceCategoryId!);
+      if (this.selectedServices.length < this.maxSelection) {
+        this.selectedServices.push(service);
       } else {
         event.source.checked = false;
-        alert('You can only select up to 3 categories.');
+        alert('You can only select up to 3 services.');
       }
     } else {
-      this.selectedCategories = this.selectedCategories.filter(id => id !== category.serviceCategoryId);
+      this.selectedServices = this.selectedServices.filter(ser => ser.serviceID !== service.serviceID);
     }
+    this.calculateServices();
   }
 
-  isSelected(category: ServiceCategoryDTO): boolean {
-    return this.selectedCategories.includes(category.serviceCategoryId!);
+  clearSelected(): void{
+    this.selectedServices = [];
+    this.calculateServices();
+  }
+
+  isSelected(service: ServiceDTO): boolean {
+    return this.selectedServices.includes(service);
   }
 
   isMaxSelected(): boolean {
-    return this.selectedCategories.length >= this.maxSelection;
+    return this.selectedServices.length >= this.maxSelection;
   }
   
+
+  calculateServices(){
+    this.visitPrice = 0;
+    this.visitTime = 0;
+    this.selectedServices.forEach(service=>{
+      this.visitPrice += service.servicePrice;
+      this.visitTime += service.serviceSpan;
+    })
+  }
+
+
   generateTimeSlots(){
     let newTime = this.startTime;
     while(this.isTupleSmaller(newTime,this.endTime)){
@@ -193,7 +225,7 @@ selectTimeSlots(index: number){
       x[3] = false;
     })
   
-    for(let i = 0;i<this.hoverCount;i++){
+    for(let i = 0;i<this.visitTime;i++){
       this.timeSlots[index + i][3] = true;
     }
 
@@ -205,7 +237,7 @@ selectTimeSlots(index: number){
 
 checkIfDisabled(index: number): boolean{
   let flag = false;
-  for(let i=0;i<this.hoverCount;i++){
+  for(let i=0;i<this.visitTime;i++){
     if(this.timeSlots[index+i][2]==true){
       flag = true;
       return flag;
@@ -214,6 +246,18 @@ checkIfDisabled(index: number): boolean{
   return flag;
 }
  
+
+getServices(){
+  this.serviceService.getServicesFromSalon(1).subscribe({
+    next: (response: any) => {
+      console.log(response.listOfCategories);
+      this.serviceCategories = response.listOfCategories
+    },
+    error: (error) => {
+      console.error(error)
+    }
+  });
+}
 
 
 }

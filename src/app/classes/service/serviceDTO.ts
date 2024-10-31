@@ -1,5 +1,5 @@
 export class ServiceDTO {
-    serviceID: number | null;
+    serviceID: number;
     serviceName: string;
     serviceSpan: number;
     servicePrice: number;
@@ -7,7 +7,7 @@ export class ServiceDTO {
     serviceCategoryID: number;
   
     constructor(
-      serviceID: number | null,
+      serviceID: number,
       serviceName: string,
       serviceSpan: number,
       servicePrice: number,

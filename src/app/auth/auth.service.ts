@@ -68,7 +68,6 @@ export class AuthService {
   // }
 
   login(email: string, password: string): Observable<any> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
     const newLogin : LoginDTO = {
       email: email,
@@ -79,12 +78,10 @@ export class AuthService {
         headers: new HttpHeaders({'Content-Type':'application/json'}),
         
     }
-    console.log(newLogin)
     
     return this.http.post(`${this.api_url}/customer/login`, newLogin, httpOptions)
       .pipe(
         tap((response: any) => {
-          console.log(response, 'hejj')
           if (response && response.tokenValue) {
 
             localStorage.setItem('authUser', email);
