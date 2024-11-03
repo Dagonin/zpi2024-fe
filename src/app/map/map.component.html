@@ -2,28 +2,32 @@
 
 
 
-<div id="map">
+  <div id="map">
     <button (click)="centerMap()" id="refreshButton">Reset mapy</button>
-</div>
-
-
-<div id="locals">
-
-<h3>Lokale:</h3>
-<mat-button-toggle-group appearance="legacy">
-<mat-list class="scrollable-list">
-    <mat-list-item *ngFor="let place of places; let i = index">
-        <span matListItemTitle>{{place.city}}</span>
-        <span matListItemLine>{{place.street}}</span>
-        <mat-button-toggle [checked]="place.checked" (click)="selectPlace(place.coords,i)" value="bold">Wybierz</mat-button-toggle>
-    </mat-list-item>
-</mat-list>
-</mat-button-toggle-group>
-
-<div class="example-button-row">
-    <button [disabled]="checkedPlace===''" [routerLink]="'/place/'+checkedPlace" mat-stroked-button>Umów się w lokalu</button>
   </div>
 
-</div>
+
+  <div id="locals">
+
+    <h3>Lokale:</h3>
+    <mat-button-toggle-group appearance="legacy">
+      <mat-list class="scrollable-list">
+        @for (place of places; track $index) {
+        <mat-list-item>
+          <span matListItemTitle>{{place.city}}</span>
+          <span matListItemLine>{{place.street}}</span>
+          <mat-button-toggle [checked]="place.checked" (click)="selectPlace(place.coords,$index)" value="bold">Wybierz
+          </mat-button-toggle>
+        </mat-list-item>
+        }
+      </mat-list>
+    </mat-button-toggle-group>
+
+    <div class="example-button-row">
+      <button [disabled]="checkedPlace===''" [routerLink]="'/place/'+checkedPlace" mat-stroked-button>Umów się w
+        lokalu</button>
+    </div>
+
+  </div>
 
 </div>

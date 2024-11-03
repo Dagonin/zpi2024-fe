@@ -1,11 +1,11 @@
-import { Component, OnChanges, OnInit, signal, SimpleChanges } from '@angular/core';
+import { Component, inject, OnChanges, OnInit, signal, SimpleChanges } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {  MatIconModule } from '@angular/material/icon';
-import {  MatButtonModule } from '@angular/material/button';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MapComponent } from "./map/map.component";
 import { AuthService } from './auth/auth.service';
 import { CommonModule } from '@angular/common';
@@ -27,29 +27,30 @@ import { MatMenuModule } from '@angular/material/menu';
     MapComponent,
     CommonModule,
     MatMenuModule
-],
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
-  title = 'inz';
-  isAuthenticated: boolean = false;
-  userRole: string = '';
-  username: string| null = '';
+  public title = 'inz';
+  public authService = inject(AuthService);
+  public isAuthenticated$ = this.authService.isAuthenticated$;
+  public userRole: string = '';
+  public username: string | null = '';
   private authSubscription!: Subscription;
   private roleSubscription!: Subscription;
 
-  constructor(private authService: AuthService){}
+  constructor() { }
 
   ngOnInit(): void {
     this.userRole = this.authService.getRole();
-    
+
     console.log(this.userRole)
-    this.authSubscription = this.authService.isAuthenticated$.subscribe(
-      (isAuthenticated) => {
-        this.isAuthenticated = isAuthenticated;
-      }
-    );
+    // this.authSubscription = this.authService.isAuthenticated$.subscribe(
+    //   (isAuthenticated) => {
+    //     this.isAuthenticated = isAuthenticated;
+    //   }
+    // );
     this.roleSubscription = this.authService.userRole$.subscribe(
       (userRole) => {
         this.userRole = userRole;

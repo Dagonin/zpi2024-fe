@@ -13,7 +13,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 @Component({
   selector: 'app-change-password',
   standalone: true,
-  imports: [    MatFormFieldModule,
+  imports: [MatFormFieldModule,
     MatInputModule,
     MatIcon,
     MatButton,
@@ -27,17 +27,17 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 })
 export class ChangePasswordComponent {
   protected change_passwordForm = new FormGroup({
-    old_password: new FormControl('',[Validators.required]),
-    old_password_repeat: new FormControl('',[Validators.required]),
-    new_password: new FormControl('',[Validators.required])
+    old_password: new FormControl('', [Validators.required]),
+    old_password_repeat: new FormControl('', [Validators.required]),
+    new_password: new FormControl('', [Validators.required])
   })
 
 
-  constructor(private formErrorService: FormErrorsService, private router: Router){
+  constructor(private formErrorService: FormErrorsService, private router: Router) {
   }
 
 
-  onSubmit(){
+  onSubmit() {
     // if(this.loginForm.valid){
     //   if(this.authService.login(this.loginForm.value)){
     //     this.router.navigate([''])
@@ -45,7 +45,7 @@ export class ChangePasswordComponent {
     // }
   }
 
-  errorMessage(vals: any, name: string){
-    return this.formErrorService.errorMessage(vals,name);
+  errorMessage(vals: any, name: string) {
+    return this.formErrorService.errorMessage(vals, name);
   }
 }

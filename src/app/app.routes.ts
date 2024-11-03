@@ -1,17 +1,6 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './forms/login/login.component';
-import { RegisterComponent } from './forms/register/register.component';
-import { ContactComponent } from './contact/contact.component';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { AppComponent } from './app.component';
-import { MapComponent } from './map/map.component';
 import { authGuard } from './auth/auth.guard';
 import { negateAuthGuard } from './auth/negate-auth.guard';
-import { ProfileComponent } from './profile/profile.component';
-import { HistoryComponent } from './history/history.component';
-import { AdminPanelComponent } from './admin-panel/admin-panel.component';
-import { adminGuard } from './auth/admin.guard';
-import { PlaceComponent } from './place/place.component';
 import { employeeGuard } from './auth/employee.guard';
 import { MainPageComponent } from './main-page/main-page.component';
 

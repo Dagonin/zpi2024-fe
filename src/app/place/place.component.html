@@ -1,106 +1,124 @@
 <div id="place_content">
-<div>
-  <div id="mapp">
-    <button (click)="centerMap()" id="refreshButton">Reset mapy</button>
-  </div>
-  
-  <div id="showInfo" *ngIf="visitTime">
-    cena wybranych usług: {{visitPrice}}
-    czas wybranych usług: {{visitTime * 15}}
-  </div>
-</div>
+  <div>
+    <div id="mapp">
+      <button (click)="centerMap()" id="refreshButton">Reset mapy</button>
+    </div>
 
-<mat-stepper class="stepper" linear #stepper>
-  <mat-step class="mat-step" [stepControl]="dateFormGroup" [editable]="true">
-    <form [formGroup]="dateFormGroup">
-      <ng-template matStepLabel>Wybierz dzień wizyty</ng-template>
-      <mat-form-field>
-        <mat-label>Wybierz dzień</mat-label>
-        <input formControlName="day" [min]="minDate" [max]="maxDate" matInput [matDatepicker]="picker">
-        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
+    @if (visitTime) {
+    <div id="showInfo">
+      cena wybranych usług: {{visitPrice}}
+      czas wybranych usług: {{visitTime * 15}} minut
+    </div>
+    }
+
+  </div>
+
+  <mat-stepper class="stepper" linear #stepper>
+    <mat-step class="mat-step" [stepControl]="dateFormGroup" [editable]="true">
+      <form [formGroup]="dateFormGroup">
+        <ng-template matStepLabel>Wybierz dzień wizyty</ng-template>
+        <mat-form-field>
+          <mat-label>Wybierz dzień</mat-label>
+          <input formControlName="day" [min]="minDate" [max]="maxDate" matInput [matDatepicker]="picker">
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step class="mat-step" [stepControl]="servicesFormGroup" [editable]="true">
+      <button mat-raised-button color="warn" (click)="clearSelected()">
+        Anuluj zaznaczenie
+      </button>
+      <form [formGroup]="servicesFormGroup">
+        <ng-template matStepLabel>Wybierz usługi</ng-template>
+        @if (serviceCategories) {
+        <mat-accordion>
+          @for (category of serviceCategories; track $index) {
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{ category.categoryName }}
+              </mat-panel-title>
+              <mat-panel-description>
+                {{ category.categoryDescription }}
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <mat-selection-list>
+              @for (service of category.listOfServices; track $index) {
+              <mat-list>
+                <mat-checkbox [checked]="isSelected(service)" (change)="onCheckboxChange(service, $event)"
+                  [disabled]="isMaxSelected() && !isSelected(service)">
+                  {{ service.serviceName }} - {{ service.servicePrice | currency: "PLN"}}
+                </mat-checkbox>
+              </mat-list>
+              }
+            </mat-selection-list>
+          </mat-expansion-panel>
+          }
+        </mat-accordion>
+        }@else {
+        <div>
+          Ładuje usługi...
+        </div>
+        }
+
+
+
+
+
+
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button (click)="generateTimeSlots()" mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step class="mat-step">
+      <ng-template matStepLabel>Wybierz barbera</ng-template>
+      <mat-list>
+        @for (barber of barbers; track $index) {
+        <mat-list-item>
+          <span matListItemTitle>{{barber.name}} {{barber.surname}}</span>
+          <span matListItemLine>{{barber.phone_number}} {{barber.rating}}</span>
+        </mat-list-item>
+        }
+      </mat-list>
       <div>
+        <button mat-button matStepperPrevious>Back</button>
         <button mat-button matStepperNext>Next</button>
       </div>
-    </form>
-  </mat-step>
-  <mat-step class="mat-step" [stepControl]="servicesFormGroup" [editable]="true">
-    <button mat-raised-button color="warn" (click)="clearSelected()">
-      Anuluj zaznaczenie
-    </button>
-    <form [formGroup]="servicesFormGroup">
-      <ng-template matStepLabel>Wybierz usługi</ng-template>
-      <mat-accordion *ngIf="serviceCategories">
-        <mat-expansion-panel *ngFor="let category of serviceCategories">
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              {{ category.categoryName }}
-            </mat-panel-title>
-            <mat-panel-description>
-              {{ category.categoryDescription }}
-            </mat-panel-description>
-          </mat-expansion-panel-header>
-      
-          <mat-selection-list>
-            <mat-list *ngFor="let service of category.listOfServices">
-              <mat-checkbox 
-                [checked]="isSelected(service)" 
-                (change)="onCheckboxChange(service, $event)"
-                [disabled]="isMaxSelected() && !isSelected(service)">
-                {{ service.serviceName }} - {{ service.servicePrice | currency }}
-              </mat-checkbox>
-            </mat-list>
-          </mat-selection-list>
-        </mat-expansion-panel>
-      </mat-accordion>
-      
-      <div *ngIf="!serviceCategories">
-        Ładuje usługi...
-      </div>
-      
-      
+    </mat-step>
+    <mat-step class="mat-step" [stepControl]="secondFormGroup" [editable]="true">
+      <form [formGroup]="secondFormGroup">
+        <ng-template matStepLabel>Wybierz godzinę wizyty</ng-template>
 
-      <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button (click)="generateTimeSlots()" mat-button matStepperNext>Next</button>
-      </div>
-    </form>
-  </mat-step>
-  <mat-step class="mat-step">
-    <ng-template matStepLabel>Wybierz barbera</ng-template>
-    <mat-list>
-      <mat-list-item *ngFor="let barber of barbers; let i = index">
-        <span matListItemTitle>{{barber.name}} {{barber.surname}}</span>
-        <span matListItemLine>{{barber.phone_number}} {{barber.rating}}</span>
-      </mat-list-item>
-    </mat-list>
-    <div>
-      <button mat-button matStepperPrevious>Back</button>
-      <button mat-button matStepperNext>Next</button>
-    </div>
-  </mat-step>
-  <mat-step class="mat-step" [stepControl]="secondFormGroup" [editable]="true">
-    <form [formGroup]="secondFormGroup">
-      <ng-template matStepLabel>Wybierz godzinę wizyty</ng-template>
-
-      <mat-list class="scrollable-list">
-        <div *ngFor="let timeSlot of timeSlots; let i = index" class="time-slot" [ngClass]="{
-            'hovered': hoveredIndex !== null && i >= hoveredIndex && i < hoveredIndex + visitTime,
+        <mat-list class="scrollable-list">
+          @for (timeSlot of timeSlots; track $index) {
+          <div class="time-slot" [ngClass]="{
+            'hovered': hoveredIndex !== null && $index >= hoveredIndex && $index < hoveredIndex + visitTime,
             'disabled': timeSlot[2] === true
-          }" (mouseenter)="onMouseEnter(i)" (mouseleave)="onMouseLeave()" (click)="selectTimeSlots(i)">
-          {{timeSlot[0]}}: {{timeSlot[1]}}
-          <input class="invisible" type="checkbox" [checked]="timeSlot[3]">
+          }" (mouseenter)="onMouseEnter($index)" (mouseleave)="onMouseLeave()" (click)="selectTimeSlots($index)">
+            @if(timeSlot[1]==0){
+            {{timeSlot[0]}}:00
+            }@else{
+            {{timeSlot[0]}}:{{timeSlot[1]}}
+            }
+            <input class="invisible" type="checkbox" [checked]="timeSlot[3]">
+          </div>
+          }
+        </mat-list>
+
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
         </div>
-      </mat-list>
+      </form>
+    </mat-step>
 
-      <div>
-        <button mat-button matStepperPrevious>Back</button>
-      </div>
-    </form>
-  </mat-step>
-
-</mat-stepper>
+  </mat-stepper>
 
 
 </div>

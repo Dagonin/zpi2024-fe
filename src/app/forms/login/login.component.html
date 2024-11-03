@@ -1,4 +1,3 @@
-
 <div id="background">
   <div id="form">
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
@@ -11,32 +10,35 @@
       </p>
 
       <p>
-          <mat-form-field appearance="fill">
-            <mat-label>Login</mat-label>
-            <input formControlName="login" matInput>
-            <mat-error *ngIf="loginForm.get('login')?.invalid">{{errorMessage(loginForm.get('login')?.errors,'Login')}}</mat-error>
-          </mat-form-field>
-        </p>
-        <p>
-          <mat-form-field appearance="fill">
-            <mat-label>Hasło</mat-label>
-            <input formControlName="password" type="password" matInput>
-              <mat-error *ngIf="loginForm.get('password')?.invalid">{{errorMessage(loginForm.get('password')?.errors,'Hasło')}}</mat-error>
-          </mat-form-field>
-        </p>
-        
-        <div class="example-button-row">
-          <button mat-stroked-button>Login</button>
-        </div>
-      
-      </form>
+        <mat-form-field appearance="fill">
+          <mat-label>Login</mat-label>
+          <input formControlName="login" matInput>
+          @if (loginForm.get('login')?.invalid) {
+          <mat-error>{{errorMessage(loginForm.get('login')?.errors,'Login')}}</mat-error>
+          }
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="fill">
+          <mat-label>Hasło</mat-label>
+          <input formControlName="password" type="password" matInput>
+          @if (loginForm.get('password')?.invalid) {
+          <mat-error>{{errorMessage(loginForm.get('password')?.errors,'Hasło')}}</mat-error>
+          }
+        </mat-form-field>
+      </p>
 
-      <div id="forgotten_password">
-        <a [routerLink]="'/forgotten_password'">Zapomniałeś hasła?</a>
+      <div class="example-button-row">
+        <button mat-stroked-button>Login</button>
       </div>
 
+    </form>
+
+    <div id="forgotten_password">
+      <a [routerLink]="'/forgotten_password'">Zapomniałeś hasła?</a>
+    </div>
+
   </div>
-{{loginForm.value | json}}
+  {{loginForm.value | json}}
 
 </div>
-

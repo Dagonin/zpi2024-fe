@@ -14,9 +14,15 @@
 
   <section class="example-spacer" id="nav_buttons">
     <span [routerLink]="'/'">Strona główna</span>
-    <span *ngIf="!isAuthenticated" [routerLink]="'/login'" mat-raised-button>Zaloguj się</span>
-    <span *ngIf="!isAuthenticated" [routerLink]="'/register'" mat-raised-button>Załóż konto</span>
-    <span *ngIf="isAuthenticated" [routerLink]="'/history'" mat-raised-button>Historia wizyt</span>
+    @if(!(isAuthenticated$ | async)){
+    <span [routerLink]="'/login'" mat-raised-button>Zaloguj się</span>
+    <span [routerLink]="'/register'" mat-raised-button>Załóż konto</span>
+    }@else{
+    <span [routerLink]="'/history'" mat-raised-button>Historia wizyt</span>
+    }
+
+
+
     <!-- <span *ngIf="isAuthenticated" [routerLink]="'/profile'" mat-raised-button>Twój profil</span> -->
     <span [routerLink]="'/contact'" mat-raised-button>Kontakt</span>
   </section>
@@ -24,10 +30,13 @@
 
 
 
-<button *ngIf="isAuthenticated"  [matMenuTriggerFor]="menu">{{username}}</button>
-<mat-menu #menu="matMenu">
-  <button mat-menu-item [routerLink]="'/change_password'">Zmień hasło</button>
-  <button mat-menu-item (click)="logout()" >Wyloguj się</button>
-</mat-menu>
+  @if (isAuthenticated$ | async) {
+  <button [matMenuTriggerFor]="menu">{{username}}</button>
+  }
+
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item [routerLink]="'/change_password'">Zmień hasło</button>
+    <button mat-menu-item (click)="logout()">Wyloguj się</button>
+  </mat-menu>
 </mat-toolbar>
 <router-outlet></router-outlet>

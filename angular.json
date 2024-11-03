@@ -5,6 +5,9 @@
   "projects": {
     "inz": {
       "projectType": "application",
+      "i18n":{
+        "sourceLocale": "pl"
+      },
       "schematics": {},
       "root": "",
       "sourceRoot": "src",
@@ -34,7 +37,12 @@
                 "glob": "**/*",
                 "input": "src/assets/fonts/",
                 "output": "assets/fonts/"
-              }
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/leaflet/dist/images/",
+                "output": "./assets/"
+             }
  
             ],
             "styles": [

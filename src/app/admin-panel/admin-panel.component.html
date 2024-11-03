@@ -5,18 +5,20 @@
     <mat-expansion-panel-header>
       <mat-panel-title> Lokale </mat-panel-title>
     </mat-expansion-panel-header>
-    <button *ngIf="userRole=='admin'" mat-stroked-button (click)="openDialogAddPlace()">
+    @if(userRole=='admin'){
+    <button mat-stroked-button (click)="openDialogAddPlace()">
       Dodaj
       <mat-icon>add_circle</mat-icon>
     </button>
+    }
+
     <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
       <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
         <button mat-icon-button disabled></button>
         {{node.item}}
       </mat-tree-node>
       <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
-        <button mat-icon-button
-                [attr.aria-label]="'Toggle ' + node.item" matTreeNodeToggle>
+        <button mat-icon-button [attr.aria-label]="'Toggle ' + node.item" matTreeNodeToggle>
           <mat-icon class="mat-icon-rtl-mirror">
             {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
           </mat-icon>
@@ -24,17 +26,19 @@
         {{node.item}}
         <div>
           <button mat-button>
-              Raporty
-              <mat-icon>insert_chart</mat-icon>
-            </button>
-            <button *ngIf="userRole=='admin'" mat-button (click)="openDialogEditPlace(node.item)">
-              Edytuj
-              <mat-icon>create</mat-icon>
-            </button>
-            <button *ngIf="userRole=='admin'" mat-button (click)="openDialogDelete()">
-              Usuń
-              <mat-icon>delete</mat-icon>
-            </button>
+            Raporty
+            <mat-icon>insert_chart</mat-icon>
+          </button>
+          @if (userRole=='admin') {
+          <button mat-button (click)="openDialogEditPlace(node.item)">
+            Edytuj
+            <mat-icon>create</mat-icon>
+          </button>
+          <button mat-button (click)="openDialogDelete()">
+            Usuń
+            <mat-icon>delete</mat-icon>
+          </button>}
+
         </div>
       </mat-tree-node>
     </mat-tree>
@@ -43,12 +47,15 @@
     <mat-expansion-panel-header>
       <mat-panel-title> Pracownicy </mat-panel-title>
     </mat-expansion-panel-header>
-    <button *ngIf="userRole=='admin'" mat-stroked-button (click)="openDialogAddBarber()">
+    @if (userRole=='admin') {
+    <button mat-stroked-button (click)="openDialogAddBarber()">
       Dodaj
       <mat-icon>add_circle</mat-icon>
     </button>
+    }
     <mat-list>
-      <mat-list-item *ngFor="let barber of barbers; let i = index">
+      @for (barber of barbers; track $index) {
+      <mat-list-item>
         <span matListItemTitle>{{barber.name}} {{barber.surname}}</span>
         <span matListItemLine>{{barber.phone_number}} {{barber.rating}}</span>
         <button mat-button>
@@ -63,19 +70,24 @@
           Kontakt
           <mat-icon> contact_phone</mat-icon>
         </button>
-        <button *ngIf="userRole=='admin'" mat-button (click)="openDialogEditBarber(barber)">
+        @if (userRole=='admin') {
+        <button mat-button (click)="openDialogEditBarber(barber)">
           Edytuj
           <mat-icon>create</mat-icon>
         </button>
+        }
         <button mat-button (click)="openDialogHistory()">
           Historia
           <mat-icon>assignment</mat-icon>
         </button>
-        <button *ngIf="userRole=='admin'" mat-button (click)="openDialogDelete()">
+        @if (userRole=='admin') {
+        <button mat-button (click)="openDialogDelete()">
           Usun
           <mat-icon>delete</mat-icon>
         </button>
+        }
       </mat-list-item>
+      }
     </mat-list>
   </mat-expansion-panel>
 </mat-accordion>

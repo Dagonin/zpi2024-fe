@@ -1,14 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChild, viewChild, ViewChildren } from '@angular/core';
-import {MatListModule} from '@angular/material/list';
-import * as L from 'leaflet';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { MatListModule } from '@angular/material/list';
 import { Place } from '../classes/place/place';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import {MatButtonModule} from '@angular/material/button';
-import { P } from '@angular/cdk/keycodes';
+import { MatButtonModule } from '@angular/material/button';
 import { PlaceService } from '../classes/place/place.service';
 import { RouterLink } from '@angular/router';
-L.Icon.Default.imagePath = 'assets/leaflet/';
+import { MapService } from './map.service';
 
 @Component({
   selector: 'app-map',
@@ -24,106 +22,62 @@ L.Icon.Default.imagePath = 'assets/leaflet/';
   styleUrl: './map.component.css'
 })
 export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
-  map!: L.Map
-  
-
   places: Place[] = [];
+  checkedPlace: string = '';
 
-  markers: L.Marker[] = [];
-
-  checkedPlace: string = '';  
-
-
-  constructor(private cdr: ChangeDetectorRef, private placeService: PlaceService) { }
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private placeService: PlaceService,
+    private mapService: MapService
+  ) { }
 
   ngOnInit() {
-    if(this.map != undefined){this.map.remove();};
     this.places = this.placeService.getPlaces();
-    this.places.forEach(place =>{
-      let mark = L.marker(place.coords)
-      this.markers.push(mark);
-      place.checked = false;
-    })
+    this.places.forEach(place => (place.checked = false));
   }
 
   ngAfterViewInit() {
-    this.initializeMap();
-    this.addMarkers();
-    this.centerMap();
-    
-    this.map.invalidateSize()
+    const baseMapUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+
+    this.mapService.initializeMap('map', baseMapUrl);
+
+    this.places.forEach((place, index) => {
+      this.mapService.addMarker(place.coords, () => this.markerClick(index));
+    });
+
+    this.mapService.centerMap();
+    this.mapService.invalidateMapSize();
   }
 
-
-  private initializeMap() {
-    const baseMapURl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-    this.map = L.map('map');
-    L.tileLayer(baseMapURl).addTo(this.map);
-  }
-
-
-  private addMarkers() {
-    this.markers.forEach((marker,i) => {
-      marker.addTo(this.map).on('click', () => this.markerClick(marker,i));
-        }
-    );
-  }
-
-
-  resetMarkersColor(){
-    let icons = Array.from(document.getElementsByClassName('leaflet-marker-icon'));
-    icons.forEach(icon=>{
-      (icon as HTMLElement).style.filter = "hue-rotate(0deg)"
-    })
-  }
-
-  // Changes color of selected marker, and resets rest
-  markerClick(marker: any,index: number){
-    this.resetMarkersColor();
-    marker._icon.style.filter = "hue-rotate(180deg)";
+  markerClick(index: number) {
+    this.mapService.resetMarkersColor();
+    this.mapService.setMarkerColor(index, 'hue-rotate(180deg)');
     this.updatePlaceCheckedState(index, true);
   }
 
-
-
   updatePlaceCheckedState(index: number, state: boolean) {
     this.places.forEach((place, i) => {
-      if(i === index){
+      if (i === index) {
         place.checked = state;
         this.checkedPlace = place.id;
-      }else{
+      } else {
         place.checked = false;
       }
     });
     this.cdr.detectChanges();
   }
 
-
-
-  selectPlace(coords : [number,number],index: number){
-    // this.zoomOnCoords(coords);
-    this.resetMarkersColor();
-    (this.markers[index] as any)._icon.style.filter = "hue-rotate(180deg)";
+  selectPlace(coords: [number, number], index: number) {
+    this.mapService.resetMarkersColor();
+    this.mapService.setMarkerColor(index, 'hue-rotate(180deg)');
     this.updatePlaceCheckedState(index, true);
   }
 
-
+  ngOnDestroy(): void {
+    this.mapService.removeMap();
+  }
 
   centerMap() {
-    // Create a LatLngBounds object to encompass all the marker locations
-    const bounds = L.latLngBounds(this.markers.map(marker => marker.getLatLng()));
-    // Fit the map view to the bounds
-    this.map.fitBounds(bounds);
+    this.mapService.centerMap();
   }
-
-  // Zooms on probided coordinates
-  zoomOnCoords(coords : [number,number]){
-    this.map.setView({lat: coords[0],lng: coords[1]}, 13);
-  }
-
-  ngOnDestroy(): void {
-    this.map.remove();
-  }
-  
-
 }

@@ -1,17 +1,22 @@
 <div id="body">
 
-<div id="profile">    
-<h3>Witaj {{username}}</h3>
+  <div id="profile">
+    <h3>Witaj {{username}}</h3>
 
-<div *ngIf="userrole==='admin'">admin</div>
-<div *ngIf="userrole==='employee'">pracownik</div>
+    @if (userrole==='admin') {
+    <div>admin</div>
+    }
+    @if (userrole==='employee') {
+    <div>pracownik</div>
+    }
 
-<p>Zmień hasło</p>
-<p>Usuń konto</p>
-</div>
 
-<div id="loyality_card">
+    <p>Zmień hasło</p>
+    <p>Usuń konto</p>
+  </div>
+
+  <div id="loyality_card">
     Pieczątki
-</div>
+  </div>
 
 </div>
