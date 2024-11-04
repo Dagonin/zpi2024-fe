@@ -1,33 +1,6 @@
 <div id="place_content">
-  <div>
-    <div id="mapp">
-      <button (click)="centerMap()" id="refreshButton">Reset mapy</button>
-    </div>
 
-    @if (visitTime) {
-    <div id="showInfo">
-      cena wybranych usług: {{visitPrice}}
-      czas wybranych usług: {{visitTime * 15}} minut
-    </div>
-    }
-
-  </div>
-
-  <mat-stepper class="stepper" linear #stepper>
-    <mat-step class="mat-step" [stepControl]="dateFormGroup" [editable]="true">
-      <form [formGroup]="dateFormGroup">
-        <ng-template matStepLabel>Wybierz dzień wizyty</ng-template>
-        <mat-form-field>
-          <mat-label>Wybierz dzień</mat-label>
-          <input formControlName="day" [min]="minDate" [max]="maxDate" matInput [matDatepicker]="picker">
-          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
-        <div>
-          <button mat-button matStepperNext>Next</button>
-        </div>
-      </form>
-    </mat-step>
+  <mat-stepper class="stepper" linear #stepper (selectionChange)="stepperChange($event)">
     <mat-step class="mat-step" [stepControl]="servicesFormGroup" [editable]="true">
       <button mat-raised-button color="warn" (click)="clearSelected()">
         Anuluj zaznaczenie
@@ -63,37 +36,50 @@
         }@else {
         <div>
           Ładuje usługi...
+          <mat-spinner></mat-spinner>
         </div>
         }
-
-
-
-
-
-
         <div>
-          <button mat-button matStepperPrevious>Back</button>
-          <button (click)="generateTimeSlots()" mat-button matStepperNext>Next</button>
+          <button mat-flat-button matStepperNext>Next</button>
         </div>
       </form>
     </mat-step>
     <mat-step class="mat-step">
       <ng-template matStepLabel>Wybierz barbera</ng-template>
       <mat-list>
-        @for (barber of barbers; track $index) {
+        @if (employees.length > 0) {
+        @for (employee of employees; track $index) {
+        <mat-list-item>
+          <span matListItemTitle>{{employee.employeeName}} {{employee.employeeSurname}}</span>
+          <span matListItemLine>{{employee.employeeDialNumber}}</span>
+        </mat-list-item>
+        }
+        }@else {
+        <div>
+          Ładuje barberów...
+          <mat-spinner></mat-spinner>
+        </div>
+        }
+        <!-- @for (barber of barbers; track $index) {
         <mat-list-item>
           <span matListItemTitle>{{barber.name}} {{barber.surname}}</span>
           <span matListItemLine>{{barber.phone_number}} {{barber.rating}}</span>
         </mat-list-item>
-        }
+        } -->
       </mat-list>
       <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext>Next</button>
+        <button mat-flat-button matStepperPrevious>Back</button>
+        <button mat-flat-button matStepperNext>Next</button>
       </div>
     </mat-step>
     <mat-step class="mat-step" [stepControl]="secondFormGroup" [editable]="true">
       <form [formGroup]="secondFormGroup">
+        <mat-form-field>
+          <mat-label>Wybierz dzień</mat-label>
+          <input formControlName="day" [min]="minDate" [max]="maxDate" matInput [matDatepicker]="picker">
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
         <ng-template matStepLabel>Wybierz godzinę wizyty</ng-template>
 
         <mat-list class="scrollable-list">
@@ -113,12 +99,25 @@
         </mat-list>
 
         <div>
-          <button mat-button matStepperPrevious>Back</button>
+          <button mat-flat-button matStepperPrevious>Back</button>
         </div>
       </form>
     </mat-step>
 
   </mat-stepper>
 
+  <div>
+    <div id="mapp">
+      <button (click)="centerMap()" id="refreshButton">Reset mapy</button>
+    </div>
+
+    @if (visitTime) {
+    <div id="showInfo">
+      cena wybranych usług: {{visitPrice}}
+      czas wybranych usług: {{visitTime * 15}} minut
+    </div>
+    }
+
+  </div>
 
 </div>

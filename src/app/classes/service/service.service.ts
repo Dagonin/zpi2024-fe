@@ -11,14 +11,14 @@ export class ServiceService {
   constructor(private http: HttpClient) { }
 
 
-  api_url = `http://localhost:8080/api/crud`
+  api_url = `http://localhost:8080/api/crud/appointment-making`
 
-  getServicesFromSalon(salonID: number){
-    const httpOptions = 
+  getServicesFromSalon(salonID: number) {
+    const httpOptions =
     {
-        headers: new HttpHeaders({'Content-Type':'application/json'}),
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     }
-    return this.http.get<string>(`${this.api_url}/appointment-making/services-and-categories/${salonID}`,httpOptions)
+    return this.http.get<string>(`${this.api_url}/services-and-categories/${salonID}`, httpOptions)
   }
 
 

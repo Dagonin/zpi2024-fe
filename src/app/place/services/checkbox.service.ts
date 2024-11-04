@@ -43,4 +43,13 @@ export class CheckboxService {
         });
         return { totalPrice, totalTime };
     }
+
+    getSelectedServicesIds(): number[] {
+        let ids: number[] = [];
+        this.selectedServices.forEach(service => {
+            ids.push(service.serviceID);
+        })
+        return ids;
+    }
+
 }

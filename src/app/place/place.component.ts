@@ -20,6 +20,11 @@ import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
 import { ServiceDTO } from '../classes/service/serviceDTO';
 import { MapService } from '../map/map.service';
 import { CheckboxService } from './services/checkbox.service';
+import { EmployeesInSalonService } from './services/employees_in_salon.service';
+import { SalonServiceIds } from './models/salon_service_Ids';
+import { MatButton } from '@angular/material/button';
+import { EmployeeDTO } from '../classes/employee/employeeDTO';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-place',
@@ -38,7 +43,9 @@ import { CheckboxService } from './services/checkbox.service';
     ReactiveFormsModule,
     MatCheckbox,
     MatAccordion,
-    MatExpansionModule
+    MatExpansionModule,
+    MatButton,
+    MatProgressSpinnerModule
   ],
   templateUrl: './place.component.html',
   styleUrl: './place.component.css'
@@ -49,20 +56,18 @@ export class PlaceComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private placeService: PlaceService,
-    private barberService: BarberService,
     private serviceService: ServiceService,
     private mapService: MapService,
     private checkboxService: CheckboxService,
+    private employeesInSalonService: EmployeesInSalonService
   ) { }
 
 
   place!: Place;
   private sub: any;
-  marker!: L.Marker;
 
 
-  barbers: Barber[] = [];
-
+  employees: EmployeeDTO[] = [];
 
   minDate!: Date;
   maxDate!: Date;
@@ -81,40 +86,31 @@ export class PlaceComponent implements OnInit, OnDestroy {
 
   hoveredIndex: number | null = null;
 
-  protected dateFormGroup = new FormGroup({
-    day: new FormControl('', Validators.required),
-  }, { updateOn: 'blur' },)
-
   protected servicesFormGroup = new FormGroup({
-    services: new FormControl(''),
+    services: new FormControl<number[]>([], Validators.required),
   }, { updateOn: 'blur' },)
 
   protected secondFormGroup = new FormGroup({
     time_slot: new FormControl(-1, [Validators.required, Validators.min(0)]),
+    day: new FormControl('', Validators.required)
   }, { updateOn: 'blur' },)
-
-  protected timePickerFormGroup = new FormGroup({
-    time: new FormControl('', Validators.required)
-  })
 
 
   ngOnInit(): void {
     this.sub = this.route.params.subscribe(params => {
-
       this.place = this.placeService.getPlace(params['placeid']);
-      this.mapService.initializeMap('mapp', 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
-      this.centerMap();
-
-      this.barbers = this.barberService.getBarbers();
-
-      this.minDate = new Date();
-      this.maxDate = new Date();
-      this.maxDate.setDate(this.maxDate.getDate() + 15);
-      // this.serviceCategories = this.serviceCategory.getExampleServiceCategories();
-
-      this.getServices()
-
     });
+    this.mapService.initializeMap('mapp', 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+
+    this.centerMap();
+
+    this.clearSelected();
+
+    this.minDate = new Date();
+    this.maxDate = new Date();
+    this.maxDate.setDate(this.maxDate.getDate() + 15);
+
+    this.getServices()
   }
 
   ngAfterViewInit() {
@@ -137,6 +133,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
     const { totalPrice, totalTime } = this.checkboxService.calculateServices();
     this.visitPrice = totalPrice;
     this.visitTime = totalTime;
+    this.servicesFormGroup.controls.services.setValue(this.checkboxService.getSelectedServicesIds());
   }
 
   clearSelected(): void {
@@ -196,7 +193,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
   }
 
   selectTimeSlots(index: number) {
-    if (!this.checkIfDisabled(index)) {
+    if (!this.checkIfDisabled(index) && this.secondFormGroup.controls.day.value) {
       this.timeSlots.forEach(x => {
         x[3] = false;
       })
@@ -205,9 +202,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
         this.timeSlots[index + i][3] = true;
       }
 
-      this.secondFormGroup.setValue({
-        time_slot: index
-      })
+      this.secondFormGroup.controls.time_slot.setValue(index);
     }
   }
 
@@ -233,6 +228,40 @@ export class PlaceComponent implements OnInit, OnDestroy {
         console.error(error)
       }
     });
+  }
+
+  getAllEmployeesThatCanServeService() {
+    if (this.servicesFormGroup.controls.services.value?.length) {
+      this.employees = [];
+      const obj: SalonServiceIds = {
+        salonID: 1,
+        serviceIds: this.servicesFormGroup.controls.services.value
+      }
+      console.log(obj)
+      this.employeesInSalonService.getAllEmployeesThatCanServeService(obj).subscribe({
+        next: (response: any) => {
+          console.log(response);
+          this.employees = response;
+        },
+        error: (error) => {
+          console.error(error)
+        }
+      });
+    }
+  }
+
+  stepperChange(event: any) {
+    if (event.selectedIndex > event.previouslySelectedIndex)
+      switch (event.selectedIndex) {
+        case 1: {
+          this.getAllEmployeesThatCanServeService();
+          break;
+        }
+        case 2: {
+          this.generateTimeSlots()
+          break;
+        }
+      }
   }
 
 
