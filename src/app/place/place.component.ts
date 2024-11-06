@@ -13,18 +13,22 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatStepperModule } from '@angular/material/stepper';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ServiceCategoryDTO } from '../classes/service/service_categoryDTO';
+import { ServiceCategoryDTO } from '../classes/service/service-categoryDTO';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { ServiceService } from '../classes/service/service.service';
 import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
 import { ServiceDTO } from '../classes/service/serviceDTO';
 import { MapService } from '../map/map.service';
 import { CheckboxService } from './services/checkbox.service';
-import { EmployeesInSalonService } from './services/employees_in_salon.service';
-import { SalonServiceIds } from './models/salon_service_Ids';
+import { EmployeesInSalonService } from './services/employees-in-salon.service';
+import { SalonServiceIds } from './models/salon-service-Ids';
 import { MatButton } from '@angular/material/button';
 import { EmployeeDTO } from '../classes/employee/employeeDTO';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { TimeSlotsService } from './services/timeslots.service';
+import { MatCardModule } from '@angular/material/card';
+import { MatRadioModule } from '@angular/material/radio';
+import { OpeningHours } from './models/opening-hours';
 
 @Component({
   selector: 'app-place',
@@ -45,7 +49,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatAccordion,
     MatExpansionModule,
     MatButton,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatCardModule,
+    MatRadioModule
   ],
   templateUrl: './place.component.html',
   styleUrl: './place.component.css'
@@ -58,10 +64,12 @@ export class PlaceComponent implements OnInit, OnDestroy {
     private placeService: PlaceService,
     private serviceService: ServiceService,
     private mapService: MapService,
-    private checkboxService: CheckboxService,
-    private employeesInSalonService: EmployeesInSalonService
+    public checkboxService: CheckboxService,
+    private employeesInSalonService: EmployeesInSalonService,
+    public timeslotsService: TimeSlotsService
   ) { }
 
+  selectedServicesChange = false;
 
   place!: Place;
   private sub: any;
@@ -78,11 +86,9 @@ export class PlaceComponent implements OnInit, OnDestroy {
   visitPrice!: number;
 
 
-  startTime: [number, number] = [8, 0]
-  endTime: [number, number] = [20, 15]
-
-  //          hour    minute  is_disabled is_checked
-  timeSlots: [number, number, boolean, boolean][] = [];
+  startTime: [number, number] = [8, 0];
+  endTime: [number, number] = [20, 15];
+  openingHours!: OpeningHours[];
 
   hoveredIndex: number | null = null;
 
@@ -90,10 +96,9 @@ export class PlaceComponent implements OnInit, OnDestroy {
     services: new FormControl<number[]>([], Validators.required),
   }, { updateOn: 'blur' },)
 
-  protected secondFormGroup = new FormGroup({
-    time_slot: new FormControl(-1, [Validators.required, Validators.min(0)]),
-    day: new FormControl('', Validators.required)
-  }, { updateOn: 'blur' },)
+  protected barbersFormGroup = new FormGroup({
+    barber: new FormControl<number | null>(null, [Validators.required, Validators.nullValidator])
+  });
 
 
   ngOnInit(): void {
@@ -111,6 +116,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
     this.maxDate.setDate(this.maxDate.getDate() + 15);
 
     this.getServices()
+    this.getOpeningHours()
   }
 
   ngAfterViewInit() {
@@ -134,6 +140,8 @@ export class PlaceComponent implements OnInit, OnDestroy {
     this.visitPrice = totalPrice;
     this.visitTime = totalTime;
     this.servicesFormGroup.controls.services.setValue(this.checkboxService.getSelectedServicesIds());
+    this.barbersFormGroup.setValue({ barber: null })
+    this.selectedServicesChange = true;
   }
 
   clearSelected(): void {
@@ -153,36 +161,9 @@ export class PlaceComponent implements OnInit, OnDestroy {
 
 
   generateTimeSlots() {
-    let newTime = this.startTime;
-    while (this.isTupleSmaller(newTime, this.endTime)) {
-      this.timeSlots.push([newTime[0], newTime[1], false, false]);
-      newTime[1] = (newTime[1] + 15) % 60;
-      if (newTime[1] == 0) {
-        newTime[0] += 1;
-      }
-    }
-
-    this.disableTimeSlot(4);
-    this.disableTimeSlot(7);
-    this.disableTimeSlot(12);
-    this.disableTimeSlot(33);
-    this.disableTimeSlot(17);
-    this.disableTimeSlot(1);
+    this.timeslotsService.generateTimeSlots(this.startTime, this.endTime)
   }
 
-  disableTimeSlot(index: number) {
-    this.timeSlots[index][2] = true;
-  }
-
-  isTupleSmaller(a: [number, number], b: [number, number]): boolean {
-    if (a[0] < b[0]) {
-      return true;
-    } else if (a[0] >= b[0]) {
-      return false;
-    } else {
-      return a[1] <= b[1];
-    }
-  }
 
   onMouseEnter(index: number): void {
     this.hoveredIndex = index;
@@ -192,31 +173,10 @@ export class PlaceComponent implements OnInit, OnDestroy {
     this.hoveredIndex = null;
   }
 
+
   selectTimeSlots(index: number) {
-    if (!this.checkIfDisabled(index) && this.secondFormGroup.controls.day.value) {
-      this.timeSlots.forEach(x => {
-        x[3] = false;
-      })
-
-      for (let i = 0; i < this.visitTime; i++) {
-        this.timeSlots[index + i][3] = true;
-      }
-
-      this.secondFormGroup.controls.time_slot.setValue(index);
-    }
+    this.timeslotsService.selectTimeSlots(index, this.visitTime);
   }
-
-  checkIfDisabled(index: number): boolean {
-    let flag = false;
-    for (let i = 0; i < this.visitTime; i++) {
-      if (this.timeSlots[index + i][2] == true) {
-        flag = true;
-        return flag;
-      }
-    }
-    return flag;
-  }
-
 
   getServices() {
     this.serviceService.getServicesFromSalon(1).subscribe({
@@ -230,17 +190,39 @@ export class PlaceComponent implements OnInit, OnDestroy {
     });
   }
 
+  enableTimeSlots() {
+    let dayValue = this.timeslotsService.timeslotsFormGroup.controls.day.value;
+    if (dayValue && this.barbersFormGroup.controls.barber.value) {
+      console.log("tut")
+      let date = dayValue;
+      let weekday = date?.getDay()
+      let openingHours = this.openingHours[weekday - 1]
+      console.log(openingHours)
+      console.log(this.timeslotsService.enableTimeslotsInRange(openingHours.openingHour, openingHours.closingHour))
+      // this.timeslotsService.getAllTimeslotsForAnEmployee(this.employees[this.barbersFormGroup.controls.barber.value].employeeID).subscribe({
+      //   next: (response: any) => {
+      //     console.log(response)
+      //   },
+      //   error: (error) => {
+      //     console.error(error)
+      //   }
+      // })
+
+    }
+  }
+
+
   getAllEmployeesThatCanServeService() {
-    if (this.servicesFormGroup.controls.services.value?.length) {
+    if (this.servicesFormGroup.controls.services.value?.length && this.selectedServicesChange) {
       this.employees = [];
       const obj: SalonServiceIds = {
         salonID: 1,
         serviceIds: this.servicesFormGroup.controls.services.value
       }
-      console.log(obj)
       this.employeesInSalonService.getAllEmployeesThatCanServeService(obj).subscribe({
         next: (response: any) => {
           console.log(response);
+          this.selectedServicesChange = false;
           this.employees = response;
         },
         error: (error) => {
@@ -248,6 +230,18 @@ export class PlaceComponent implements OnInit, OnDestroy {
         }
       });
     }
+  }
+
+  getOpeningHours() {
+    this.timeslotsService.getAllOpeningHoursForSalon(this.place.id).subscribe({
+      next: (response: any) => {
+        this.openingHours = response;
+        console.log(this.openingHours)
+      },
+      error: (error) => {
+        console.error(error)
+      }
+    })
   }
 
   stepperChange(event: any) {

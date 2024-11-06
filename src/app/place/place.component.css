@@ -1,71 +1,94 @@
-#place_content{
+#place_content {
   width: 100%;
-  height: 100%;
+  height: 60%;
   display: flex;
 }
 
+#rightPanel {
+  padding: 1rem;
+  width: 50%;
+}
+
+#leftPanel {
+  padding: 1rem;
+  width: 90%;
+}
+
+
 #mapp {
-    width: 40vw;
-    height: 40%;
-    margin: auto;
-    margin-top: 1rem;
+  width: 100%;
+  height: 60%;
+  margin: auto;
+  margin-top: 1rem;
+}
+
+#resumeCard {
+  width: 100%;
+  height: 70%;
+  margin-top: 1rem;
 }
 
 #refreshButton {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    padding: 10px;
-    z-index: 5000;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 10px;
+  z-index: 5000;
 }
 
 .scrollable-list {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); 
-    gap: 10px;
-    
-    max-height: calc(13 * 50px);
-    overflow-y: auto;
-    padding: 10px;
-    border: 1px solid #ccc;
-  }
-  
-  .time-slot {
-    text-align: center;
-    padding: 10px;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    height: 50px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
-  
-  .hovered {
-    background-color: #cce5ff; 
-    color: #0056b3; 
-  }
-  
-  .disabled {
-    background-color: #e0e0e0; 
-    color: #888;
-    pointer-events: none;
-    opacity: 0.6;
-  }
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
 
-  .invisible{
-    visibility: hidden;
-  }
+  max-height: calc(13 * 50px);
+  overflow-y: auto;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
 
-  .time-slot:has(input:checked){
-    /* background-color: gold; */
-    border: 4px gold solid;
-  }
+.time-slot {
+  text-align: center;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  height: 50px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
 
-  .stepper{
-    width: 1200px;
-  }
+.hovered {
+  background-color: #cce5ff;
+  color: #0056b3;
+}
 
-  .mat-step{
-    margin: auto;
-  }
+.disabled {
+  background-color: #e0e0e0;
+  color: #888;
+  pointer-events: none;
+  opacity: 0.6;
+}
 
+.invisible {
+  visibility: hidden;
+}
+
+.time-slot:has(input:checked) {
+  /* background-color: gold; */
+  border: 4px gold solid;
+}
+
+.stepper {
+  width: 1200px;
+}
+
+.mat-step {
+  margin: auto;
+}
+
+.radioGroup {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+  align-items: flex-start;
+}
