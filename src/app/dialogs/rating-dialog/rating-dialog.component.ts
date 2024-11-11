@@ -6,7 +6,7 @@ import { BarRatingModule } from 'ngx-bar-rating';
 
 @Component({
   selector: 'rating_dialog',
-  templateUrl: 'rating_dialog.html',
+  templateUrl: 'rating-dialog.html',
   standalone: true,
   imports: [
     MatDialogTitle,
@@ -22,7 +22,7 @@ export class RatingDialogComponent {
 
 
 
-  rateBarber(){
+  rateBarber() {
     console.log(this.rating)
   }
 

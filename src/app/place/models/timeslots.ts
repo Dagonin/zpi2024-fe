@@ -1,5 +1,5 @@
-export class SalonServiceIds {
-    timeSlotDate!: Date;
-    timeSlotTime!: Date;
+export class Timeslot {
+    timeSlotDate!: string;
+    timeSlotTime!: string;
     employeeID!: number;
 }

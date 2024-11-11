@@ -56,8 +56,18 @@ export class TimeSlotsService {
     }
 
 
+    resetTimeSlots() {
+        this.timeSlots.forEach(x => {
+            x[2] = true;
+            x[3] = false;
+        })
+    }
+
+    resetFormGroup() {
+        this.timeslotsFormGroup.setValue({ time_slot: -1, day: null })
+    }
+
     enableTimeslotsInRange(openingHour: string, closingHour: string) {
-        console.log("ASDASDD")
         const openingHourTuple = this.convertTimeToTuple(openingHour);
         const closingHourTuple = this.convertTimeToTuple(closingHour);
         const openinHourIndex = this.calculateTimeslotIndex(openingHourTuple);
@@ -68,8 +78,6 @@ export class TimeSlotsService {
         }
 
         return (this.calculateTimeslotIndex(openingHourTuple))
-
-
     }
 
     convertTimeToTuple(time: string): [number, number] {
@@ -99,6 +107,11 @@ export class TimeSlotsService {
         return flag;
     }
 
+
+    disableTimeSlotStr(time: string) {
+        const tuple = this.convertTimeToTuple(time);
+        this.disableTimeSlot(this.calculateTimeslotIndex(tuple));
+    }
 
     disableTimeSlot(index: number) {
         this.timeSlots[index][2] = true;

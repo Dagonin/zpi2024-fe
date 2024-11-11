@@ -19,7 +19,7 @@ export class EmployeesInSalonService {
     }
 
 
-    getAllAvailabilityDatesForEmployee(salonID: number, employeeID: number) {
+    getAllAvailabilityDatesForEmployee(salonID: string, employeeID: number) {
         const httpOptions =
         {
             headers: new HttpHeaders({ 'Content-Type': 'application/json' }),

@@ -2,10 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Place } from '../classes/place/place';
 import { PlaceService } from '../classes/place/place.service';
-import L from 'leaflet';
-import { BarberService } from '../classes/barber/barber.service';
-import { Barber } from '../classes/barber/barber';
-import { CommonModule } from '@angular/common';
+import { CommonModule, formatDate } from '@angular/common';
 import { MatListModule } from '@angular/material/list';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -29,6 +26,8 @@ import { TimeSlotsService } from './services/timeslots.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatRadioModule } from '@angular/material/radio';
 import { OpeningHours } from './models/opening-hours';
+import { Timeslot } from './models/timeslots';
+import { format } from 'date-fns';
 
 @Component({
   selector: 'app-place',
@@ -70,15 +69,35 @@ export class PlaceComponent implements OnInit, OnDestroy {
   ) { }
 
   selectedServicesChange = false;
+  selectedBarberChange = false;
 
   place!: Place;
   private sub: any;
 
 
   employees: EmployeeDTO[] = [];
+  employee_timeslots!: Timeslot[];
 
   minDate!: Date;
   maxDate!: Date;
+
+  // myFilter = (d: Date | null): boolean => {
+  //   const day = (d || new Date()).getDay();
+  //   // Prevent Saturday and Sunday from being selected.
+  //   return day !== 0 && day !== 6;
+  // };
+
+  allowedDates!: string[];
+
+  myFilter = (date: Date | null): boolean => {
+    if (!date) {
+      return false
+    };
+    const adjustedDate = new Date(date);
+    adjustedDate.setDate(adjustedDate.getDate() + 1);
+    const dateString = adjustedDate.toISOString().split('T')[0];
+    return this.allowedDates.includes(dateString);
+  };
 
   serviceCategories !: ServiceCategoryDTO[];
 
@@ -115,8 +134,10 @@ export class PlaceComponent implements OnInit, OnDestroy {
     this.maxDate = new Date();
     this.maxDate.setDate(this.maxDate.getDate() + 15);
 
-    this.getServices()
-    this.getOpeningHours()
+    this.getServices();
+    this.getOpeningHours();
+
+    this.timeslotsService.generateTimeSlots(this.startTime, this.endTime);
   }
 
   ngAfterViewInit() {
@@ -144,6 +165,11 @@ export class PlaceComponent implements OnInit, OnDestroy {
     this.selectedServicesChange = true;
   }
 
+  onBarberChange() {
+    this.selectedBarberChange = true;
+    console.log("barber changed")
+  }
+
   clearSelected(): void {
     this.checkboxService.clearSelected();
     const { totalPrice, totalTime } = this.checkboxService.calculateServices();
@@ -161,7 +187,23 @@ export class PlaceComponent implements OnInit, OnDestroy {
 
 
   generateTimeSlots() {
-    this.timeslotsService.generateTimeSlots(this.startTime, this.endTime)
+    console.log(this.selectedBarberChange);
+    if (this.barbersFormGroup.controls.barber.value !== null) {
+      if (this.selectedBarberChange) {
+        this.timeslotsService.resetFormGroup()
+        this.timeslotsService.resetTimeSlots()
+        this.selectedBarberChange = false;
+        this.timeslotsService.getAllTimeslotsForAnEmployee(this.employees[this.barbersFormGroup.controls.barber.value].employeeID).subscribe({
+          next: (response: any) => {
+            console.log(response)
+            this.employee_timeslots = response;
+          },
+          error: (error) => {
+            console.error(error)
+          }
+        })
+      }
+    }
   }
 
 
@@ -192,22 +234,17 @@ export class PlaceComponent implements OnInit, OnDestroy {
 
   enableTimeSlots() {
     let dayValue = this.timeslotsService.timeslotsFormGroup.controls.day.value;
-    if (dayValue && this.barbersFormGroup.controls.barber.value) {
-      console.log("tut")
+    if (dayValue) {
       let date = dayValue;
       let weekday = date?.getDay()
       let openingHours = this.openingHours[weekday - 1]
-      console.log(openingHours)
-      console.log(this.timeslotsService.enableTimeslotsInRange(openingHours.openingHour, openingHours.closingHour))
-      // this.timeslotsService.getAllTimeslotsForAnEmployee(this.employees[this.barbersFormGroup.controls.barber.value].employeeID).subscribe({
-      //   next: (response: any) => {
-      //     console.log(response)
-      //   },
-      //   error: (error) => {
-      //     console.error(error)
-      //   }
-      // })
-
+      this.timeslotsService.resetTimeSlots();
+      this.timeslotsService.enableTimeslotsInRange(openingHours.openingHour, openingHours.closingHour)
+      this.employee_timeslots.forEach(ts => {
+        if (format(new Date(ts.timeSlotDate), 'dd MM yyyy') == format(date, 'dd MM yyyy')) {
+          this.timeslotsService.disableTimeSlotStr(ts.timeSlotTime);
+        }
+      })
     }
   }
 
@@ -215,6 +252,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
   getAllEmployeesThatCanServeService() {
     if (this.servicesFormGroup.controls.services.value?.length && this.selectedServicesChange) {
       this.employees = [];
+      //                               tu zamienic 1 na salonID           XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
       const obj: SalonServiceIds = {
         salonID: 1,
         serviceIds: this.servicesFormGroup.controls.services.value
@@ -229,6 +267,21 @@ export class PlaceComponent implements OnInit, OnDestroy {
           console.error(error)
         }
       });
+    }
+  }
+  getAllAvailabilityDatesForEmployee() {
+    if (this.barbersFormGroup.controls.barber.value !== null) {
+      console.log(this.employees[this.barbersFormGroup.controls.barber.value].employeeID)
+      //                               tu zamienic 1 na salonID               XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+      this.employeesInSalonService.getAllAvailabilityDatesForEmployee('1', this.employees[this.barbersFormGroup.controls.barber.value].employeeID ?? 0).subscribe({
+        next: (response: any) => {
+          console.log(response);
+          this.allowedDates = response;
+        },
+        error: (error) => {
+          console.error(error)
+        }
+      })
     }
   }
 
@@ -252,7 +305,8 @@ export class PlaceComponent implements OnInit, OnDestroy {
           break;
         }
         case 2: {
-          this.generateTimeSlots()
+          this.generateTimeSlots();
+          this.getAllAvailabilityDatesForEmployee();
           break;
         }
       }

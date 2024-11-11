@@ -49,7 +49,8 @@
           <ng-template matStepLabel>Wybierz barbera</ng-template>
           <mat-list>
             @if (employees.length > 0) {
-            <mat-radio-group formControlName="barber" class="radioGroup" aria-label="Select an option">
+            <mat-radio-group (change)="onBarberChange()" formControlName="barber" class="radioGroup"
+              aria-label="Select an option">
               @for (employee of employees; track $index) {
               <mat-radio-button [value]="$index">
                 <mat-list-item>
@@ -76,8 +77,8 @@
         <form [formGroup]="timeslotsService.timeslotsFormGroup">
           <mat-form-field>
             <mat-label>Wybierz dzień</mat-label>
-            <input formControlName="day" [min]="minDate" [max]="maxDate" matInput [matDatepicker]="picker"
-              (dateChange)="enableTimeSlots()">
+            <input formControlName="day" [min]="minDate" [max]="maxDate" [matDatepickerFilter]="myFilter" matInput
+              [matDatepicker]="picker" (dateChange)="enableTimeSlots()">
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
