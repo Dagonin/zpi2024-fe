@@ -1,26 +1,20 @@
-<p>history works!</p>
+<div id="body">
+  <div id="history">
+    <mat-list>
+      @for (visit of visits; track $index) {
+      <mat-list-item>
+        <span matListItemTitle>{{visit.date}}</span>
+        <span matListItemLine>{{visit.place.city}}</span>
+        <span matListItemLine>{{visit.barber.name}} {{visit.barber.surname}} {{visit.barber.rating}}
+          @if (!visit.rating) {
+          <button (click)="openDialog()" mat-button>Oceń</button>
+          }
+        </span>
+      </mat-list-item>
+      <mat-divider></mat-divider>
 
-<mat-list>
-  @for (visit of visits; track $index) {
-  <mat-list-item>
-    <span matListItemTitle>{{visit.date}}</span>
-    <span matListItemLine>{{visit.place.city}}</span>
-    <span matListItemLine>{{visit.barber.name}} {{visit.barber.surname}} {{visit.barber.rating}}
-      @if (!visit.rating) {
-      <button (click)="openDialog()" mat-button>Oceń</button>
       }
-    </span>
+    </mat-list>
 
-  </mat-list-item>
-  }
-</mat-list>
-
-<!-- <div class="stars container">
-    <div class="row">
-      <div class="col-md-4">
-        <section>
-          <bar-rating theme="stars" class="star" [(rate)]="cssRate" [max]="5"></bar-rating>
-        </section>
-      </div>
-    </div>
-  </div> -->
+  </div>
+</div>

@@ -4,12 +4,12 @@ import { MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MAT
 import { Visit } from '../../classes/visit/visit';
 import { VisitService } from '../../classes/visit/visit.service';
 import { CommonModule } from '@angular/common';
-import {MatDividerModule} from '@angular/material/divider';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-visits-dialog',
   standalone: true,
-  imports: [ 
+  imports: [
     MatDialogTitle,
     MatDialogContent,
     MatDialogActions,
@@ -26,7 +26,7 @@ export class VisitsDialogComponent implements OnInit {
 
   visits: Visit[] = [];
 
-  constructor(private visitService: VisitService){}
+  constructor(private visitService: VisitService) { }
 
   ngOnInit(): void {
     this.visits = this.visitService.getVisits();

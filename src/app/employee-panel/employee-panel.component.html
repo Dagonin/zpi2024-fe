@@ -1,0 +1,36 @@
+<div id="body">
+  <div id="visits">
+    <div id="make_appointment"><button mat-flat-button>Umów wizytę</button></div>
+    @if (groupedVisits) {
+    <mat-accordion>
+      @for (day of groupedVisits | keyvalue; track $index) {
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ day.key }}
+          </mat-panel-title>
+          <mat-panel-description>
+            {{ day.value.length }}
+            @if (day.value.length<5) { Wizyty }@else { Wizit } </mat-panel-description> </mat-expansion-panel-header>
+              <mat-list>
+              @for (visit of day.value; track $index) {
+              <mat-list-item>
+                {{visit.startTime}}
+                {{visit.barber.name}}
+                <br>
+                {{visit.services}}
+              </mat-list-item>
+              <mat-divider></mat-divider>
+              }
+              </mat-list>
+      </mat-expansion-panel>
+      }
+    </mat-accordion>
+    }
+
+  </div>
+  <div id="schedule">
+    <mwl-calendar-week-view [viewDate]="viewDate" [dayStartHour]="7" [dayEndHour]="20">
+    </mwl-calendar-week-view>
+  </div>
+</div>

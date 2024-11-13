@@ -72,6 +72,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
   selectedBarberChange = false;
 
   place!: Place;
+  userid!: string;
   private sub: any;
 
 
@@ -123,7 +124,9 @@ export class PlaceComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.sub = this.route.params.subscribe(params => {
       this.place = this.placeService.getPlace(params['placeid']);
+      this.userid = params['userid'];
     });
+
     this.mapService.initializeMap('mapp', 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
 
     this.centerMap();

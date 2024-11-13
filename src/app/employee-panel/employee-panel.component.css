@@ -1,0 +1,26 @@
+#body {
+    width: 100%;
+    height: 93%;
+    display: flex;
+}
+
+#visits {
+    width: 50%;
+    max-height: 80%;
+    overflow-y: scroll;
+    padding: 0.5rem;
+}
+
+#schedule {
+    width: 50%;
+}
+
+#make_appointment {
+    padding: 1rem;
+}
+
+#make_appointment button {
+    display: block;
+    margin: auto;
+    width: 250px;
+}
