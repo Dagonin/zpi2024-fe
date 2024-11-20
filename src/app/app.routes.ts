@@ -34,7 +34,7 @@ export const routes: Routes = [{
         import('./place/place.component').then((c) => c.PlaceComponent),
 },
 {
-    path: 'place/:placeid/:userid',
+    path: 'place/:placeid/:flag',
     loadComponent: () =>
         import('./place/place.component').then((c) => c.PlaceComponent),
 },

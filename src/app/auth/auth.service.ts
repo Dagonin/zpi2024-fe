@@ -18,7 +18,7 @@ export class AuthService {
   public userRole$: Observable<string>;
   private rsa_helper: RSAHelper;
 
-  constructor(private http: HttpClient, private router:Router
+  constructor(private http: HttpClient, private router: Router
   ) {
     const isLoggedIn = this.isLoggedIn();
     const getRole = this.getRole();
@@ -27,14 +27,14 @@ export class AuthService {
     this.userRoleSubject = new BehaviorSubject<string>(getRole);
     this.userRole$ = this.userRoleSubject.asObservable();
     this.rsa_helper = new RSAHelper();
-   }
+  }
 
-   api_url = `http://localhost:8080/api/auth`
+  api_url = `http://localhost:8080/api/auth`
 
   // login(data: any) {
   //   // console.log(data)
   //   // console.log(this.rsa_helper.encryptWithPublicKey(data.password))
-    
+
   //   // return this.httpClient.post(`${this.baseUrl}/login`, data)
   //   //   .pipe(tap((result) => {
   //   //     localStorage.setItem('authUser', JSON.stringify(result));
@@ -47,7 +47,7 @@ export class AuthService {
   //     this.userRoleSubject.next('admin');
   //     return true;
   //   }
-    
+
   //   if(data.login === "employee" && data.password === "employee"){
   //     localStorage.setItem('authUser', data.login);
   //     localStorage.setItem('role', 'employee');
@@ -69,26 +69,26 @@ export class AuthService {
 
   login(email: string, password: string): Observable<any> {
 
-    const newLogin : LoginDTO = {
+    const newLogin: LoginDTO = {
       email: email,
       password: password
     }
-    const httpOptions = 
+    const httpOptions =
     {
-        headers: new HttpHeaders({'Content-Type':'application/json'}),
-        
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+
     }
-    
+
     return this.http.post(`${this.api_url}/customer/login`, newLogin, httpOptions)
       .pipe(
         tap((response: any) => {
           if (response && response.tokenValue) {
 
             localStorage.setItem('authUser', email);
-            localStorage.setItem('role', 'user'); 
+            localStorage.setItem('role', 'user');
 
-            this.isAuthenticatedSubject.next(true);  
-            this.userRoleSubject.next('user'); 
+            this.isAuthenticatedSubject.next(true);
+            this.userRoleSubject.next('user');
             this.router.navigate(['']);
           }
         })
@@ -109,7 +109,7 @@ export class AuthService {
     return localStorage.getItem('authUser') !== null;
   }
 
-  getRole() : string{
+  getRole(): string {
     return localStorage.getItem('role') as string
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Place } from '../classes/place/place';
 import { PlaceService } from '../classes/place/place.service';
@@ -17,7 +17,7 @@ import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
 import { ServiceDTO } from '../classes/service/serviceDTO';
 import { MapService } from '../map/map.service';
 import { CheckboxService } from './services/checkbox.service';
-import { EmployeesInSalonService } from './services/employees-in-salon.service';
+import { SalonService } from './services/salon.service';
 import { SalonServiceIds } from './models/salon-service-Ids';
 import { MatButton } from '@angular/material/button';
 import { EmployeeDTO } from '../classes/employee/employeeDTO';
@@ -27,7 +27,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatRadioModule } from '@angular/material/radio';
 import { OpeningHours } from './models/opening-hours';
 import { Timeslot } from './models/timeslots';
-import { format } from 'date-fns';
+import { format, parse } from 'date-fns';
+import { UserEmailDialog } from '../dialogs/user-email-dialog/user-email-dialog';
+import { MatDialog } from '@angular/material/dialog';
+import { visit } from './models/visit';
 
 @Component({
   selector: 'app-place',
@@ -64,7 +67,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
     private serviceService: ServiceService,
     private mapService: MapService,
     public checkboxService: CheckboxService,
-    private employeesInSalonService: EmployeesInSalonService,
+    private SalonService: SalonService,
     public timeslotsService: TimeSlotsService
   ) { }
 
@@ -72,8 +75,10 @@ export class PlaceComponent implements OnInit, OnDestroy {
   selectedBarberChange = false;
 
   place!: Place;
-  userid!: string;
+  flag!: string;
   private sub: any;
+
+  readonly dialog = inject(MatDialog);
 
 
   employees: EmployeeDTO[] = [];
@@ -89,6 +94,8 @@ export class PlaceComponent implements OnInit, OnDestroy {
   // };
 
   allowedDates!: string[];
+  pickedDate!: Date;
+
 
   myFilter = (date: Date | null): boolean => {
     if (!date) {
@@ -124,7 +131,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.sub = this.route.params.subscribe(params => {
       this.place = this.placeService.getPlace(params['placeid']);
-      this.userid = params['userid'];
+      this.flag = params['flag'];
     });
 
     this.mapService.initializeMap('mapp', 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
@@ -170,6 +177,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
 
   onBarberChange() {
     this.selectedBarberChange = true;
+    this.timeslotsService.resetFormGroup();
     console.log("barber changed")
   }
 
@@ -260,7 +268,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
         salonID: 1,
         serviceIds: this.servicesFormGroup.controls.services.value
       }
-      this.employeesInSalonService.getAllEmployeesThatCanServeService(obj).subscribe({
+      this.SalonService.getAllEmployeesThatCanServeService(obj).subscribe({
         next: (response: any) => {
           console.log(response);
           this.selectedServicesChange = false;
@@ -276,7 +284,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
     if (this.barbersFormGroup.controls.barber.value !== null) {
       console.log(this.employees[this.barbersFormGroup.controls.barber.value].employeeID)
       //                               tu zamienic 1 na salonID               XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-      this.employeesInSalonService.getAllAvailabilityDatesForEmployee('1', this.employees[this.barbersFormGroup.controls.barber.value].employeeID ?? 0).subscribe({
+      this.SalonService.getAllAvailabilityDatesForEmployee('1', this.employees[this.barbersFormGroup.controls.barber.value].employeeID ?? 0).subscribe({
         next: (response: any) => {
           console.log(response);
           this.allowedDates = response;
@@ -313,6 +321,39 @@ export class PlaceComponent implements OnInit, OnDestroy {
           break;
         }
       }
+  }
+
+  makeAppointment() {
+    if (this.flag) {
+      this.dialog.open(UserEmailDialog);
+    }
+
+    let date = this.timeslotsService.timeslotsFormGroup.controls.day.value
+    //  to trzeba poprawić
+    let barber = this.employees[this.barbersFormGroup.controls.barber.value ?? 0].employeeID
+    console.log(barber, date)
+    // TODO 
+    if (date && barber) {
+      let newVisit = new visit(parseInt(this.place.id),
+        date.toISOString().split('T')[0],
+        this.timeslotsService.indexToHour(this.timeslotsService.timeslotsFormGroup.controls.time_slot.value) + ":00",
+        'RESERVED',
+        barber,
+        2,
+        this.checkboxService.getSelectedServicesIds()
+      )
+      this.SalonService.makeAppointment(newVisit).subscribe({
+        next: (response: any) => {
+          console.log(response)
+        },
+        error: (error) => {
+          console.error(error)
+        }
+      })
+    }
+
+
+
   }
 
 

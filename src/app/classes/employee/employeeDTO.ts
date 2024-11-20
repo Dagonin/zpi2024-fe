@@ -1,5 +1,5 @@
 export class EmployeeDTO {
-  employeeID: number | null;
+  employeeID: number;
   employeeName: string;
   employeeSurname: string;
   employeeDialNumber: string;

@@ -127,17 +127,35 @@
         @for (service of checkboxService.selectedServices; track $index) {
         <div>{{service.serviceName}}</div>
         }
+        <br>
         @if(barbersFormGroup.controls.barber.value !== null){
         <mat-card-subtitle>Wybrany barber:</mat-card-subtitle>
         <div>{{employees[barbersFormGroup.get('barber')?.value ?? 0].employeeName}}
           {{employees[barbersFormGroup.get('barber')?.value ?? 0].employeeSurname}}</div>
         <div>{{employees[barbersFormGroup.get('barber')?.value ?? 0].employeeDialNumber}}</div>
+        <br>
+        @if (this.timeslotsService.timeslotsFormGroup.controls.day.value) {
+        <mat-card-subtitle>Data wizyty:</mat-card-subtitle>
+        {{this.timeslotsService.timeslotsFormGroup.controls.day.value | date}}
+        <br>
+        @if (this.timeslotsService.timeslotsFormGroup.controls.time_slot.value) {
+        {{this.timeslotsService.indexToHour(this.timeslotsService.timeslotsFormGroup.controls.time_slot.value)}}
+        <br>
+        <button mat-raised-button (click)="makeAppointment()">Umów wizytę</button>
+        }
+
+
+        }@else {
+        <mat-card-subtitle>Wybierz datę wizyty:</mat-card-subtitle>
+        }
         }@else {
         <mat-card-subtitle>Wybierz barbera:</mat-card-subtitle>
         }
         }@else{
         <div>Wybierz usługi</div>
         }
+
+
       </mat-card-content>
     </mat-card>
 
