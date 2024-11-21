@@ -5,7 +5,7 @@ import { ServiceDTO } from "../service/serviceDTO";
 
 export class Visit {
     id: string;
-    date: Date;
+    date: string;
     startTime: string;
     place: Place;
     barber: Barber; // Zrobić obiekt pracownika
@@ -14,7 +14,7 @@ export class Visit {
     services: string[];
 
 
-    constructor(id: string, date: Date, startTime: string, place: Place, barber: Barber, services: string[], rating?: number) {
+    constructor(id: string, date: string, startTime: string, place: Place, barber: Barber, services: string[], rating?: number) {
         this.id = id;
         this.date = date;
         this.startTime = startTime;

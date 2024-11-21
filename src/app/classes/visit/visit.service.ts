@@ -13,6 +13,8 @@ export class VisitService {
   private placeService = inject(PlaceService);
   private barberService = inject(BarberService);
 
+
+  // TODO to chyba niepotrzebne
   createTimeOnly(time: string): Date {
     const [hours, minutes, seconds] = time.split(':').map(Number);
     const dateObj = new Date();
@@ -22,54 +24,54 @@ export class VisitService {
 
 
   visits: Visit[] = [
-    new Visit('1', new Date('2024-11-11'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-11'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-12'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-12'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-11'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-12'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-12'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-13'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-13'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-13'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-13'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-13'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-14'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-14'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-14'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-14'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-14'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-14'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-14'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-14'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-14'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-14'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-14'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-14'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-14'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-14'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-14'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-14'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-14'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-14'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-14'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-14'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-14'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-14'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-14'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-14'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-14'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-14'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-14'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-14'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-14'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-14'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-14'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-14'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-14'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-14'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-14'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    new Visit('1', new Date('2024-11-14'), '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-21', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-21', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-22', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-22', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-21', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-22', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-22', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-23', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-23', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-23', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-23', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-23', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
 
   ];
 
@@ -87,11 +89,10 @@ export class VisitService {
 
   groupVisitsByDate(visits: Visit[]) {
     return visits.reduce((temp, visit) => {
-      const dateDay = visit.date.toISOString().split('T')[0];
-      if (!temp[dateDay]) {
-        temp[dateDay] = [];
+      if (!temp[visit.date]) {
+        temp[visit.date] = [];
       }
-      temp[dateDay].push(visit);
+      temp[visit.date].push(visit);
       return temp;
     }, {} as { [key: string]: Visit[] });
   }

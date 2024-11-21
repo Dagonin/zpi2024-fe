@@ -17,6 +17,7 @@ import {
 } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { bootstrapApplication } from '@angular/platform-browser';
+import { startOfDay } from 'date-fns';
 
 @Component({
   selector: 'app-employee-panel',
@@ -41,6 +42,7 @@ export class EmployeePanelComponent {
 
   visits: Visit[] = [];
   groupedVisits: { [key: string]: Visit[] } = {};
+  events: CalendarEvent[] = [];
 
   viewDate = new Date();
 
@@ -50,6 +52,19 @@ export class EmployeePanelComponent {
     const visits = this.visitService.getVisits();
     this.groupedVisits = this.visitService.groupVisitsByDate(visits);
     console.log(this.groupedVisits)
+    visits.forEach(visit => {
+      const startDateTime = new Date(`${visit.date}T${visit.startTime}`);
+      // TODO zamienić na prawdziwy czas
+      const endDateTime = new Date(startDateTime.getTime() + 2 * 60 * 60 * 1000); // +2 godziny
+      this.events.push(
+        {
+          start: startDateTime,
+          end: endDateTime,
+          title: `${visit.barber.name} ${visit.barber.surname} at ${visit.place.street}, ${visit.place.city}`
+        }
+      )
+    })
+
   }
 
 
