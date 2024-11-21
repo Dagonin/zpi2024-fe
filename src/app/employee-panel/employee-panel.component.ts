@@ -1,4 +1,4 @@
-import { Component, importProvidersFrom } from '@angular/core';
+import { Component, importProvidersFrom, inject } from '@angular/core';
 import { VisitService } from '../classes/visit/visit.service';
 import { Visit } from '../classes/visit/visit';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,7 +17,10 @@ import {
 } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { bootstrapApplication } from '@angular/platform-browser';
-import { startOfDay } from 'date-fns';
+import { isSameDay, startOfDay } from 'date-fns';
+import { Subject } from 'rxjs';
+import { EmployeePanelVisitDialog } from '../dialogs/employee-panel-visit-dialog/employee-panel-visit-dialog';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-employee-panel',
@@ -60,12 +63,100 @@ export class EmployeePanelComponent {
         {
           start: startDateTime,
           end: endDateTime,
-          title: `${visit.barber.name} ${visit.barber.surname} at ${visit.place.street}, ${visit.place.city}`
+          title: `${visit.barber.name} ${visit.barber.surname} at ${visit.place.street}, ${visit.place.city}`,
+          draggable: false,
+          color: {
+            "primary": "#e3bc08",
+            "secondary": "#FDF1BA"
+          },
         }
       )
     })
 
   }
+
+  refresh = new Subject<void>();
+
+
+  readonly dialog = inject(MatDialog);
+
+  openDialog(event: any) {
+    const dialogRef = this.dialog.open(EmployeePanelVisitDialog, {
+      data: event
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        const found = this.events.find((event) => event == result.event)
+        if (found) {
+          found.draggable = true;
+        }
+      }
+    });
+  }
+
+
+
+
+
+  validateEventTimesChanged = (
+    { event, newStart, newEnd, allDay }: CalendarEventTimesChangedEvent,
+    addCssClass = true
+  ) => {
+    if (event.allDay) {
+      return true;
+    }
+
+
+    // don't allow dragging events to the same times as other events
+    const overlappingEvent = this.events.find((otherEvent) => {
+      let retBool = false;
+      if (newEnd && otherEvent.end) {
+        retBool = (otherEvent !== event &&
+          !otherEvent.allDay &&
+          ((otherEvent.start < newStart && newStart < otherEvent.end) ||
+            (otherEvent.start < newEnd && newStart < otherEvent.end)))
+      }
+      event.color = {
+        "primary": "#e3bc08",
+        "secondary": "#FDF1BA"
+      }
+      return retBool;
+    });
+
+    if (overlappingEvent) {
+
+      if (addCssClass) {
+        event.color = {
+          "primary": "#ad2121",
+          "secondary": "#ad2121"
+        }
+      } else {
+
+        return false;
+      }
+    } else {
+      event.color = {
+        "primary": "#e3bc08",
+        "secondary": "#FDF1BA"
+      }
+    }
+
+    return true;
+  };
+
+  eventTimesChanged(
+    eventTimesChangedEvent: CalendarEventTimesChangedEvent
+  ): void {
+    if (this.validateEventTimesChanged(eventTimesChangedEvent, false)) {
+      const { event, newStart, newEnd } = eventTimesChangedEvent;
+
+      event.start = newStart;
+      event.end = newEnd;
+      this.refresh.next();
+    }
+  }
+
 
 
 }

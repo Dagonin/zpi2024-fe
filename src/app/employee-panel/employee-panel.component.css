@@ -5,14 +5,14 @@
 }
 
 #visits {
-    width: 50%;
+    width: 25%;
     max-height: 80%;
     overflow-y: scroll;
     padding: 0.5rem;
 }
 
 #schedule {
-    width: 50%;
+    width: 75%;
 }
 
 #make_appointment {

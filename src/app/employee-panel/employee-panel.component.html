@@ -30,7 +30,10 @@
 
   </div>
   <div id="schedule">
-    <mwl-calendar-week-view [viewDate]="viewDate" [dayStartHour]="7" [dayEndHour]="20" [events]="events">
+    <mwl-calendar-week-view [viewDate]="viewDate" [dayStartHour]="7" [dayEndHour]="20" [events]="events"
+      [daysInWeek]="10" [refresh]="refresh" [hourSegments]="4" [hourSegmentHeight]="15"
+      [validateEventTimesChanged]="validateEventTimesChanged" [excludeDays]="[0,6]"
+      (eventTimesChanged)="eventTimesChanged($event)" (eventClicked)="openDialog($event)">
     </mwl-calendar-week-view>
   </div>
 </div>

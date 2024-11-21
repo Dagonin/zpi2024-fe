@@ -24,7 +24,7 @@ export class VisitService {
 
 
   visits: Visit[] = [
-    new Visit('1', '2024-11-21', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
+    new Visit('1', '2024-11-21', '10:15:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
     new Visit('1', '2024-11-21', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
     new Visit('1', '2024-11-22', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
     new Visit('1', '2024-11-22', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
