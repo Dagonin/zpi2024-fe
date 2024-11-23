@@ -46,7 +46,12 @@ export class EmployeePanelComponent {
   visits: Visit[] = [];
   groupedVisits: { [key: string]: Visit[] } = {};
   events: CalendarEvent[] = [];
-
+  selectedVisit!: CalendarEvent;
+  selectedVisitBool: boolean = false;
+  selectedVisitOld!: {
+    start: Date,
+    end: Date | undefined
+  };
   viewDate = new Date();
 
   constructor(private visitService: VisitService) { }
@@ -80,23 +85,47 @@ export class EmployeePanelComponent {
 
   readonly dialog = inject(MatDialog);
 
-  openDialog(event: any) {
+  openDialog(startEvent: any) {
     const dialogRef = this.dialog.open(EmployeePanelVisitDialog, {
-      data: event
+      data: startEvent
     });
-
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        const found = this.events.find((event) => event == result.event)
-        if (found) {
-          found.draggable = true;
+        console.log("hahah")
+        this.resetDrag()
+        this.selectedVisitBool = true;
+        this.selectedVisit = startEvent.event;
+        this.selectedVisitOld = {
+          start: this.selectedVisit.start,
+          end: this.selectedVisit.end
         }
+        this.selectedVisit.color = {
+          "primary": "#74337d",
+          "secondary": "#74337d"
+        }
+        this.selectedVisit.draggable = true;
       }
     });
   }
 
 
 
+  resetDrag() {
+    if (this.selectedVisitBool) {
+      this.selectedVisit.draggable = false;
+
+      if (this.selectedVisitOld) {
+        this.selectedVisit.start = this.selectedVisitOld.start;
+        this.selectedVisit.end = this.selectedVisitOld.end;
+        this.selectedVisit.color = {
+          "primary": "#e3bc08",
+          "secondary": "#FDF1BA"
+        }
+        this.refresh.next();
+      }
+
+    }
+  }
 
 
   validateEventTimesChanged = (
@@ -117,9 +146,11 @@ export class EmployeePanelComponent {
           ((otherEvent.start < newStart && newStart < otherEvent.end) ||
             (otherEvent.start < newEnd && newStart < otherEvent.end)))
       }
-      event.color = {
-        "primary": "#e3bc08",
-        "secondary": "#FDF1BA"
+      if (!this.selectedVisitBool) {
+        event.color = {
+          "primary": "#e3bc08",
+          "secondary": "#FDF1BA"
+        }
       }
       return retBool;
     });
@@ -136,10 +167,18 @@ export class EmployeePanelComponent {
         return false;
       }
     } else {
-      event.color = {
-        "primary": "#e3bc08",
-        "secondary": "#FDF1BA"
+      if (!this.selectedVisitBool) {
+        event.color = {
+          "primary": "#e3bc08",
+          "secondary": "#FDF1BA"
+        }
+      } else {
+        event.color = {
+          "primary": "#74337d",
+          "secondary": "#74337d"
+        }
       }
+
     }
 
     return true;

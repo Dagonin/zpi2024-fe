@@ -30,7 +30,7 @@ export class ChangePasswordComponent {
     old_password: new FormControl('', [Validators.required]),
     old_password_repeat: new FormControl('', [Validators.required]),
     new_password: new FormControl('', [Validators.required])
-  })
+  }, { updateOn: 'change' })
 
 
   constructor(private formErrorService: FormErrorsService, private router: Router) {

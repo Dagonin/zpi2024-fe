@@ -25,12 +25,80 @@ $test_theme: mat.define-theme((
 
 ));
 
-html {
-    // Apply the light theme by default
-    // @include mat.all-component-themes($theme);
-    @include mat.button-theme($theme);
-    // @include mat.strong-focus-indicators-theme($test_theme);
-  }
+
+
+
+
+$primary: gold;
+$secondary: orange;
+
+:root {
+  @include mat.form-field-overrides((
+    container-color: $primary,
+    focus-active-indicator-color: black,
+    focus-outline-color: $primary,
+    focus-label-text-color: $primary
+  ));
+
+  @include mat.button-overrides((
+    container-color: $secondary,
+  ));
+
+  @include mat.button-toggle-overrides((
+    background-color: $secondary,
+    // selected-state-background-color: $primary
+  ));
+
+
+
+  @include mat.progress-spinner-overrides((
+    active-indicator-color:$primary,
+  ));
+
+
+
+
+
+  // NOT WORKING
+
+  // @include mat.checkbox-overrides((
+  //   selected-checkmark-color: red,
+
+  // ));
+  // @include mat.stepper-overrides((
+  //   header-icon-foreground-color: black,
+  //   header-icon-background-color: $secondary,
+  //   header-edit-state-icon-background-color: $primary,
+  //   header-edit-state-icon-foreground-color: $primary,
+  //   header-selected-state-icon-background-color: $primary,
+  //   header-selected-state-icon-foreground-color: $primary,
+    
+  //   header-done-state-icon-foreground-color: $primary,
+  //   header-error-state-icon-foreground-color: red
+  // ));
+
+  //   @include mat.radio-overrides((
+  //   ripple-color: orange,
+  //   selected-icon-color: red,
+  //   unselected-icon-color: orange,
+  //   disabled-selected-icon-color: red,
+  //   selected-pressed-icon-color: red
+  // ));
+
+}
+
+
+// html {
+//     // Apply the light theme by default
+//     // @include mat.all-component-themes($theme);
+//     @include mat.button-theme($theme);
+//     // @include mat.strong-focus-indicators-theme($test_theme);
+
+
+
+
+
+//   }
 
 
 

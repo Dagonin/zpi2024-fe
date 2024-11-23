@@ -13,7 +13,7 @@ import { FormErrorsService } from '../../form-errors/form-errors.service';
 @Component({
   selector: 'app-forgotten-password',
   standalone: true,
-  imports: [    
+  imports: [
     MatFormFieldModule,
     MatInputModule,
     MatIcon,
@@ -29,15 +29,15 @@ import { FormErrorsService } from '../../form-errors/form-errors.service';
 export class ForgottenPasswordComponent {
 
   protected forgotten_passwordForm = new FormGroup({
-    email: new FormControl('',[Validators.required,Validators.email])
-  })
+    email: new FormControl('', [Validators.required, Validators.email])
+  }, { updateOn: 'change' })
 
 
-  constructor(private formErrorService: FormErrorsService, private router: Router){
+  constructor(private formErrorService: FormErrorsService, private router: Router) {
   }
 
 
-  onSubmit(){
+  onSubmit() {
     // if(this.loginForm.valid){
     //   if(this.authService.login(this.loginForm.value)){
     //     this.router.navigate([''])
@@ -45,8 +45,8 @@ export class ForgottenPasswordComponent {
     // }
   }
 
-  errorMessage(vals: any, name: string){
-    return this.formErrorService.errorMessage(vals,name);
+  errorMessage(vals: any, name: string) {
+    return this.formErrorService.errorMessage(vals, name);
   }
 
 }

@@ -98,3 +98,45 @@
   margin: 15px 0;
   align-items: flex-start;
 }
+
+/* STL */
+::ng-deep .mat-step-header .mat-step-icon-selected {
+  background-color: orange;
+  color: black;
+}
+
+::ng-deep .mat-step-header .mat-step-icon-state-edit {
+  background-color: orange;
+  color: black;
+}
+
+::ng-deep .mat-checkbox-ripple .mat-ripple-element {
+  background-color: black !important;
+}
+
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+  background-color: black !important;
+}
+
+::ng-deep .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background,
+.mdc-checkbox__native-control:enabled:indeterminate~.mdc-checkbox__background {
+  border-color: orange !important;
+  background-color: orange !important;
+}
+
+::ng-deep .mdc-form-field .mat-radio-ripple .mat-ripple-element {
+  opacity: 0 !important;
+  /*click effect color change*/
+  background-color: gold !important;
+}
+
+::ng-deep .mdc-radio__background .mdc-radio__outer-circle {
+  background-color: black !important;
+  border-color: orange !important;
+  /*inner circle color change*/
+}
+
+::ng-deep .mdc-radio__background .mdc-radio__inner-circle {
+  border-color: gold !important;
+  /*outer ring color change*/
+}
