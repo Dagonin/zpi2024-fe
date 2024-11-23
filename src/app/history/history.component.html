@@ -1,11 +1,12 @@
 <div id="body">
   <div id="history">
     <mat-list>
-      @for (visit of visits; track $index) {
+      @for (visit of visitService.visits; track $index) {
       <mat-list-item>
-        <span matListItemTitle>{{visit.date}}</span>
-        <span matListItemLine>{{visit.place.city}}</span>
-        <span matListItemLine>{{visit.barber.name}} {{visit.barber.surname}} {{visit.barber.rating}}
+        <!-- <span matListItemTitle>{{visit.date}}</span> -->
+        <!-- <span matListItemLine>{{visit.salon.salonCity}}</span> -->
+        <!-- <span matListItemLine>{{visit.barber.name}} {{visit.barber.surname}} {{visit.barber.rating}} -->
+        <span> {{visit.id}}
           @if (!visit.rating) {
           <button (click)="openDialog()" mat-button>Oceń</button>
           }

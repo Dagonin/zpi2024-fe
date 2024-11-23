@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Place } from '../../classes/place/place';
+import { Salon } from '../../classes/Salon/salon';
 
 @Component({
   selector: 'app-edit-place-dialog',
@@ -28,24 +28,24 @@ import { Place } from '../../classes/place/place';
 export class EditPlaceDialogComponent {
 
   protected editForm = new FormGroup({
-    city: new FormControl('',Validators.required),
-    zipCode: new FormControl('',Validators.required),
-    street: new FormControl('',Validators.required),
+    city: new FormControl('', Validators.required),
+    zipCode: new FormControl('', Validators.required),
+    street: new FormControl('', Validators.required),
   })
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data : Place) {} 
+  constructor(@Inject(MAT_DIALOG_DATA) public data: Salon) { }
 
-  
+
   ngOnInit(): void {
-    this.editForm.controls['city'].setValue(this.data.city);
-    this.editForm.controls['zipCode'].setValue(this.data.zipCode);
-    this.editForm.controls['street'].setValue(this.data.street);
-}
+    this.editForm.controls['city'].setValue(this.data.salonCity);
+    this.editForm.controls['zipCode'].setValue(this.data.salonPostalCode);
+    this.editForm.controls['street'].setValue(this.data.salonStreet);
+  }
 
-onSubmit(){
-  console.log("test")
-  console.log(this.editForm);
-}
+  onSubmit() {
+    console.log("test")
+    console.log(this.editForm);
+  }
 
 }
 

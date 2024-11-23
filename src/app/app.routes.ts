@@ -29,12 +29,12 @@ export const routes: Routes = [{
     loadComponent: () =>
         import('./history/history.component').then((c) => c.HistoryComponent),
 }, {
-    path: 'place/:placeid',
+    path: 'place/:salonid',
     loadComponent: () =>
         import('./place/place.component').then((c) => c.PlaceComponent),
 },
 {
-    path: 'place/:placeid/:flag',
+    path: 'place/:salonid/:flag',
     loadComponent: () =>
         import('./place/place.component').then((c) => c.PlaceComponent),
 },

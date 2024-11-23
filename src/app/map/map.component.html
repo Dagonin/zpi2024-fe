@@ -12,11 +12,12 @@
     <h3>Lokale:</h3>
     <mat-button-toggle-group appearance="legacy">
       <mat-list class="scrollable-list">
-        @for (place of places; track $index) {
+        @for (salon of salonService.salons; track $index) {
         <mat-list-item>
-          <span matListItemTitle>{{place.city}}</span>
-          <span matListItemLine>{{place.street}}</span>
-          <mat-button-toggle [checked]="place.checked" (click)="selectPlace(place.coords,$index)" value="bold">Wybierz
+          <span matListItemTitle>{{salon.salonCity}}</span>
+          <span matListItemLine>{{salon.salonStreet}}</span>
+          <mat-button-toggle [checked]="salon.checked" (click)="selectPlace([salon.longitude,salon.latitude],$index)"
+            value="bold">Wybierz
           </mat-button-toggle>
         </mat-list-item>
         }

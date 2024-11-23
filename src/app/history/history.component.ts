@@ -21,8 +21,6 @@ import { RatingDialogComponent } from '../dialogs/rating-dialog/rating-dialog.co
 })
 export class HistoryComponent implements OnInit {
 
-  visits: Visit[] = [];
-
 
   readonly dialog = inject(MatDialog);
 
@@ -30,12 +28,18 @@ export class HistoryComponent implements OnInit {
     this.dialog.open(RatingDialogComponent);
   }
 
-  constructor(private visitService: VisitService) { }
+  constructor(public visitService: VisitService) { }
 
 
   ngOnInit(): void {
-    this.visits = this.visitService.getVisits();
-    console.log(this.visits)
+    this.visitService.initializeVisitsByCustomerID('1').subscribe({
+      next: (response) => {
+        console.log(response)
+      },
+      error: (error) => {
+        console.log(error)
+      }
+    })
   }
 
 }

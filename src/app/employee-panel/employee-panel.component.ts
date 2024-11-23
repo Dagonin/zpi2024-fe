@@ -68,7 +68,8 @@ export class EmployeePanelComponent {
         {
           start: startDateTime,
           end: endDateTime,
-          title: `${visit.barber.name} ${visit.barber.surname} at ${visit.place.street}, ${visit.place.city}`,
+          // title: `${visit.barber.name} ${visit.barber.surname} at ${visit.salon.salonStreet}, ${visit.salon.salonCity}`,
+          title: "asd",
           draggable: false,
           color: {
             "primary": "#e3bc08",

@@ -6,7 +6,7 @@ import { visit } from "../models/visit";
 @Injectable({
     providedIn: 'root'
 })
-export class SalonService {
+export class SalonComponentService {
     constructor(private http: HttpClient) { }
 
     api_url = `http://localhost:8080/api/crud/appointment-making`

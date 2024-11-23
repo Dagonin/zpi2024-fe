@@ -1,7 +1,5 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Place } from '../classes/place/place';
-import { PlaceService } from '../classes/place/place.service';
 import { CommonModule, formatDate } from '@angular/common';
 import { MatListModule } from '@angular/material/list';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -17,7 +15,7 @@ import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
 import { ServiceDTO } from '../classes/service/serviceDTO';
 import { MapService } from '../map/map.service';
 import { CheckboxService } from './services/checkbox.service';
-import { SalonService } from './services/salon.service';
+import { SalonComponentService } from './services/salon-component.service';
 import { SalonServiceIds } from './models/salon-service-Ids';
 import { MatButton } from '@angular/material/button';
 import { EmployeeDTO } from '../classes/employee/employeeDTO';
@@ -31,6 +29,8 @@ import { format, parse } from 'date-fns';
 import { UserEmailDialog } from '../dialogs/user-email-dialog/user-email-dialog';
 import { MatDialog } from '@angular/material/dialog';
 import { visit } from './models/visit';
+import { SalonService } from '../classes/Salon/salon.service';
+import { Salon } from '../classes/Salon/salon';
 
 @Component({
   selector: 'app-place',
@@ -63,18 +63,18 @@ export class PlaceComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private placeService: PlaceService,
     private serviceService: ServiceService,
     private mapService: MapService,
     public checkboxService: CheckboxService,
-    private SalonService: SalonService,
+    private salonComponentService: SalonComponentService,
+    private salonService: SalonService,
     public timeslotsService: TimeSlotsService
   ) { }
 
   selectedServicesChange = false;
   selectedBarberChange = false;
 
-  place!: Place;
+  salon!: Salon;
   flag!: string;
   private sub: any;
 
@@ -130,29 +130,48 @@ export class PlaceComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.sub = this.route.params.subscribe(params => {
-      this.place = this.placeService.getPlace(params['placeid']);
+      // this.salon = this.salonService.getSalon(params['salonid']);
       this.flag = params['flag'];
+      this.salonService.getSalonById(params['salonid']).subscribe({
+        next: (response: any) => {
+
+
+          // TODO nie wiem czy to dobre rozwiazanie
+
+          this.salon = response
+          console.log(this.salon)
+          this.mapService.initializeMap('mapp', 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+
+          this.centerMap();
+
+          this.clearSelected();
+
+          this.mapService.addMarker([this.salon.longitude, this.salon.latitude]);
+
+          this.minDate = new Date();
+          this.maxDate = new Date();
+          this.maxDate.setDate(this.maxDate.getDate() + 15);
+
+          this.getServices();
+          this.getOpeningHours();
+
+          this.timeslotsService.generateTimeSlots(this.startTime, this.endTime);
+        },
+        error: (error) => {
+          //  TODO
+          console.error(error)
+        }
+      })
     });
 
-    this.mapService.initializeMap('mapp', 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
 
-    this.centerMap();
 
-    this.clearSelected();
 
-    this.minDate = new Date();
-    this.maxDate = new Date();
-    this.maxDate.setDate(this.maxDate.getDate() + 15);
-
-    this.getServices();
-    this.getOpeningHours();
-
-    this.timeslotsService.generateTimeSlots(this.startTime, this.endTime);
   }
 
-  ngAfterViewInit() {
-    this.mapService.addMarker(this.place.coords);
-  }
+  // ngAfterViewInit() {
+  //   this.mapService.addMarker([this.salon.latitude, this.salon.longitude]);
+  // }
 
 
   ngOnDestroy() {
@@ -268,7 +287,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
         salonID: 1,
         serviceIds: this.servicesFormGroup.controls.services.value
       }
-      this.SalonService.getAllEmployeesThatCanServeService(obj).subscribe({
+      this.salonComponentService.getAllEmployeesThatCanServeService(obj).subscribe({
         next: (response: any) => {
           console.log(response);
           this.selectedServicesChange = false;
@@ -284,7 +303,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
     if (this.barbersFormGroup.controls.barber.value !== null) {
       console.log(this.employees[this.barbersFormGroup.controls.barber.value].employeeID)
       //                               tu zamienic 1 na salonID               XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-      this.SalonService.getAllAvailabilityDatesForEmployee('1', this.employees[this.barbersFormGroup.controls.barber.value].employeeID ?? 0).subscribe({
+      this.salonComponentService.getAllAvailabilityDatesForEmployee('1', this.employees[this.barbersFormGroup.controls.barber.value].employeeID ?? 0).subscribe({
         next: (response: any) => {
           console.log(response);
           this.allowedDates = response;
@@ -297,7 +316,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
   }
 
   getOpeningHours() {
-    this.timeslotsService.getAllOpeningHoursForSalon(this.place.id).subscribe({
+    this.timeslotsService.getAllOpeningHoursForSalon(this.salon.salonID).subscribe({
       next: (response: any) => {
         this.openingHours = response;
         console.log(this.openingHours)
@@ -334,7 +353,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
     console.log(barber, date)
     // TODO 
     if (date && barber) {
-      let newVisit = new visit(parseInt(this.place.id),
+      let newVisit = new visit(parseInt(this.salon.salonID),
         date.toISOString().split('T')[0],
         this.timeslotsService.indexToHour(this.timeslotsService.timeslotsFormGroup.controls.time_slot.value) + ":00",
         'RESERVED',
@@ -342,7 +361,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
         2,
         this.checkboxService.getSelectedServicesIds()
       )
-      this.SalonService.makeAppointment(newVisit).subscribe({
+      this.salonComponentService.makeAppointment(newVisit).subscribe({
         next: (response: any) => {
           console.log(response)
         },
@@ -358,7 +377,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
 
 
   centerMap() {
-    this.mapService.zoomOnCoords(this.place.coords);
+    this.mapService.zoomOnCoords([this.salon.longitude, this.salon.latitude]);
   }
 
 }
