@@ -18,7 +18,7 @@ import { CheckboxService } from './services/checkbox.service';
 import { SalonComponentService } from './services/salon-component.service';
 import { SalonServiceIds } from './models/salon-service-Ids';
 import { MatButton } from '@angular/material/button';
-import { EmployeeDTO } from '../classes/employee/employeeDTO';
+import { Employee } from '../classes/employee/employee';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TimeSlotsService } from './services/timeslots.service';
 import { MatCardModule } from '@angular/material/card';
@@ -81,7 +81,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
   readonly dialog = inject(MatDialog);
 
 
-  employees: EmployeeDTO[] = [];
+  employees: Employee[] = [];
   employee_timeslots!: Timeslot[];
 
   minDate!: Date;
@@ -303,7 +303,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
     if (this.barbersFormGroup.controls.barber.value !== null) {
       console.log(this.employees[this.barbersFormGroup.controls.barber.value].employeeID)
       //                               tu zamienic 1 na salonID               XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-      this.salonComponentService.getAllAvailabilityDatesForEmployee('1', this.employees[this.barbersFormGroup.controls.barber.value].employeeID ?? 0).subscribe({
+      this.salonComponentService.getAllAvailabilityDatesForEmployee(this.salon.salonID, this.employees[this.barbersFormGroup.controls.barber.value].employeeID ?? 0).subscribe({
         next: (response: any) => {
           console.log(response);
           this.allowedDates = response;

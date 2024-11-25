@@ -15,10 +15,10 @@
               <mat-list>
               @for (visit of day.value; track $index) {
               <mat-list-item>
-                {{visit.startTime}}
-                {{visit.barber.name}}
+                {{visit.visitStartTime}}
                 <br>
-                {{visit.services}}
+                <!-- TODO -->
+                {{customerMap.get(visit.customerID)?.customerName}}
               </mat-list-item>
               <mat-divider></mat-divider>
               }

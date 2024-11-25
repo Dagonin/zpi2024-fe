@@ -1,5 +1,5 @@
 export class CustomerDTO {
-    customerID: number | null;
+    customerID: number;
     customerName: string;
     customerSurname: string;
     customerDialNumber: string;
@@ -8,7 +8,7 @@ export class CustomerDTO {
     serviceCategoryID: number | null;
 
     constructor(
-        customerID: number | null,
+        customerID: number,
         customerName: string,
         customerSurname: string,
         customerDialNumber: string,

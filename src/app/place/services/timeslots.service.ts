@@ -84,9 +84,9 @@ export class TimeSlotsService {
         if (index && index > 0) {
             let time_slot = this.timeSlots[index];
             if (time_slot[1] == 0) {
-                return time_slot[0] + ":00"
+                return time_slot[0].toString().padStart(2, '0') + ":00"
             } else {
-                return time_slot[0] + ":" + time_slot[1]
+                return time_slot[0].toString().padStart(2, '0') + ":" + time_slot[1]
             }
 
         }

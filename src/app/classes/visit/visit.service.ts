@@ -4,7 +4,11 @@ import { BarberService } from '../barber/barber.service';
 import { SalonService } from '../Salon/salon.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
-import { tap } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs';
+import { EmployeeService } from '../employee/employee.service';
+import { CustomerService } from '../customer/customer.service';
+import { CustomerDTO } from '../customer/customerDTO';
+import { Employee } from '../employee/employee';
 
 @Injectable({
   providedIn: 'root'
@@ -27,62 +31,13 @@ export class VisitService {
     return dateObj;
   }
 
-
-  visits: Visit[] = [
-    // new Visit('1', '2024-11-21', '10:15:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-21', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-22', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-22', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-21', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-22', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-22', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-23', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-23', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-23', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-23', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-23', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-26', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-27', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-28', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-25', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-    // new Visit('1', '2024-11-24', '10:00:00', this.placeService.getPlace('1'), this.barberService.getBarber('1'), ['Strzyzenie', 'golenie brody']),
-
-  ];
+  private visits: Visit[] = [];
+  private customerMap: Map<number, CustomerDTO> = new Map();
+  private employeeMap: Map<number, Employee> = new Map();
 
 
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private employeeService: EmployeeService, private customerService: CustomerService) { }
 
   getVisits() {
     return this.visits;
@@ -92,64 +47,101 @@ export class VisitService {
     return this.visits[0];
   }
 
+  getCustomerMap(): Map<number, CustomerDTO> {
+    return this.customerMap;
+  }
+
+  getEmployeeMap(): Map<number, Employee> {
+    return this.employeeMap;
+  }
+
   groupVisitsByDate(visits: Visit[]) {
     return visits.reduce((temp, visit) => {
-      if (!temp[visit.date]) {
-        temp[visit.date] = [];
+      if (!temp[visit.visitDate]) {
+        temp[visit.visitDate] = [];
       }
-      temp[visit.date].push(visit);
+      temp[visit.visitDate].push(visit);
       return temp;
     }, {} as { [key: string]: Visit[] });
   }
 
 
-  private getAllVisitsByCustomerID(customerID: string): Observable<Visit[]> {
+  private getAllVisitsWithIdsByCustomerID(customerID: string): Observable<Visit[]> {
     const httpOptions =
     {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     }
-    return this.http.get<Visit[]>(`${this.api_url}/forCustomer/${customerID}`)
+    return this.http.get<Visit[]>(`${this.api_url}/withIds/forCustomer/${customerID}`)
 
   }
 
-  initializeVisitsByCustomerID(customerID: string): Observable<Visit[]> {
-    return this.getAllVisitsByCustomerID(customerID).pipe(
-      tap({
-        next: (response: Visit[]) => {
-          this.visits = response;
-        },
-        error: (error) => {
-          console.error(error);
-        }
+
+  initializeVisitsByCustomerID(customerID: string) {
+    return this.getAllVisitsWithIdsByCustomerID(customerID).pipe(
+      switchMap((visits) => {
+        this.visits = visits;
+        const distinctIDs = getDistinctIDs(visits);
+
+        return this.employeeService.getAllEmployeesByListOfId(distinctIDs.distinctEmployeeIDs).pipe(
+          tap((employees) => {
+            this.employeeMap.clear();
+            employees.forEach((employee) => {
+              this.employeeMap.set(employee.employeeID, employee);
+            });
+          })
+        );
       })
     );
   }
 
 
 
-  private getAllVisitsByEmployeeID(employeeID: string): Observable<Visit[]> {
+  private getAllVisitsWithIdsByEmployeeID(employeeID: string): Observable<Visit[]> {
     const httpOptions =
     {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     }
-    return this.http.get<Visit[]>(`${this.api_url}/forCustomer/${employeeID}`)
+    return this.http.get<Visit[]>(`${this.api_url}/withIds/forEmployee/${employeeID}`)
 
   }
 
-  initializeVisitsByEmployeeID(employeeID: string): Observable<Visit[]> {
-    return this.getAllVisitsByCustomerID(employeeID).pipe(
-      tap({
-        next: (response: Visit[]) => {
-          this.visits = response;
-        },
-        error: (error) => {
-          console.error(error);
-        }
+  initializeVisitsByEmployeeID(employeeID: string) {
+    return this.getAllVisitsWithIdsByEmployeeID(employeeID).pipe(
+      switchMap((visits) => {
+        this.visits = visits;
+        const distinctIDs = getDistinctIDs(visits);
+
+        // Fetch customers and store them in a Map
+        return this.customerService.getAllCustomersByListOfId(distinctIDs.distinctCustomerIDs).pipe(
+          tap((customers) => {
+            this.customerMap.clear();
+            customers.forEach((customer) => {
+              this.customerMap.set(customer.customerID, customer); // Store customer by ID
+            });
+          })
+        );
       })
     );
   }
 
 
 
+
+}
+
+
+function getDistinctIDs(visits: { customerID: number; employeeID: number }[]): { distinctCustomerIDs: number[], distinctEmployeeIDs: number[] } {
+  const customerIDs = new Set<number>();
+  const employeeIDs = new Set<number>();
+
+  for (const visit of visits) {
+    customerIDs.add(visit.customerID);
+    employeeIDs.add(visit.employeeID);
+  }
+
+  return {
+    distinctCustomerIDs: Array.from(customerIDs),
+    distinctEmployeeIDs: Array.from(employeeIDs)
+  };
 }
 

@@ -1,4 +1,4 @@
-export class EmployeeDTO {
+export class Employee {
   employeeID: number;
   employeeName: string;
   employeeSurname: string;

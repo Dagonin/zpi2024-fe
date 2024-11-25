@@ -47,7 +47,7 @@ export const routes: Routes = [{
         import('./employee-panel/employee-panel.component').then((c) => c.EmployeePanelComponent),
 }, {
     path: 'adm_panel',
-    canActivate: [authGuard, employeeGuard],
+    // canActivate: [authGuard, employeeGuard],
     loadComponent: () =>
         import('./admin-panel/admin-panel.component').then((c) => c.AdminPanelComponent),
 }, {

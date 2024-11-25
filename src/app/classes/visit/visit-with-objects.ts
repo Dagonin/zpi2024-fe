@@ -1,10 +1,13 @@
-export class Visit {
+import { CustomerDTO } from "../customer/customerDTO";
+import { Employee } from "../employee/employee";
+
+export class VisitWithOBJ {
     salonID: number;
     visitDate: string;
     visitStartTime: string;
     visitStatus: string;
-    employeeID: number;
-    customerID: number;
+    employee: Employee;
+    customer: CustomerDTO;
     visitID: number;
 
 
@@ -13,16 +16,16 @@ export class Visit {
         visitDate: string,
         visitStartTime: string,
         visitStatus: string,
-        employeeID: number,
-        customerID: number,
+        employee: Employee,
+        customer: CustomerDTO,
         visitID: number
     ) {
         this.salonID = salonID;
         this.visitDate = visitDate;
         this.visitStartTime = visitStartTime;
         this.visitStatus = visitStatus;
-        this.employeeID = employeeID;
-        this.customerID = customerID;
+        this.employee = employee;
+        this.customer = customer;
         this.visitID = visitID
     }
 

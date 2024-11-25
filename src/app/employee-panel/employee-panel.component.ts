@@ -21,6 +21,7 @@ import { isSameDay, startOfDay } from 'date-fns';
 import { Subject } from 'rxjs';
 import { EmployeePanelVisitDialog } from '../dialogs/employee-panel-visit-dialog/employee-panel-visit-dialog';
 import { MatDialog } from '@angular/material/dialog';
+import { CustomerDTO } from '../classes/customer/customerDTO';
 
 @Component({
   selector: 'app-employee-panel',
@@ -44,6 +45,7 @@ import { MatDialog } from '@angular/material/dialog';
 export class EmployeePanelComponent {
 
   visits: Visit[] = [];
+  customerMap: Map<number, CustomerDTO> = new Map();
   groupedVisits: { [key: string]: Visit[] } = {};
   events: CalendarEvent[] = [];
   selectedVisit!: CalendarEvent;
@@ -57,27 +59,37 @@ export class EmployeePanelComponent {
   constructor(private visitService: VisitService) { }
 
   ngOnInit(): void {
-    const visits = this.visitService.getVisits();
-    this.groupedVisits = this.visitService.groupVisitsByDate(visits);
-    console.log(this.groupedVisits)
-    visits.forEach(visit => {
-      const startDateTime = new Date(`${visit.date}T${visit.startTime}`);
-      // TODO zamienić na prawdziwy czas
-      const endDateTime = new Date(startDateTime.getTime() + 2 * 60 * 60 * 1000); // +2 godziny
-      this.events.push(
-        {
-          start: startDateTime,
-          end: endDateTime,
-          // title: `${visit.barber.name} ${visit.barber.surname} at ${visit.salon.salonStreet}, ${visit.salon.salonCity}`,
-          title: "asd",
-          draggable: false,
-          color: {
-            "primary": "#e3bc08",
-            "secondary": "#FDF1BA"
-          },
-        }
-      )
+    // TODO
+    this.visitService.initializeVisitsByEmployeeID('1').subscribe({
+      next: (response) => {
+        const visits = this.visitService.getVisits();
+        this.customerMap = this.visitService.getCustomerMap();
+        this.groupedVisits = this.visitService.groupVisitsByDate(visits);
+        visits.forEach(visit => {
+          const startDateTime = new Date(`${visit.visitDate}T${visit.visitStartTime}`);
+          // TODO zamienić na prawdziwy czas
+          const endDateTime = new Date(startDateTime.getTime() + 2 * 60 * 60 * 1000); // +2 godziny
+          let customer = this.customerMap.get(visit.customerID);
+          this.events.push(
+            {
+              start: startDateTime,
+              end: endDateTime,
+              title: `${customer?.customerName} ${customer?.customerSurname} at ${customer?.customerEmail}, ${customer?.customerDialNumber}`,
+              draggable: false,
+              color: {
+                "primary": "#e3bc08",
+                "secondary": "#FDF1BA"
+              },
+            }
+          )
+        })
+        this.refresh.next();
+      },
+      error: (error) => {
+        console.log(error)
+      }
     })
+
 
   }
 
@@ -92,7 +104,6 @@ export class EmployeePanelComponent {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        console.log("hahah")
         this.resetDrag()
         this.selectedVisitBool = true;
         this.selectedVisit = startEvent.event;
