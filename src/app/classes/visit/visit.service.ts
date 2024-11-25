@@ -16,8 +16,6 @@ import { Employee } from '../employee/employee';
 export class VisitService {
 
 
-  private salonService = inject(SalonService);
-  private barberService = inject(BarberService);
 
 
   api_url = `http://localhost:8080/api/crud/visit`
@@ -66,7 +64,7 @@ export class VisitService {
   }
 
 
-  private getAllVisitsWithIdsByCustomerID(customerID: string): Observable<Visit[]> {
+  private getAllVisitsWithIdsByCustomerID(customerID: number): Observable<Visit[]> {
     const httpOptions =
     {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -76,7 +74,7 @@ export class VisitService {
   }
 
 
-  initializeVisitsByCustomerID(customerID: string) {
+  initializeVisitsByCustomerID(customerID: number) {
     return this.getAllVisitsWithIdsByCustomerID(customerID).pipe(
       switchMap((visits) => {
         this.visits = visits;
@@ -96,7 +94,7 @@ export class VisitService {
 
 
 
-  private getAllVisitsWithIdsByEmployeeID(employeeID: string): Observable<Visit[]> {
+  private getAllVisitsWithIdsByEmployeeID(employeeID: number): Observable<Visit[]> {
     const httpOptions =
     {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -105,7 +103,7 @@ export class VisitService {
 
   }
 
-  initializeVisitsByEmployeeID(employeeID: string) {
+  initializeVisitsByEmployeeID(employeeID: number) {
     return this.getAllVisitsWithIdsByEmployeeID(employeeID).pipe(
       switchMap((visits) => {
         this.visits = visits;

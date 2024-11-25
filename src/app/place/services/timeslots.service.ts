@@ -140,7 +140,7 @@ export class TimeSlotsService {
 
     api_url = `http://localhost:8080/api/crud/appointment-making`
 
-    getAllOpeningHoursForSalon(salonID: string) {
+    getAllOpeningHoursForSalon(salonID: number) {
         const httpOptions =
         {
             headers: new HttpHeaders({ 'Content-Type': 'application/json' }),

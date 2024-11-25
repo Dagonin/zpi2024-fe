@@ -22,7 +22,7 @@ import { Salon } from '../classes/Salon/salon';
   styleUrl: './map.component.css'
 })
 export class MapComponent implements OnInit, OnDestroy {
-  checkedPlace: string = '';
+  checkedPlace!: number;
 
   constructor(
     private cdr: ChangeDetectorRef,

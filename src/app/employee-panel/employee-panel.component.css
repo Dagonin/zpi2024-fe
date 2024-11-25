@@ -11,16 +11,80 @@
     padding: 0.5rem;
 }
 
+.visit-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    overflow-wrap: anywhere;
+    padding: 0.5rem;
+    box-sizing: border-box;
+    white-space: normal;
+    overflow: visible;
+    height: auto !important;
+
+}
+
+.visit-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+    text-wrap: wrap;
+}
+
+
+
+
 #schedule {
     width: 75%;
 }
 
 #make_appointment {
-    padding: 1rem;
+    padding: 0.5rem;
 }
 
 #make_appointment button {
     display: block;
     margin: auto;
     width: 250px;
+}
+
+.visit-item {
+    display: block;
+    overflow-wrap: anywhere;
+    height: 100%
+}
+
+
+
+
+.custom-event {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    height: 100%;
+    padding: 5px;
+    overflow: hidden;
+    background: #f9f9f9;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.custom-event-header {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.custom-event-body {
+    font-size: 12px;
+    color: #555;
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
 }

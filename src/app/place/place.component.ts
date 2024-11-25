@@ -31,6 +31,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { visit } from './models/visit';
 import { SalonService } from '../classes/Salon/salon.service';
 import { Salon } from '../classes/Salon/salon';
+import { Subject, switchMap, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-place',
@@ -79,7 +80,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
   private sub: any;
 
   readonly dialog = inject(MatDialog);
-
+  private destroy$ = new Subject<void>();
 
   employees: Employee[] = [];
   employee_timeslots!: Timeslot[];
@@ -129,54 +130,48 @@ export class PlaceComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-    this.sub = this.route.params.subscribe(params => {
-      // this.salon = this.salonService.getSalon(params['salonid']);
-      this.flag = params['flag'];
-      this.salonService.getSalonById(params['salonid']).subscribe({
-        next: (response: any) => {
-
-
-          // TODO nie wiem czy to dobre rozwiazanie
-
-          this.salon = response
-          console.log(this.salon)
-          this.mapService.initializeMap('mapp', 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
-
-          this.centerMap();
-
-          this.clearSelected();
-
-          this.mapService.addMarker([this.salon.longitude, this.salon.latitude]);
-
-          this.minDate = new Date();
-          this.maxDate = new Date();
-          this.maxDate.setDate(this.maxDate.getDate() + 15);
-
-          this.getServices();
-          this.getOpeningHours();
-
-          this.timeslotsService.generateTimeSlots(this.startTime, this.endTime);
-        },
-        error: (error) => {
-          //  TODO
-          console.error(error)
-        }
-      })
+    this.route.params.pipe(
+      switchMap((params) => {
+        this.flag = params['flag'];
+        return this.salonService.getSalonById(params['salonid']);
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (response: any) => {
+        this.salon = response;
+        this.initializeMap();
+        this.setDateLimits();
+        this.getServices();
+        this.getOpeningHours();
+        this.clearSelected()
+        this.timeslotsService.generateTimeSlots(this.startTime, this.endTime);
+      },
+      error: (error) => {
+        console.error('Error loading salon:', error);
+      }
     });
-
-
-
-
   }
 
-  // ngAfterViewInit() {
-  //   this.mapService.addMarker([this.salon.latitude, this.salon.longitude]);
-  // }
+  private initializeMap(): void {
+    if (this.salon) {
+      this.mapService.initializeMap('mapp', 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+      this.centerMap();
+      this.mapService.addMarker([this.salon.longitude, this.salon.latitude]);
+    }
+  }
+
+  private setDateLimits(): void {
+    this.minDate = new Date();
+    this.maxDate = new Date();
+    this.maxDate.setDate(this.maxDate.getDate() + 15);
+  }
 
 
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-    this.mapService.removeMap();
+
+  ngOnDestroy(): void {
+
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
 
@@ -353,7 +348,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
     console.log(barber, date)
     // TODO 
     if (date && barber) {
-      let newVisit = new visit(parseInt(this.salon.salonID),
+      let newVisit = new visit(this.salon.salonID,
         date.toISOString().split('T')[0],
         this.timeslotsService.indexToHour(this.timeslotsService.timeslotsFormGroup.controls.time_slot.value) + ":00",
         'RESERVED',

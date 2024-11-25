@@ -25,7 +25,8 @@
     </mat-button-toggle-group>
 
     <div class="example-button-row">
-      <button [disabled]="checkedPlace===''" [routerLink]="'/place/'+checkedPlace" mat-stroked-button>Umów się w
+      <!-- TODO nw czy disabled jest dobrze -->
+      <button [disabled]="!checkedPlace" [routerLink]="'/place/'+checkedPlace" mat-stroked-button>Umów się w
         lokalu</button>
     </div>
 

@@ -1,8 +1,11 @@
 <h2 mat-dialog-title>Wizyta</h2>
 
-
+@let customer = data.event.meta.customer;
 <mat-dialog-content>
   {{data.event.title}}
+  <div>{{customer.customerName}} {{customer.customerSurname}}</div>
+  <div>{{customer.customerDialNumber}}</div>
+  <div>{{customer.customerEmail}}</div>
   <mat-divider></mat-divider>
 </mat-dialog-content>
 <mat-dialog-actions>

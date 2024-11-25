@@ -1,6 +1,12 @@
 <div id="body">
   <div id="visits">
+    @if (selectedVisitBool) {
+    <div class="center"><button mat-flat-button>Przełóż wizytę</button> <button (click)="resetDrag()"
+        mat-flat-button>Anuluj</button>
+    </div>
+    }@else {
     <div id="make_appointment"><button mat-flat-button>Umów wizytę</button></div>
+    }
     @if (groupedVisits) {
     <mat-accordion>
       @for (day of groupedVisits | keyvalue; track $index) {
@@ -14,11 +20,14 @@
             @if (day.value.length<5) { Wizyty }@else { Wizit } </mat-panel-description> </mat-expansion-panel-header>
               <mat-list>
               @for (visit of day.value; track $index) {
-              <mat-list-item>
-                {{visit.visitStartTime}}
-                <br>
-                <!-- TODO -->
-                {{customerMap.get(visit.customerID)?.customerName}}
+              @let customer = customerMap.get(visit.customerID);
+              @let salon = salonService.getSalon(visit.salonID);
+              <mat-list-item class="visit-item">
+                <div class="visit-content">
+                  <div>{{ visit.visitStartTime }} {{ customer?.customerName }} {{ customer?.customerSurname }}</div>
+                  <div>{{ customer?.customerDialNumber }} {{ customer?.customerEmail }}</div>
+                  <div>{{ salon  | json }}</div>
+                </div>
               </mat-list-item>
               <mat-divider></mat-divider>
               }
@@ -33,7 +42,20 @@
     <mwl-calendar-week-view [viewDate]="viewDate" [dayStartHour]="7" [dayEndHour]="20" [events]="events"
       [daysInWeek]="10" [refresh]="refresh" [hourSegments]="4" [hourSegmentHeight]="15"
       [validateEventTimesChanged]="validateEventTimesChanged" [excludeDays]="[0,6]"
-      (eventTimesChanged)="eventTimesChanged($event)" (eventClicked)="openDialog($event)">
+      [eventTitleTemplate]="customEventTemplate" (eventTimesChanged)="eventTimesChanged($event)"
+      (eventClicked)="openDialog($event)">
     </mwl-calendar-week-view>
   </div>
 </div>
+
+
+<ng-template #customEventTemplate let-event="event">
+  <div class="custom-event">
+    <div class="custom-event-header">
+      <strong>{{ event.title }}</strong>
+    </div>
+    <div class="custom-event-body">
+      {{ event.meta?.body || 'No additional info' }}
+    </div>
+  </div>
+</ng-template>

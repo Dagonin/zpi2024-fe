@@ -2,16 +2,15 @@ import { inject, Injectable } from '@angular/core';
 import { BarberService } from '../barber/barber.service';
 import { Salon } from './salon';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
 })
 export class SalonService {
 
-    private barberService = inject(BarberService);
-
     salons: Salon[] = [];
+    salonMap: Map<number, Salon> = new Map();
     api_url = `http://localhost:8080/api/crud/salons`
 
     //   places: Place[] = [
@@ -33,10 +32,13 @@ export class SalonService {
     }
 
 
-    getSalon(id: string) {
-        return this.salons.find((salon) => salon.salonID == id)
+    getSalon(id: number) {
+        return this.salonMap.get(id);
     }
 
+    getSalonMap() {
+        return this.salonMap;
+    }
 
     getSalonsCities() {
         let salonCities: string[] = [];
@@ -85,17 +87,17 @@ export class SalonService {
 
     initializeSalons(): Observable<Salon[]> {
         return this.getAllSalons().pipe(
-            tap({
-                next: (response: Salon[]) => {
-                    this.salons = response;
-                },
-                error: (error) => {
-                    console.error(error);
-                }
+            tap((response: Salon[]) => {
+                this.salons = response;
+                this.salonMap.clear();
+                response.forEach((salon) => this.salonMap.set(salon.salonID, salon));
+            }),
+            catchError((error) => {
+                console.error('Failed to initialize salons:', error);
+                return throwError(() => new Error('Could not load salons'));
             })
         );
     }
-
 
 
 

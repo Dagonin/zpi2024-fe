@@ -18,10 +18,14 @@ import {
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { isSameDay, startOfDay } from 'date-fns';
-import { Subject } from 'rxjs';
+import { forkJoin, Subject } from 'rxjs';
 import { EmployeePanelVisitDialog } from '../dialogs/employee-panel-visit-dialog/employee-panel-visit-dialog';
 import { MatDialog } from '@angular/material/dialog';
 import { CustomerDTO } from '../classes/customer/customerDTO';
+import { SalonService } from '../classes/Salon/salon.service';
+import { Salon } from '../classes/Salon/salon';
+import { ServiceService } from '../classes/service/service.service';
+import { ServiceDTO } from '../classes/service/serviceDTO';
 
 @Component({
   selector: 'app-employee-panel',
@@ -46,6 +50,7 @@ export class EmployeePanelComponent {
 
   visits: Visit[] = [];
   customerMap: Map<number, CustomerDTO> = new Map();
+  serviceMap: Map<number, ServiceDTO> = new Map();
   groupedVisits: { [key: string]: Visit[] } = {};
   events: CalendarEvent[] = [];
   selectedVisit!: CalendarEvent;
@@ -56,42 +61,60 @@ export class EmployeePanelComponent {
   };
   viewDate = new Date();
 
-  constructor(private visitService: VisitService) { }
+  constructor(private visitService: VisitService, public salonService: SalonService, private serviceService: ServiceService) { }
 
   ngOnInit(): void {
-    // TODO
-    this.visitService.initializeVisitsByEmployeeID('1').subscribe({
-      next: (response) => {
-        const visits = this.visitService.getVisits();
-        this.customerMap = this.visitService.getCustomerMap();
-        this.groupedVisits = this.visitService.groupVisitsByDate(visits);
-        visits.forEach(visit => {
-          const startDateTime = new Date(`${visit.visitDate}T${visit.visitStartTime}`);
-          // TODO zamienić na prawdziwy czas
-          const endDateTime = new Date(startDateTime.getTime() + 2 * 60 * 60 * 1000); // +2 godziny
-          let customer = this.customerMap.get(visit.customerID);
-          this.events.push(
-            {
-              start: startDateTime,
-              end: endDateTime,
-              title: `${customer?.customerName} ${customer?.customerSurname} at ${customer?.customerEmail}, ${customer?.customerDialNumber}`,
-              draggable: false,
-              color: {
-                "primary": "#e3bc08",
-                "secondary": "#FDF1BA"
-              },
-            }
-          )
-        })
-        this.refresh.next();
+    // Use forkJoin to execute observables in parallel
+    forkJoin({
+      visits: this.visitService.initializeVisitsByEmployeeID(1),
+      salons: this.salonService.initializeSalons(),
+      services: this.serviceService.initializeServicesForEmployee(1)
+    }).subscribe({
+      next: ({ visits, salons, services }) => {
+        console.log(visits, services)
+        this.serviceMap = this.serviceService.getServiceMap();
+        this.handleVisits();
       },
       error: (error) => {
-        console.log(error)
-      }
-    })
+        console.error('Error loading data:', error);
+        // Optionally show a user-friendly error message
+      },
+    });
+  }
 
+  private populateServiceMap(services: ServiceDTO[]) {
 
   }
+
+  private handleVisits(): void {
+    const visits = this.visitService.getVisits();
+    this.customerMap = this.visitService.getCustomerMap();
+    this.groupedVisits = this.visitService.groupVisitsByDate(visits);
+
+    this.events = visits.map(visit => {
+      const startDateTime = new Date(`${visit.visitDate}T${visit.visitStartTime}`);
+      const endDateTime = new Date(startDateTime.getTime() + 2 * 60 * 60 * 1000); // Add 2 hours
+
+      const customer = this.customerMap.get(visit.customerID);
+      return {
+        start: startDateTime,
+        end: endDateTime,
+        title: visit.visitStartTime,
+        draggable: false,
+        meta: {
+          body: `${customer?.customerName} ${customer?.customerSurname}`,
+          customer: customer,
+        },
+        color: {
+          primary: '#e3bc08',
+          secondary: '#FDF1BA',
+        },
+      };
+    });
+
+    this.refresh.next();
+  }
+
 
   refresh = new Subject<void>();
 
@@ -100,7 +123,7 @@ export class EmployeePanelComponent {
 
   openDialog(startEvent: any) {
     const dialogRef = this.dialog.open(EmployeePanelVisitDialog, {
-      data: startEvent
+      data: startEvent,
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
@@ -125,7 +148,7 @@ export class EmployeePanelComponent {
   resetDrag() {
     if (this.selectedVisitBool) {
       this.selectedVisit.draggable = false;
-
+      this.selectedVisitBool = false;
       if (this.selectedVisitOld) {
         this.selectedVisit.start = this.selectedVisitOld.start;
         this.selectedVisit.end = this.selectedVisitOld.end;

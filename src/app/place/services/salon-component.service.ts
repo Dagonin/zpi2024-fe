@@ -20,7 +20,7 @@ export class SalonComponentService {
     }
 
 
-    getAllAvailabilityDatesForEmployee(salonID: string, employeeID: number) {
+    getAllAvailabilityDatesForEmployee(salonID: number, employeeID: number) {
         const httpOptions =
         {
             headers: new HttpHeaders({ 'Content-Type': 'application/json' }),

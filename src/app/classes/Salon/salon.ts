@@ -1,5 +1,5 @@
 export class Salon {
-    salonID: string;
+    salonID: number;
     salonName: string;
     salonDialNumber: string;
     salonCity: string;
@@ -11,7 +11,7 @@ export class Salon {
     checked: boolean;
 
     constructor(
-        salonID: string,
+        salonID: number,
         salonName: string = '',
         salonDialNumber: string = '',
         salonCity: string = '',
