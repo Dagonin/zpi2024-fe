@@ -57,34 +57,18 @@
 
 
 
-
-.custom-event {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start;
-    height: 100%;
-    padding: 5px;
-    overflow: hidden;
-    background: #f9f9f9;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-.custom-event-header {
+.custom-tooltip {
+    background-color: #f5f5f5;
+    color: #333;
     font-size: 14px;
-    font-weight: bold;
-    margin-bottom: 5px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    border-radius: 4px;
+    padding: 8px;
 }
 
-.custom-event-body {
-    font-size: 12px;
-    color: #555;
-    flex-grow: 1;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: normal;
+.event-container {
+    display: block;
+    padding: 5px;
+    /* Adjust padding to match event styles */
+    cursor: pointer;
+    /* Indicate the area is interactive */
 }

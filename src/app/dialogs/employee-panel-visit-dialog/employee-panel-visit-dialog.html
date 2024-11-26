@@ -6,6 +6,9 @@
   <div>{{customer.customerName}} {{customer.customerSurname}}</div>
   <div>{{customer.customerDialNumber}}</div>
   <div>{{customer.customerEmail}}</div>
+  @for (service of data.event.meta.services; track $index) {
+  <div>{{service.serviceName}} </div>
+  }
   <mat-divider></mat-divider>
 </mat-dialog-content>
 <mat-dialog-actions>

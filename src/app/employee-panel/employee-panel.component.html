@@ -44,23 +44,10 @@
 
   </div>
   <div id="schedule">
-    <mwl-calendar-week-view [viewDate]="viewDate" [dayStartHour]="7" [dayEndHour]="20" [events]="events"
-      [daysInWeek]="10" [refresh]="refresh" [hourSegments]="4" [hourSegmentHeight]="15"
+    <mwl-calendar-week-view [viewDate]="viewDate" [dayStartHour]="7" [dayEndHour]="19" [events]="events"
+      [daysInWeek]="10" [refresh]="refresh" [hourSegments]="4" [hourSegmentHeight]="16"
       [validateEventTimesChanged]="validateEventTimesChanged" [excludeDays]="[0,6]"
-      [eventTitleTemplate]="customEventTemplate" (eventTimesChanged)="eventTimesChanged($event)"
-      (eventClicked)="openDialog($event)">
+      (eventTimesChanged)="eventTimesChanged($event)" (eventClicked)="openDialog($event)">
     </mwl-calendar-week-view>
   </div>
 </div>
-
-
-<ng-template #customEventTemplate let-event="event">
-  <div class="custom-event">
-    <div class="custom-event-header">
-      <strong>{{ event.title }}</strong>
-    </div>
-    <div class="custom-event-body">
-      {{ event.meta?.body || 'No additional info' }}
-    </div>
-  </div>
-</ng-template>
