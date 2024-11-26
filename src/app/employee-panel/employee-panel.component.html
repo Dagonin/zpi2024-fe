@@ -26,7 +26,12 @@
                 <div class="visit-content">
                   <div>{{ visit.visitStartTime }} {{ customer?.customerName }} {{ customer?.customerSurname }}</div>
                   <div>{{ customer?.customerDialNumber }} {{ customer?.customerEmail }}</div>
-                  <div>{{ salon  | json }}</div>
+                  <div>{{salon?.salonName}} {{salon?.salonCity}} {{salon?.salonStreet}}</div>
+                  <div>
+                    @for (serviceID of visitServiceMap.get(visit.visitID); track $index) {
+                    <div>{{serviceMap.get(serviceID)?.serviceName}} </div>
+                    }
+                  </div>
                 </div>
               </mat-list-item>
               <mat-divider></mat-divider>

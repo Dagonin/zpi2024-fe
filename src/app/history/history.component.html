@@ -10,6 +10,11 @@
         <span matListItemLine>{{emp?.employeeName}} {{emp?.employeeSurname}} {{emp?.employeeDialNumber}}
           {{emp?.employeeEmail}}</span>
         <span>
+          <span>
+            @for (serviceID of visitServiceMap.get(visit.visitID); track $index) {
+            <div>{{serviceMap.get(serviceID)?.serviceName}} </div>
+            }
+          </span>
           <button (click)="openRatingDialog()" mat-button>Oceń</button>
           <button (click)="openDetailsDialog(visit.employeeID,visit.visitID, visit.salonID)"
             mat-button>Szczegóły</button>

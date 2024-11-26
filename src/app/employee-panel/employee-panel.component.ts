@@ -18,7 +18,7 @@ import {
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { isSameDay, startOfDay } from 'date-fns';
-import { forkJoin, Subject } from 'rxjs';
+import { forkJoin, Subject, switchMap, tap } from 'rxjs';
 import { EmployeePanelVisitDialog } from '../dialogs/employee-panel-visit-dialog/employee-panel-visit-dialog';
 import { MatDialog } from '@angular/material/dialog';
 import { CustomerDTO } from '../classes/customer/customerDTO';
@@ -26,6 +26,7 @@ import { SalonService } from '../classes/Salon/salon.service';
 import { Salon } from '../classes/Salon/salon';
 import { ServiceService } from '../classes/service/service.service';
 import { ServiceDTO } from '../classes/service/serviceDTO';
+import { SalonComponentService } from '../place/services/salon-component.service';
 
 @Component({
   selector: 'app-employee-panel',
@@ -51,6 +52,7 @@ export class EmployeePanelComponent {
   visits: Visit[] = [];
   customerMap: Map<number, CustomerDTO> = new Map();
   serviceMap: Map<number, ServiceDTO> = new Map();
+  visitServiceMap: Map<number, number[]> = new Map();
   groupedVisits: { [key: string]: Visit[] } = {};
   events: CalendarEvent[] = [];
   selectedVisit!: CalendarEvent;
@@ -64,27 +66,37 @@ export class EmployeePanelComponent {
   constructor(private visitService: VisitService, public salonService: SalonService, private serviceService: ServiceService) { }
 
   ngOnInit(): void {
-    // Use forkJoin to execute observables in parallel
     forkJoin({
+      // TODO id
       visits: this.visitService.initializeVisitsByEmployeeID(1),
       salons: this.salonService.initializeSalons(),
-      services: this.serviceService.initializeServicesForEmployee(1)
-    }).subscribe({
-      next: ({ visits, salons, services }) => {
-        console.log(visits, services)
-        this.serviceMap = this.serviceService.getServiceMap();
-        this.handleVisits();
-      },
-      error: (error) => {
-        console.error('Error loading data:', error);
-        // Optionally show a user-friendly error message
-      },
-    });
+      services: this.serviceService.initializeServicesForEmployee(1),
+    })
+      .pipe(
+        tap(({ services }) => {
+          const distinctIds = this.serviceService.getDistinctIDs(services);
+          this.visitServiceMap = this.serviceService.createVisitServiceMap(services);
+        }),
+        switchMap(({ services }) => {
+          const distinctIds = this.serviceService.getDistinctIDs(services);
+          return this.serviceService.initializeServicesByListOfIds(distinctIds);
+        })
+      )
+      .subscribe({
+        next: (response) => {
+          console.log(response);
+          this.serviceMap = this.serviceService.getServiceMap();
+          console.log(this.serviceMap)
+          this.handleVisits();
+        },
+        error: (error) => {
+          console.error('Error loading data:', error);
+          // Optionally show a user-friendly error message
+        },
+      });
   }
 
-  private populateServiceMap(services: ServiceDTO[]) {
 
-  }
 
   private handleVisits(): void {
     const visits = this.visitService.getVisits();
@@ -104,6 +116,8 @@ export class EmployeePanelComponent {
         meta: {
           body: `${customer?.customerName} ${customer?.customerSurname}`,
           customer: customer,
+          salon: this.salonService.getSalon(visit.salonID),
+          service: this.getServicesForVisit(visit.visitID)
         },
         color: {
           primary: '#e3bc08',
@@ -116,6 +130,7 @@ export class EmployeePanelComponent {
   }
 
 
+
   refresh = new Subject<void>();
 
 
@@ -123,7 +138,7 @@ export class EmployeePanelComponent {
 
   openDialog(startEvent: any) {
     const dialogRef = this.dialog.open(EmployeePanelVisitDialog, {
-      data: startEvent,
+      data: startEvent
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
@@ -162,6 +177,16 @@ export class EmployeePanelComponent {
     }
   }
 
+
+  getServicesForVisit(visitID: number) {
+    const servicesIDs = this.visitServiceMap.get(visitID);
+    let servicesArr: (ServiceDTO | undefined)[] = [];
+    servicesIDs?.forEach(id => {
+      servicesArr.push(this.serviceMap.get(id));
+    })
+    console.log(servicesArr);
+    return servicesArr;
+  }
 
   validateEventTimesChanged = (
     { event, newStart, newEnd, allDay }: CalendarEventTimesChangedEvent,

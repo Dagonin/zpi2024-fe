@@ -10,7 +10,7 @@ import { Employee } from '../classes/employee/employee';
 import { ServiceService } from '../classes/service/service.service';
 import { HistoryDetailsDialog } from '../dialogs/history-details-dialog/history-details-dialog';
 import { SalonService } from '../classes/Salon/salon.service';
-import { forkJoin } from 'rxjs';
+import { forkJoin, switchMap } from 'rxjs';
 import { ServiceDTO } from '../classes/service/serviceDTO';
 import { Salon } from '../classes/Salon/salon';
 
@@ -36,6 +36,7 @@ export class HistoryComponent implements OnInit {
   serviceMap: Map<number, ServiceDTO> = new Map();
   employeeMap: Map<number, Employee> = new Map();
   salonMap: Map<number, Salon> = new Map();
+  visitServiceMap: Map<number, number[]> = new Map();
 
   openRatingDialog() {
     this.dialog.open(RatingDialogComponent);
@@ -56,28 +57,40 @@ export class HistoryComponent implements OnInit {
 
 
   ngOnInit(): void {
-    // TODO id
+    // TODO: Replace hardcoded customer ID with dynamic value if necessary.
 
     forkJoin({
       visits: this.visitService.initializeVisitsByCustomerID(1),
       salons: this.salonService.initializeSalons(),
-      services: this.serviceService.initializeServicesForCustomer(1)
-    }).subscribe({
-      next: ({ visits, salons, services }) => {
-        this.serviceMap = this.serviceService.getServiceMap();
-        this.salonMap = this.salonService.getSalonMap();
-        this.visits = this.visitService.getVisits();
-        this.employeeMap = this.visitService.getEmployeeMap();
-        this.visitMap.clear();
-        this.visits.forEach((visit) => {
-          this.visitMap.set(visit.visitID, visit);
-        });
-      },
-      error: (error) => {
-        console.error('Error loading data:', error);
+      services: this.serviceService.initializeServicesForCustomer(1),
+    })
+      .pipe(
+        switchMap(({ visits, salons, services }) => {
+          this.serviceMap = this.serviceService.getServiceMap();
+          this.salonMap = this.salonService.getSalonMap();
+          this.visits = this.visitService.getVisits();
+          this.employeeMap = this.visitService.getEmployeeMap();
+          this.visitMap.clear();
+          this.visits.forEach((visit) => {
+            this.visitMap.set(visit.visitID, visit);
+          });
+          this.visitServiceMap = this.serviceService.createVisitServiceMap(services);
 
-      },
-    });
+          const distinctIds = this.serviceService.getDistinctIDs(services);
+          return this.serviceService.initializeServicesByListOfIds(distinctIds);
+        })
+      )
+      .subscribe({
+        next: (allServices) => {
+
+          this.serviceMap = this.serviceService.getServiceMap();
+          console.log(this.serviceMap, this.visitServiceMap);
+        },
+        error: (error) => {
+          console.error('Error loading data:', error);
+        },
+      });
   }
+
 
 }
