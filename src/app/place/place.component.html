@@ -54,7 +54,8 @@
               @for (employee of employees; track $index) {
               <mat-radio-button [value]="$index">
                 <mat-list-item>
-                  <span matListItemTitle>{{employee.employeeName}} {{employee.employeeSurname}}</span>
+                  <span matListItemTitle>{{employee.employeeName}} {{employee.employeeSurname}}
+                    {{employee.rating}}</span>
                   <span matListItemLine>{{employee.employeeDialNumber}}</span>
                 </mat-list-item>
               </mat-radio-button>

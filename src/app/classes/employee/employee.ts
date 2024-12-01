@@ -13,6 +13,7 @@ export class Employee {
   employeeBuildingNumber: string;
   employeeApartmentNumber: string;
   employeePostalCode: string;
+  rating: number | undefined;
 
   constructor(
     employeeID: number,
@@ -28,7 +29,8 @@ export class Employee {
     employeeStreet: string,
     employeeBuildingNumber: string,
     employeeApartmentNumber: string,
-    employeePostalCode: string
+    employeePostalCode: string,
+    rating?: number | undefined
   ) {
     this.employeeID = employeeID;
     this.employeeName = employeeName;
@@ -44,5 +46,6 @@ export class Employee {
     this.employeeBuildingNumber = employeeBuildingNumber;
     this.employeeApartmentNumber = employeeApartmentNumber;
     this.employeePostalCode = employeePostalCode;
+    this.rating = rating;
   }
 }

@@ -13,6 +13,9 @@ import { SalonService } from '../classes/Salon/salon.service';
 import { forkJoin, switchMap } from 'rxjs';
 import { ServiceDTO } from '../classes/service/serviceDTO';
 import { Salon } from '../classes/Salon/salon';
+import { RatingService } from '../classes/rating/rating.service';
+import { Rating } from '../classes/rating/rating';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-history',
@@ -21,7 +24,8 @@ import { Salon } from '../classes/Salon/salon';
     MatListModule,
     CommonModule,
     MatButtonModule,
-    MatDialogModule
+    MatDialogModule,
+    MatTabsModule
   ],
   templateUrl: './history.component.html',
   styleUrl: './history.component.css'
@@ -37,9 +41,19 @@ export class HistoryComponent implements OnInit {
   employeeMap: Map<number, Employee> = new Map();
   salonMap: Map<number, Salon> = new Map();
   visitServiceMap: Map<number, number[]> = new Map();
+  ratingMap: Map<number, Rating> = new Map();
 
-  openRatingDialog() {
-    this.dialog.open(RatingDialogComponent);
+  openRatingDialog(employeeID: number, visitID: number, salonID: number) {
+    const dialogRef = this.dialog.open(RatingDialogComponent, {
+      data: {
+        employee: this.employeeMap.get(employeeID),
+        visit: this.visitMap.get(visitID),
+        salon: this.salonMap.get(salonID),
+        rating: this.ratingMap.get(visitID)
+      },
+      height: '400px',
+      width: '600px',
+    });
   }
 
   openDetailsDialog(employeeID: number, visitID: number, salonID: number) {
@@ -47,13 +61,13 @@ export class HistoryComponent implements OnInit {
       data: {
         employee: this.employeeMap.get(employeeID),
         visit: this.visitMap.get(visitID),
-        salon: this.salonMap.get(salonID)
+        salon: this.salonMap.get(salonID),
       },
       height: '400px',
       width: '600px',
     });
   }
-  constructor(public visitService: VisitService, private serviceService: ServiceService, private salonService: SalonService) { }
+  constructor(public visitService: VisitService, private serviceService: ServiceService, private salonService: SalonService, private ratingService: RatingService) { }
 
 
   ngOnInit(): void {
@@ -63,9 +77,11 @@ export class HistoryComponent implements OnInit {
       visits: this.visitService.initializeVisitsByCustomerID(1),
       salons: this.salonService.initializeSalons(),
       services: this.serviceService.initializeServicesForCustomer(1),
+      ratings: this.ratingService.getAllRatingForCustomer(1)
     })
       .pipe(
-        switchMap(({ visits, salons, services }) => {
+        switchMap(({ visits, salons, services, ratings }) => {
+          console.log(ratings)
           this.serviceMap = this.serviceService.getServiceMap();
           this.salonMap = this.salonService.getSalonMap();
           this.visits = this.visitService.getVisits();
@@ -74,6 +90,12 @@ export class HistoryComponent implements OnInit {
           this.visits.forEach((visit) => {
             this.visitMap.set(visit.visitID, visit);
           });
+
+          this.ratingMap.clear();
+          ratings.forEach((rating) => {
+            this.ratingMap.set(rating.visitID, rating);
+          })
+
           this.visitServiceMap = this.serviceService.createVisitServiceMap(services);
 
           const distinctIds = this.serviceService.getDistinctIDs(services);
@@ -91,6 +113,13 @@ export class HistoryComponent implements OnInit {
         },
       });
   }
+
+  isFutureTime(dateString: string, timeString: string): boolean {
+    const combinedDate = new Date(`${dateString}T${timeString}`);
+    const now = new Date();
+    return combinedDate.getTime() > now.getTime();
+  }
+
 
 
 }

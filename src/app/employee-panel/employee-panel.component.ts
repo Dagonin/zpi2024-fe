@@ -28,6 +28,7 @@ import { ServiceService } from '../classes/service/service.service';
 import { ServiceDTO } from '../classes/service/serviceDTO';
 import { SalonComponentService } from '../place/services/salon-component.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-employee-panel',
@@ -44,7 +45,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatListModule,
     CalendarModule,
     MatButtonModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatTabsModule
   ],
   templateUrl: './employee-panel.component.html',
   styleUrl: './employee-panel.component.css'
@@ -285,6 +287,16 @@ export class EmployeePanelComponent {
       })
     }
     return visitLen
+  }
+
+  isFutureOrSameDate(dateString: string): boolean {
+    const inputDate = new Date(dateString);
+    const today = new Date();
+
+    inputDate.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+
+    return inputDate.getTime() >= today.getTime();
   }
 
 

@@ -13,3 +13,11 @@
   max-height: 80%;
   overflow-y: scroll
 }
+
+.services {
+  float: right
+}
+
+.list_item {
+  height: 100%;
+}

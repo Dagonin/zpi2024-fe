@@ -32,6 +32,7 @@ import { visit } from './models/visit';
 import { SalonService } from '../classes/Salon/salon.service';
 import { Salon } from '../classes/Salon/salon';
 import { Subject, switchMap, takeUntil } from 'rxjs';
+import { RatingService } from '../classes/rating/rating.service';
 
 @Component({
   selector: 'app-place',
@@ -54,7 +55,7 @@ import { Subject, switchMap, takeUntil } from 'rxjs';
     MatButton,
     MatProgressSpinnerModule,
     MatCardModule,
-    MatRadioModule
+    MatRadioModule,
   ],
   templateUrl: './place.component.html',
   styleUrl: './place.component.css'
@@ -69,7 +70,8 @@ export class PlaceComponent implements OnInit, OnDestroy {
     public checkboxService: CheckboxService,
     private salonComponentService: SalonComponentService,
     private salonService: SalonService,
-    public timeslotsService: TimeSlotsService
+    public timeslotsService: TimeSlotsService,
+    private ratingService: RatingService
   ) { }
 
   selectedServicesChange = false;
@@ -275,29 +277,50 @@ export class PlaceComponent implements OnInit, OnDestroy {
 
 
   getAllEmployeesThatCanServeService() {
-    if (this.servicesFormGroup.controls.services.value?.length && this.selectedServicesChange) {
+    const services = this.servicesFormGroup.controls.services.value;
+
+    if (services?.length && this.selectedServicesChange) {
       this.employees = [];
-      //                               tu zamienic 1 na salonID           XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-      const obj: SalonServiceIds = {
-        salonID: 1,
-        serviceIds: this.servicesFormGroup.controls.services.value
-      }
-      this.salonComponentService.getAllEmployeesThatCanServeService(obj).subscribe({
-        next: (response: any) => {
-          console.log(response);
-          this.selectedServicesChange = false;
-          this.employees = response;
-        },
-        error: (error) => {
-          console.error(error)
-        }
-      });
+      const requestPayload: SalonServiceIds = {
+        salonID: this.salon.salonID,
+        serviceIds: services,
+      };
+
+      this.fetchEmployeesWithRatings(requestPayload);
     }
   }
+
+  private fetchEmployeesWithRatings(payload: SalonServiceIds): void {
+    this.salonComponentService.getAllEmployeesThatCanServeService(payload).subscribe({
+      next: (employees: any) => {
+        console.log(employees);
+        this.selectedServicesChange = false;
+        this.employees = employees;
+        this.addRatingsToEmployees(employees);
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
+  }
+
+  private addRatingsToEmployees(employees: any[]): void {
+    employees.forEach((employee) => {
+      this.ratingService.getAverageRatingForEmployee(employee.employeeID).subscribe({
+        next: (rating: any) => {
+          console.log(rating)
+          employee.rating = rating.averageRating;
+        },
+        error: (error) => {
+          console.error(`Error fetching rating for employee ${employee.employeeID}:`, error);
+        },
+      });
+    });
+  }
+
   getAllAvailabilityDatesForEmployee() {
     if (this.barbersFormGroup.controls.barber.value !== null) {
       console.log(this.employees[this.barbersFormGroup.controls.barber.value].employeeID)
-      //                               tu zamienic 1 na salonID               XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
       this.salonComponentService.getAllAvailabilityDatesForEmployee(this.salon.salonID, this.employees[this.barbersFormGroup.controls.barber.value].employeeID ?? 0).subscribe({
         next: (response: any) => {
           console.log(response);

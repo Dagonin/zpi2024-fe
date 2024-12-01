@@ -1,4 +1,5 @@
 <div id="body">
+
   <div id="visits">
     @if (selectedVisitBool) {
     <div class="center"><button mat-flat-button>Przełóż wizytę</button> <button (click)="resetDrag()"
@@ -7,41 +8,84 @@
     }@else {
     <div id="make_appointment"><button mat-flat-button>Umów wizytę</button></div>
     }
-    @if (groupedVisits) {
-    <mat-accordion>
-      @for (day of groupedVisits | keyvalue; track $index) {
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            {{ day.key }}
-          </mat-panel-title>
-          <mat-panel-description>
-            {{ day.value.length }}
-            @if (day.value.length<5) { Wizyty }@else { Wizit } </mat-panel-description> </mat-expansion-panel-header>
-              <mat-list>
-              @for (visit of day.value; track $index) {
-              @let customer = customerMap.get(visit.customerID);
-              @let salon = salonService.getSalon(visit.salonID);
-              <mat-list-item class="visit-item">
-                <div class="visit-content">
-                  <div>{{ visit.visitStartTime }} {{ customer?.customerName }} {{ customer?.customerSurname }}</div>
-                  <div>{{ customer?.customerDialNumber }} {{ customer?.customerEmail }}</div>
-                  <div>{{salon?.salonName}} {{salon?.salonCity}} {{salon?.salonStreet}}</div>
-                  <div>
-                    @for (serviceID of visitServiceMap.get(visit.visitID); track $index) {
-                    <div>{{serviceMap.get(serviceID)?.serviceName}} </div>
-                    }
-                  </div>
-                </div>
-              </mat-list-item>
-              <mat-divider></mat-divider>
-              }
-              </mat-list>
-      </mat-expansion-panel>
-      }
-    </mat-accordion>
-    }
-
+    <mat-tab-group>
+      <mat-tab label="Przyszłe wizyty">
+        @if (groupedVisits) {
+        <mat-accordion>
+          @for (day of groupedVisits | keyvalue; track $index) {
+          @if (isFutureOrSameDate(day.key)) {
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{ day.key }}
+              </mat-panel-title>
+              <mat-panel-description>
+                {{ day.value.length }}
+                @if (day.value.length<5) { Wizyty }@else { Wizit } </mat-panel-description>
+                  </mat-expansion-panel-header> <mat-list>
+                  @for (visit of day.value; track $index) {
+                  @let customer = customerMap.get(visit.customerID);
+                  @let salon = salonService.getSalon(visit.salonID);
+                  <mat-list-item class="visit-item">
+                    <div class="visit-content">
+                      <div>{{ visit.visitStartTime }} {{ customer?.customerName }} {{ customer?.customerSurname }}</div>
+                      <div>{{ customer?.customerDialNumber }} {{ customer?.customerEmail }}</div>
+                      <div>{{salon?.salonName}} {{salon?.salonCity}} {{salon?.salonStreet}}</div>
+                      <div>
+                        @for (serviceID of visitServiceMap.get(visit.visitID); track $index) {
+                        <div>{{serviceMap.get(serviceID)?.serviceName}} </div>
+                        }
+                      </div>
+                    </div>
+                  </mat-list-item>
+                  <mat-divider></mat-divider>
+                  }
+                  </mat-list>
+          </mat-expansion-panel>
+          }
+          }
+        </mat-accordion>
+        }
+      </mat-tab>
+      <mat-tab label="Przeszłe wizyty">
+        @if (groupedVisits) {
+        <mat-accordion>
+          @for (day of groupedVisits | keyvalue; track $index) {
+          @if (!isFutureOrSameDate(day.key)) {
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{ day.key }}
+              </mat-panel-title>
+              <mat-panel-description>
+                {{ day.value.length }}
+                @if (day.value.length<5) { Wizyty }@else { Wizit } </mat-panel-description>
+                  </mat-expansion-panel-header> <mat-list>
+                  @for (visit of day.value; track $index) {
+                  @let customer = customerMap.get(visit.customerID);
+                  @let salon = salonService.getSalon(visit.salonID);
+                  <mat-list-item class="visit-item">
+                    <div class="visit-content">
+                      <div>{{ visit.visitStartTime }} {{ customer?.customerName }} {{ customer?.customerSurname }}</div>
+                      <div>{{ customer?.customerDialNumber }} {{ customer?.customerEmail }}</div>
+                      <div>{{salon?.salonName}} {{salon?.salonCity}} {{salon?.salonStreet}}</div>
+                      <div>
+                        @for (serviceID of visitServiceMap.get(visit.visitID); track $index) {
+                        <div>{{serviceMap.get(serviceID)?.serviceName}} </div>
+                        }
+                      </div>
+                    </div>
+                  </mat-list-item>
+                  <mat-divider></mat-divider>
+                  }
+                  </mat-list>
+          </mat-expansion-panel>
+          }
+          }
+        </mat-accordion>
+        }
+      </mat-tab>
+    </mat-tab-group>
   </div>
   <div id="schedule">
     <mwl-calendar-week-view [viewDate]="viewDate" [dayStartHour]="7" [dayEndHour]="19" [events]="events"
