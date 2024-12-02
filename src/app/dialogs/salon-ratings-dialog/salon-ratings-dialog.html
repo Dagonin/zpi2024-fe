@@ -1,0 +1,18 @@
+<h2 mat-dialog-title>Opinie klientów:</h2>
+<div mat-dialog-content>
+  <div class="ratings-list">
+    <mat-list>
+      @for (rating of data.ratings; track $index) {
+      <mat-list-item>
+        <div>
+          <p matListItemLine><strong>Ocena: </strong>{{ rating.ratingValue }}</p>
+          <p matListItemLine><strong>Opinia: </strong>{{ rating.ratingOpinion }}</p>
+        </div>
+      </mat-list-item>
+      }
+    </mat-list>
+  </div>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Close</button>
+</div>

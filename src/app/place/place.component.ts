@@ -366,6 +366,8 @@ export class PlaceComponent implements OnInit, OnDestroy {
     }
 
     let date = this.timeslotsService.timeslotsFormGroup.controls.day.value
+    date?.setHours(1)
+
     //  to trzeba poprawić
     let barber = this.employees[this.barbersFormGroup.controls.barber.value ?? 0].employeeID
     console.log(barber, date)

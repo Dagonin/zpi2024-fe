@@ -29,7 +29,7 @@ export class RatingService {
         const httpOptions = {
             headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
         };
-        return this.http.get<Rating>(`${this.api_url}/avgForSalon/${salonID}`, httpOptions);
+        return this.http.get<any>(`${this.api_url}/avgForSalon/${salonID}`, httpOptions);
     }
 
 
@@ -47,5 +47,11 @@ export class RatingService {
         return this.http.get<Rating[]>(`${this.api_url}/getAllByCustomerId/${customerID}`, httpOptions);
     }
 
+    getAllRatingForSalon(salonID: number) {
+        const httpOptions = {
+            headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+        };
+        return this.http.get<Rating[]>(`${this.api_url}/allForSalon/${salonID}`, httpOptions);
+    }
 
 }

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatButtonModule } from '@angular/material/button';
@@ -7,6 +7,11 @@ import { RouterLink } from '@angular/router';
 import { MapService } from './map.service';
 import { SalonService } from '../classes/Salon/salon.service';
 import { Salon } from '../classes/Salon/salon';
+import { RatingService } from '../classes/rating/rating.service';
+import { Rating } from '../classes/rating/rating';
+import { MatDialog } from '@angular/material/dialog';
+import { HistoryDetailsDialog } from '../dialogs/history-details-dialog/history-details-dialog';
+import { SalonRatingsDialog } from '../dialogs/salon-ratings-dialog/salon-ratings-dialog';
 
 @Component({
   selector: 'app-map',
@@ -23,17 +28,25 @@ import { Salon } from '../classes/Salon/salon';
 })
 export class MapComponent implements OnInit, OnDestroy {
   checkedPlace!: number;
-
+  readonly dialog = inject(MatDialog);
+  ratingsMap: Map<number, Rating[]> = new Map();
+  avgRatingsMap: Map<number, any> = new Map();
   constructor(
     private cdr: ChangeDetectorRef,
     private mapService: MapService,
-    public salonService: SalonService
+    public salonService: SalonService,
+    private ratingService: RatingService
   ) { }
 
   ngOnInit() {
     this.salonService.initializeSalons().subscribe({
-      next: (response) => {
+      next: () => {
         this.addMarkersToMap();
+
+        const salons = this.salonService.getSalons();
+        salons.forEach((salon) => {
+          this.loadSalonRatings(salon.salonID);
+        });
       },
       error: (error) => {
         console.error('Failed to load salons:', error);
@@ -41,18 +54,35 @@ export class MapComponent implements OnInit, OnDestroy {
     });
   }
 
+  private loadSalonRatings(salonID: number): void {
+
+    const handleError = (error: any, type: string) => {
+      console.error(`Error fetching ${type} for salonID ${salonID}:`, error);
+    };
+
+    this.ratingService.getAllRatingForSalon(salonID).subscribe({
+      next: (response) => {
+        this.ratingsMap.set(salonID, response)
+      },
+      error: (err) => handleError(err, 'all ratings')
+    });
+
+    this.ratingService.getAverageRatingForSalon(salonID).subscribe({
+      next: (response) => {
+        this.avgRatingsMap.set(salonID, response)
+      },
+      error: (err) => handleError(err, 'average rating')
+    });
+  }
   private addMarkersToMap() {
     const baseMapUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 
-    // Initialize the map
     this.mapService.initializeMap('map', baseMapUrl);
 
-    // Add markers for the salons
     this.salonService.salons.forEach((salon, index) => {
       this.mapService.addMarker([salon.longitude, salon.latitude], () => this.markerClick(index));
     });
 
-    // Center and resize the map
     this.mapService.centerMap();
     this.mapService.invalidateMapSize();
   }
@@ -72,6 +102,17 @@ export class MapComponent implements OnInit, OnDestroy {
       }
     });
     this.cdr.detectChanges();
+  }
+
+  showRatings(salonID: number) {
+    const dialogRef = this.dialog.open(SalonRatingsDialog, {
+      data: {
+        salon: this.salonService.salonMap.get(salonID),
+        ratings: this.ratingsMap.get(salonID)
+      },
+      height: '400px',
+      width: '600px',
+    });
   }
 
   selectPlace(coords: [number, number], index: number) {

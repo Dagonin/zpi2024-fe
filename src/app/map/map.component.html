@@ -3,7 +3,7 @@
 
 
   <div id="map">
-    <button (click)="centerMap()" id="refreshButton">Reset mapy</button>
+    <!-- <button (click)="centerMap()" id="refreshButton">Reset mapy</button> -->
   </div>
 
 
@@ -13,13 +13,22 @@
     <mat-button-toggle-group appearance="legacy">
       <mat-list class="scrollable-list">
         @for (salon of salonService.salons; track $index) {
-        <mat-list-item>
+        <mat-list-item lines="4">
           <span matListItemTitle>{{salon.salonCity}}</span>
           <span matListItemLine>{{salon.salonStreet}}</span>
-          <mat-button-toggle [checked]="salon.checked" (click)="selectPlace([salon.longitude,salon.latitude],$index)"
-            value="bold">Wybierz
+          @if (avgRatingsMap.get(salon.salonID) && ratingsMap.get(salon.salonID)) {
+          <div class="rating_container" matListItemLine>
+
+            <span>{{avgRatingsMap.get(salon.salonID).averageRating | number : '1.0-2'}} <span
+                (click)="showRatings(salon.salonID)">Zobacz opinie</span></span>
+
+          </div>
+          }
+          <mat-button-toggle matListItemLine [checked]="salon.checked"
+            (click)="selectPlace([salon.longitude,salon.latitude],$index)" value="bold">Wybierz
           </mat-button-toggle>
         </mat-list-item>
+
         }
       </mat-list>
     </mat-button-toggle-group>

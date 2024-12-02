@@ -19,11 +19,12 @@
               }
             </span>
             <div matListItemLine>
-              <!-- <button (click)="openRatingDialog(visit.employeeID,visit.visitID, visit.salonID)"
-                mat-button>Oceń</button> -->
               <button (click)="openDetailsDialog(visit.employeeID,visit.visitID, visit.salonID)"
                 mat-button>Szczegóły</button>
+              <!-- <button (click)="openRatingDialog(visit.employeeID,visit.visitID, visit.salonID)"
+                mat-button>Oceń</button> -->
               @if (ratingMap.has(visit.visitID)) {
+
               <span>Ocenione {{ratingMap.get(visit.visitID)?.ratingValue}}</span>
               }
 

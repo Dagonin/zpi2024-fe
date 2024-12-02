@@ -81,7 +81,7 @@ export class HistoryComponent implements OnInit {
     })
       .pipe(
         switchMap(({ visits, salons, services, ratings }) => {
-          console.log(ratings)
+          console.log(visits, salons, services)
           this.serviceMap = this.serviceService.getServiceMap();
           this.salonMap = this.salonService.getSalonMap();
           this.visits = this.visitService.getVisits();
