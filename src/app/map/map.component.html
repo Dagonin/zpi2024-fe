@@ -19,8 +19,11 @@
           @if (avgRatingsMap.get(salon.salonID) && ratingsMap.get(salon.salonID)) {
           <div class="rating_container" matListItemLine>
 
-            <span>{{avgRatingsMap.get(salon.salonID).averageRating | number : '1.0-2'}} <span
-                (click)="showRatings(salon.salonID)">Zobacz opinie</span></span>
+            <span>
+              <mat-icon fontIcon="star"> </mat-icon>
+              {{avgRatingsMap.get(salon.salonID).averageRating | number : '1.0-2'}}
+              <span (click)="showRatings(salon.salonID)">Zobacz opinie</span>
+            </span>
 
           </div>
           }

@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, of, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { RSAHelper } from './rsa-helper';
 import { LoginDTO } from '../classes/login/loginDTO';
+import { jwtDecode } from "jwt-decode";
 
 @Injectable({
   providedIn: 'root'
@@ -84,8 +85,10 @@ export class AuthService {
         tap((response: any) => {
           if (response && response.tokenValue) {
 
+            localStorage.setItem('token', response.tokenValue);
             localStorage.setItem('authUser', email);
-            localStorage.setItem('role', 'user');
+            localStorage.setItem('role', 'C');
+            localStorage.setItem('userID', this.decodeJWT(response.tokenValue).userId)
 
             this.isAuthenticatedSubject.next(true);
             this.userRoleSubject.next('user');
@@ -94,6 +97,42 @@ export class AuthService {
         })
       );
   }
+
+
+  employeeLogin(email: string, password: string): Observable<any> {
+    const newLogin: LoginDTO = {
+      email: email,
+      password: password
+    }
+    const httpOptions =
+    {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+
+    }
+
+    return this.http.post(`${this.api_url}/employee/login`, newLogin, httpOptions)
+      .pipe(
+        tap((response: any) => {
+          if (response && response.tokenValue) {
+
+            localStorage.setItem('token', response.tokenValue);
+            localStorage.setItem('authUser', email);
+            localStorage.setItem('role', 'E');
+            localStorage.setItem('userID', this.decodeJWT(response.tokenValue).userId)
+
+            this.isAuthenticatedSubject.next(true);
+            this.userRoleSubject.next('user');
+            this.router.navigate(['']);
+          }
+        })
+      );
+  }
+
+  getAuthToken() {
+    return localStorage.getItem('token')
+  }
+
+
 
 
   // TODO
@@ -120,6 +159,16 @@ export class AuthService {
 
   getRole(): string {
     return localStorage.getItem('role') as string
+  }
+
+
+  private decodeJWT(token: string): any {
+    try {
+      return jwtDecode(token);
+    } catch (error) {
+      console.error('Invalid JWT Token:', error);
+      return null;
+    }
   }
 
 }

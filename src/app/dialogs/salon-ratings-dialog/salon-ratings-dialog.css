@@ -1,0 +1,14 @@
+* {
+    background-color: black;
+    color: white;
+}
+
+p {
+    text-wrap: wrap;
+}
+
+.mat-item {
+    border: 2px solid gold;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}

@@ -123,6 +123,22 @@ export class VisitService {
   }
 
 
+  rescheduleVisit(visitID: number, time: string, date: string, userID: number, userRole: string) {
+    const RescheduleDTO = {
+      userID: userID,
+      userRole: userRole,
+      rescheduleDate: date,
+      rescheduleTime: time
+    }
+    console.log(RescheduleDTO)
+    const httpOptions =
+    {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    }
+    return this.http.patch<boolean>(`http://localhost:8080/api/crud/appointment-making/reschedule-visit/${visitID}`, RescheduleDTO, httpOptions)
+
+  }
+
 
 
 }

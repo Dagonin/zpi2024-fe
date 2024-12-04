@@ -3,11 +3,17 @@
   <div class="ratings-list">
     <mat-list>
       @for (rating of data.ratings; track $index) {
-      <mat-list-item>
+      <mat-list-item class="mat-item">
         <div>
           <p matListItemLine><strong>Ocena: </strong>{{ rating.ratingValue }}</p>
           <p matListItemLine><strong>Opinia: </strong>{{ rating.ratingOpinion }}</p>
+          <p matListItemLine><strong>Usługi: </strong>@for (service of data.services.get(rating.visitID); track $index)
+            {
+            <p>{{service}}</p>
+            }</p>
+
         </div>
+        <mat-divider></mat-divider>
       </mat-list-item>
       }
     </mat-list>

@@ -64,12 +64,20 @@ export class ServiceService {
   }
 
 
+  getAllServicesForSalon(salonID: number) {
+    const httpOptions =
+    {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    }
+    return this.http.get<any>(`${this.appointment_api_url}/forSalon/${salonID}`, httpOptions)
+  }
+
   getAllServicesByListOfIds(servicesIDs: number[]) {
     const httpOptions =
     {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     }
-    return this.http.post<any>(`${this.service_api_url}/getAllById`, servicesIDs, httpOptions)
+    return this.http.post<ServiceDTO[]>(`${this.service_api_url}/getAllById`, servicesIDs, httpOptions)
   }
 
 
@@ -96,8 +104,8 @@ export class ServiceService {
         // this.mapServices();
       }),
       catchError((error) => {
-        console.error('Failed to initialize salons:', error);
-        return throwError(() => new Error('Could not load salons'));
+        console.error('Failed to initialize services:', error);
+        return throwError(() => new Error('Could not load services'));
       })
     );
   }
@@ -109,11 +117,27 @@ export class ServiceService {
         // this.mapServices();
       }),
       catchError((error) => {
-        console.error('Failed to initialize salons:', error);
-        return throwError(() => new Error('Could not load salons'));
+        console.error('Failed to initialize services:', error);
+        return throwError(() => new Error('Could not load services'));
       })
     );
   }
+
+  initializeServicesForSalon(salonID: number) {
+    return this.getAllServicesForCustomer(salonID).pipe(
+      tap((response: any) => {
+        this.services = response;
+        // this.mapServices();
+      }),
+      catchError((error) => {
+        console.error('Failed to initialize services:', error);
+        return throwError(() => new Error('Could not load services'));
+      })
+    );
+  }
+
+
+
 
   getDistinctIDs(services: { serviceInVisitId: number; serviceID: number, visitID: number }[]): number[] {
     const serviceIDs = new Set<number>();

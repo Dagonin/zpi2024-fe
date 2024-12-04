@@ -10,6 +10,7 @@ import { RatingService } from "../../classes/rating/rating.service";
 
 import { MapComponent } from "../../map/map.component";
 import { MatListModule } from "@angular/material/list";
+import { MatDivider } from "@angular/material/divider";
 
 @Component({
     selector: 'salon-ratings-dialog',
@@ -22,7 +23,8 @@ import { MatListModule } from "@angular/material/list";
         MatDialogActions,
         MatButtonModule,
         MatDialogClose,
-        MatListModule
+        MatListModule,
+        MatDivider
     ],
 })
 export class SalonRatingsDialog {

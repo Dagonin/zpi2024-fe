@@ -122,6 +122,7 @@ export class EmployeePanelComponent {
           customer: customer,
           salon: this.salonService.getSalon(visit.salonID),
           services: this.getServicesForVisit(visit.visitID),
+          visitID: visit.visitID
         },
         color: {
           primary: '#e3bc08',
@@ -164,14 +165,18 @@ export class EmployeePanelComponent {
 
 
 
-  resetDrag() {
+  resetDrag(flag?: boolean) {
     if (this.selectedVisitBool) {
       this.selectedVisit.draggable = false;
       this.selectedVisitBool = false;
+      console.log("reset drag", flag)
       if (this.selectedVisitOld) {
-        this.selectedVisit.start = this.selectedVisitOld.start;
-        this.selectedVisit.end = this.selectedVisitOld.end;
-        this.selectedVisit.title = `${this.selectedVisitOld.start.toLocaleTimeString('en-US', { hour12: false })}  ${this.selectedVisit.meta.customer.customerName} ${this.selectedVisit.meta.customer.customerSurname}`
+        if (!flag) {
+          this.selectedVisit.start = this.selectedVisitOld.start;
+          this.selectedVisit.end = this.selectedVisitOld.end;
+          this.selectedVisit.title = `${this.selectedVisitOld.start.toLocaleTimeString('en-US', { hour12: false })}  ${this.selectedVisit.meta.customer.customerName} ${this.selectedVisit.meta.customer.customerSurname}`
+
+        }
         this.selectedVisit.color = {
           "primary": "#e3bc08",
           "secondary": "#FDF1BA"
@@ -297,6 +302,24 @@ export class EmployeePanelComponent {
     today.setHours(0, 0, 0, 0);
 
     return inputDate.getTime() >= today.getTime();
+  }
+
+  rescheduleVisit() {
+    // TODO
+    console.log(this.selectedVisit)
+    const startTime = this.selectedVisit.start.toLocaleTimeString('en-US', { hour12: false });
+    const date = this.selectedVisit.start.toISOString().split('T')[0];
+    this.resetDrag(true);
+    this.visitService.rescheduleVisit(this.selectedVisit.meta.visitID, startTime, date, 1, "E").subscribe({
+      next(response) {
+        console.log(response)
+
+      },
+      error(error) {
+        console.log(error)
+      },
+    })
+
   }
 
 

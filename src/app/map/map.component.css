@@ -1,6 +1,8 @@
 #body {
     display: inline-flex;
     padding: 1rem;
+    /* background-color: black;
+    color: white; */
 }
 
 #map {

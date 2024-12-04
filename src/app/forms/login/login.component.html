@@ -3,9 +3,9 @@
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <h3>Zaloguj się</h3>
       <p id="user_toggle">
-        <mat-button-toggle-group formControlName="user_type" aria-label="Font Style" value="user">
-          <mat-button-toggle checked value="user">Klient</mat-button-toggle>
-          <mat-button-toggle value="worker">Pracownik</mat-button-toggle>
+        <mat-button-toggle-group formControlName="user_type" aria-label="Font Style" value="C">
+          <mat-button-toggle checked value="C">Klient</mat-button-toggle>
+          <mat-button-toggle value="E">Pracownik</mat-button-toggle>
         </mat-button-toggle-group>
       </p>
 

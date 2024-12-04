@@ -16,6 +16,7 @@ import { Salon } from '../classes/Salon/salon';
 import { RatingService } from '../classes/rating/rating.service';
 import { Rating } from '../classes/rating/rating';
 import { MatTabsModule } from '@angular/material/tabs';
+import { CustomerTimeSlotsDialog } from '../dialogs/customer-time-slots-dialog/customer-time-slots-dialog';
 
 @Component({
   selector: 'app-history',
@@ -67,6 +68,27 @@ export class HistoryComponent implements OnInit {
       width: '600px',
     });
   }
+
+  openRescheduleDialog(visitID: number, rescheduleBool: boolean) {
+    const visit = this.visitMap.get(visitID)
+    let visitTime = 0;
+    const services = this.visitServiceMap.get(visitID)
+    services?.forEach(service => {
+      visitTime += this.serviceMap.get(service)?.serviceSpan ?? 0;
+    })
+    // const employee = this.employeeMap.get(visit.employeeID)
+    const dialogRef = this.dialog.open(CustomerTimeSlotsDialog, {
+      data: {
+        visit: visit,
+        visitTime: visitTime,
+        bool: rescheduleBool,
+        services: services
+      },
+      height: '800px',
+      width: '1200px',
+    });
+  }
+
   constructor(public visitService: VisitService, private serviceService: ServiceService, private salonService: SalonService, private ratingService: RatingService) { }
 
 

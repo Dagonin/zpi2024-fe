@@ -2,8 +2,8 @@
 
   <div id="visits">
     @if (selectedVisitBool) {
-    <div class="center"><button mat-flat-button>Przełóż wizytę</button> <button (click)="resetDrag()"
-        mat-flat-button>Anuluj</button>
+    <div class="center"><button mat-flat-button (click)="rescheduleVisit()">Przełóż wizytę</button> <button
+        (click)="resetDrag()" mat-flat-button>Anuluj</button>
     </div>
     }@else {
     <div id="make_appointment"><button mat-flat-button>Umów wizytę</button></div>

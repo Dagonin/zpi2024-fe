@@ -35,10 +35,13 @@ import { MatSnackBar, MatSnackBarAction, MatSnackBarActions, MatSnackBarLabel, M
 export class LoginComponent {
 
   protected loginForm = new FormGroup({
-    user_type: new FormControl(''),
+    user_type: new FormControl('', Validators.required),
     login: new FormControl('', [Validators.required, Validators.minLength(5)]),
-    password: new FormControl('', [Validators.required, Validators.minLength(8)])
+    password: new FormControl('', [Validators.required, Validators.minLength(8)]),
+
   }, { updateOn: 'change' },)
+
+
 
 
   opened: boolean = false;
@@ -49,23 +52,33 @@ export class LoginComponent {
   }
 
 
-  //  Here encrypt password and send credentials to the server
   onSubmit() {
+
     const vals = this.loginForm.getRawValue();
     if (this.loginForm.valid) {
+      console.log(vals)
+      if (vals.user_type == "C") {
+        this.authService.login(vals.login!, vals.password!).subscribe({
+          next: (response) => {
+            console.log('Login successful', response);
+          },
+          error: (error) => {
+            console.log('Login failed', error);
+            this.openSnackBar("Taki użytkownik nie istnieje")
+          }
+        });
+      } else if (vals.user_type == "E") {
+        this.authService.employeeLogin(vals.login!, vals.password!).subscribe({
+          next: (response) => {
+            console.log('Login successful', response);
+          },
+          error: (error) => {
+            console.log('Login failed', error);
+            this.openSnackBar("Taki użytkownik nie istnieje")
+          }
+        });
+      }
 
-
-      this.authService.login(vals.login!, vals.password!).subscribe({
-        next: (response) => {
-          // Navigate to another page on success or show a success message
-          console.log('Login successful', response);
-        },
-        error: (error) => {
-          // Handle error, show an error message
-          console.log('Login failed', error);
-          this.openSnackBar("Taki użytkownik nie istnieje")
-        }
-      });
     }
   }
 
