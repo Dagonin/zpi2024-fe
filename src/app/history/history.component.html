@@ -4,7 +4,7 @@
       <mat-tab label="Przyszłe wizyty">
         <mat-list>
           @for (visit of visits; track $index) {
-          @if (isFutureTime(visit.visitDate,visit.visitStartTime)) {
+          @if (isFutureTime(visit.visitDate,visit.visitStartTime) && visit.visitStatus == "RESERVED") {
           <mat-list-item class="list_item">
             @let emp = employeeMap.get(visit.employeeID);
             @let salon = salonMap.get(visit.salonID);
@@ -60,10 +60,41 @@
                 mat-button>Oceń</button>
               <button (click)="openDetailsDialog(visit.employeeID,visit.visitID, visit.salonID)"
                 mat-button>Szczegóły</button>
-              <button (click)="openRescheduleDialog(visit.visitID,false)" mat-button>Przełóż wizytę</button>
+              <button (click)="openRescheduleDialog(visit.visitID,false)" mat-button>Umów ponownie</button>
               @if (ratingMap.has(visit.visitID)) {
               <span>Ocenione {{ratingMap.get(visit.visitID)?.ratingValue}}</span>
               }
+
+            </div>
+
+          </mat-list-item>
+          <mat-divider></mat-divider>
+
+          }
+          }
+        </mat-list>
+      </mat-tab>
+      <mat-tab label="Anulowane wizyty">
+        <mat-list>
+          @for (visit of visits; track $index) {
+          @if (visit.visitStatus == "CANCELLED_CUSTOMER" || visit.visitStatus == "CANCELLED_EMPLOYEE") {
+          <mat-list-item class="list_item">
+            @let emp = employeeMap.get(visit.employeeID);
+            @let salon = salonMap.get(visit.salonID);
+            <span matListItemTitle>{{visit.visitDate}} {{visit.visitStartTime}} </span>
+            <span matListItemLine>{{salon?.salonName}} {{salon?.salonCity}} {{salon?.salonStreet}}</span>
+            <span matListItemLine>{{emp?.employeeName}} {{emp?.employeeSurname}} {{emp?.employeeDialNumber}}
+              {{emp?.employeeEmail}}</span>
+
+            <span matListItemLine>
+              @for (serviceID of visitServiceMap.get(visit.visitID); track $index) {
+              <div>{{serviceMap.get(serviceID)?.serviceName}} </div>
+              }
+            </span>
+            <div matListItemLine>
+              <button (click)="openDetailsDialog(visit.employeeID,visit.visitID, visit.salonID)"
+                mat-button>Szczegóły</button>
+              <button (click)="openRescheduleDialog(visit.visitID,false)" mat-button>Umów ponownie</button>
 
             </div>
 

@@ -9,6 +9,7 @@ import { EmployeeService } from '../employee/employee.service';
 import { CustomerService } from '../customer/customer.service';
 import { CustomerDTO } from '../customer/customerDTO';
 import { Employee } from '../employee/employee';
+import { visit } from '../../place/models/visit';
 
 @Injectable({
   providedIn: 'root'
@@ -78,7 +79,7 @@ export class VisitService {
   initializeVisitsByCustomerID(customerID: number) {
     return this.getAllVisitsWithIdsByCustomerID(customerID).pipe(
       switchMap((visits) => {
-        this.visits = visits;
+        this.visits = this.sortVisits(visits);
         const distinctIDs = getDistinctIDs(visits);
 
         return this.employeeService.getAllEmployeesByListOfId(distinctIDs.distinctEmployeeIDs).pipe(
@@ -93,7 +94,15 @@ export class VisitService {
     );
   }
 
+  private sortVisits(visits: Visit[]): any[] {
 
+    return visits.sort((a, b) => {
+      const dateA = new Date(`${a.visitDate}T${a.visitStartTime}`);
+      const dateB = new Date(`${b.visitDate}T${b.visitStartTime}`);
+
+      return dateA.getTime() - dateB.getTime();
+    });
+  }
 
   private getAllVisitsWithIdsByEmployeeID(employeeID: number): Observable<Visit[]> {
     const httpOptions =

@@ -97,7 +97,6 @@ export class EmployeePanelComponent {
         },
         error: (error) => {
           console.error('Error loading data:', error);
-          // Optionally show a user-friendly error message
         },
       });
   }
@@ -118,7 +117,8 @@ export class EmployeePanelComponent {
 
 
   private handleVisits(): void {
-    const visits = this.visitService.getVisits();
+    const visits = this.visitService.getVisits().filter(visit => visit.visitStatus === "RESERVED");
+    // const visits = this.visitService.getVisits();
     this.customerMap = this.visitService.getCustomerMap();
     this.groupedVisits = this.visitService.groupVisitsByDate(visits);
 
@@ -224,34 +224,31 @@ export class EmployeePanelComponent {
     { event, newStart, newEnd, allDay }: CalendarEventTimesChangedEvent,
     addCssClass = true
   ): boolean => {
-    // Define the boundary time (8:00 PM)
     const boundaryTime = new Date(newStart);
-    boundaryTime.setHours(20, 0, 0, 0); // 8:00 PM
+    boundaryTime.setHours(20, 0, 0, 0);
     event.title = `${newStart.toLocaleTimeString('en-US', { hour12: false })} ${this.selectedVisit.meta.customer.customerName} ${this.selectedVisit.meta.customer.customerSurname}`
-    // Get the current time
     const currentTime = new Date();
 
-    // Block dragging to a time earlier than the current time
     if (newStart < currentTime) {
       console.warn("Cannot drag to a time earlier than the current time.");
       event.color = {
-        primary: "#ad2121", // Error color
+        primary: "#ad2121",
         secondary: "#FADBD8",
       };
-      return false; // Block the event change
+      return false;
     }
 
-    // Block dragging to a time after 8:00 PM
+
     if (newEnd && newEnd > boundaryTime) {
       console.warn("End time exceeds the allowed limit of 8:00 PM.");
       event.color = {
-        primary: "#ad2121", // Error color
+        primary: "#ad2121",
         secondary: "#FADBD8",
       };
-      return false; // Block the event change
+      return false;
     }
 
-    // Check for overlapping events
+
     const overlappingEvent = this.events.find((otherEvent) => {
       let retBool = false;
       if (newEnd && otherEvent.end) {
