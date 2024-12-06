@@ -101,17 +101,6 @@ export class AuthService {
 
 
 
-
-  // TODO
-  private getCustomerID() {
-    const httpOptions =
-    {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-    }
-  }
-
-
-
   logout(): void {
     localStorage.removeItem('authUser');
     localStorage.removeItem('role');

@@ -18,8 +18,11 @@
     <span [routerLink]="'/login'" mat-raised-button>Zaloguj się</span>
     <span [routerLink]="'/register'" mat-raised-button>Załóż konto</span>
     }@else{
+    @if (userRole == "C") {
     <span [routerLink]="'/history'" mat-raised-button>Historia wizyt</span>
+    } @else if (userRole == "E") {
     <span [routerLink]="'/emp_panel'" mat-raised-button>Panel pracownika</span>
+    }
     }
 
 
@@ -37,8 +40,9 @@
 
   <mat-menu #menu="matMenu">
     <button mat-menu-item [routerLink]="'/change_password'">Zmień hasło</button>
-
+    @if (userRole == "C") {
     <button mat-menu-item (click)="openProfileDialog()">Profil</button>
+    }
     <button mat-menu-item (click)="logout()">Wyloguj się</button>
   </mat-menu>
 </mat-toolbar>

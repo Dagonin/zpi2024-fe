@@ -60,6 +60,7 @@ export class LoginComponent {
         this.authService.login(vals.login!, vals.password!).subscribe({
           next: (response) => {
             console.log('Login successful', response);
+            window.location.reload();
           },
           error: (error) => {
             console.log('Login failed', error);
@@ -70,6 +71,7 @@ export class LoginComponent {
         this.authService.employeeLogin(vals.login!, vals.password!).subscribe({
           next: (response) => {
             console.log('Login successful', response);
+            window.location.reload();
           },
           error: (error) => {
             console.log('Login failed', error);

@@ -37,6 +37,7 @@ export class AppComponent implements OnInit {
   public title = 'inz';
   public authService = inject(AuthService);
   public isAuthenticated$ = this.authService.isAuthenticated$;
+
   public userRole: string = '';
   public username: string | null = '';
   private authSubscription!: Subscription;
@@ -45,28 +46,28 @@ export class AppComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.userRole = this.authService.getRole();
+    // this.userRole = this.authService.getRole();
 
-    console.log(this.userRole)
-    // this.authSubscription = this.authService.isAuthenticated$.subscribe(
-    //   (isAuthenticated) => {
-    //     this.isAuthenticated = isAuthenticated;
-    //   }
-    // );
+    // console.log(this.userRole)
+
     this.roleSubscription = this.authService.userRole$.subscribe(
       (userRole) => {
         this.userRole = userRole;
         this.username = localStorage.getItem('authUser');
+        console.log(userRole)
       }
     );
   }
+
+
+
 
   readonly dialog = inject(MatDialog);
 
   openProfileDialog() {
     this.dialog.open(UserProfileDialogComponent, {
-      height: '500px',
-      width: '600px'
+      height: '450px',
+      width: '400px'
     })
   }
 

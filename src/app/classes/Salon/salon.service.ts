@@ -49,10 +49,7 @@ export class SalonService {
     }
 
     // TODO
-    getPlaceBarbers(id: string) {
-        // return place with correct id
-        // return this.salons[0].barbers;
-    }
+
 
     getPlaceTreeBarbers() {
         // let dataTree = new Map<string, string[]>();

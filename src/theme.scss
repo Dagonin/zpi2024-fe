@@ -27,25 +27,28 @@ $test_theme: mat.define-theme((
 
 
 
-
-
-$primary: gold;
-$secondary: orange;
+$primary: #EFBF04;
+$background: #121212;
+$gray_background: #222222;
+$hover_background: #ffc107;
+$hover_border: #e6b800;
+$color: white;
+$disabled_background: #444444;
+$disabled_color: #888888;
 
 :root {
   @include mat.form-field-overrides((
-    container-color: $primary,
     focus-active-indicator-color: black,
     focus-outline-color: $primary,
     focus-label-text-color: $primary
   ));
 
   @include mat.button-overrides((
-    container-color: $secondary,
+    container-color: $background,
   ));
 
   @include mat.button-toggle-overrides((
-    background-color: $secondary,
+    background-color: $background,
     // selected-state-background-color: $primary
   ));
 
@@ -56,15 +59,56 @@ $secondary: orange;
   ));
 
 
+  @include mat.dialog-overrides((
+    container-color: black,
+    subhead-color: $primary,
+  ));
+
+  @include mat.tabs-overrides((
+    active-indicator-color: $primary,
+    active-focus-indicator-color: $primary,
+    active-label-text-color: $color,
+    inactive-label-text-color: $color,
+    inactive-hover-label-text-color: $color,
+    active-focus-label-text-color: $color
+  ));
+
+  @include mat.stepper-overrides((
+    container-color: $background
+  ));
+
+  @include mat.expansion-overrides((
+    container-background-color: $background,
+    header-text-color: $color
+  ));
 
 
+  @include mat.list-overrides((
+    list-item-container-color: $background,
+    list-item-label-text-color: $color,
+    list-item-supporting-text-color: $color,
+    list-item-hover-label-text-color: $color
+  ));
+
+  @include mat.card-overrides((
+    subtitle-text-color: $color,
+  ));
+
+
+  @include mat.datepicker-overrides((
+    calendar-container-text-color: $color,
+    calendar-date-text-color: $color,
+    calendar-container-background-color: $background,
+    calendar-date-disabled-state-text-color: $gray_background,
+    calendar-date-selected-state-background-color: $hover_background,
+    calendar-date-selected-state-text-color: black,
+    calendar-date-hover-state-background-color: $primary,
+    calendar-date-today-selected-state-outline-color: $gray_background,
+  ));
 
   // NOT WORKING
 
-  // @include mat.checkbox-overrides((
-  //   selected-checkmark-color: red,
 
-  // ));
   // @include mat.stepper-overrides((
   //   header-icon-foreground-color: black,
   //   header-icon-background-color: $secondary,

@@ -2,6 +2,27 @@
 @import '../node_modules/angular-calendar/css/angular-calendar.css';
 @import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Carattere&family=Noto+Serif+Display:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
 
+$primary: #EFBF04;
+$background: #121212;
+$gray_background: #222222;
+$hover_background: #ffc107;
+$hover_border: #e6b800;
+$color: white;
+$disabled_background: #444444;
+$disabled_color: #888888;
+
+:root {
+  --primary: #{$primary};
+  --background: #{$background};
+  --gray-background: #{$gray_background};
+  --hover-background: #{$hover_background};
+  --hover-border: #{$hover_border};
+  --color: #{$color};
+  --disabled-background: #{$disabled_background};
+  --disabled-color: #{$disabled_color};
+}
+
+
 
 html,
 body {
@@ -29,3 +50,4 @@ body {
     justify-content: center;
     align-items: center;
 }
+

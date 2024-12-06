@@ -10,7 +10,7 @@ import { Employee } from '../classes/employee/employee';
 import { ServiceService } from '../classes/service/service.service';
 import { HistoryDetailsDialog } from '../dialogs/history-details-dialog/history-details-dialog';
 import { SalonService } from '../classes/Salon/salon.service';
-import { forkJoin, switchMap } from 'rxjs';
+import { catchError, forkJoin, of, switchMap } from 'rxjs';
 import { ServiceDTO } from '../classes/service/serviceDTO';
 import { Salon } from '../classes/Salon/salon';
 import { RatingService } from '../classes/rating/rating.service';
@@ -19,6 +19,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { CustomerTimeSlotsDialog } from '../dialogs/customer-time-slots-dialog/customer-time-slots-dialog';
 import { ConfirmDialogSerice } from '../dialogs/confirm-dialog/confirm-dialog.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-history',
@@ -104,21 +105,26 @@ export class HistoryComponent implements OnInit {
     });
   }
 
-  constructor(public visitService: VisitService, private serviceService: ServiceService, private salonService: SalonService, private ratingService: RatingService, private confirmDialogService: ConfirmDialogSerice) { }
+  constructor(public visitService: VisitService, private serviceService: ServiceService, private salonService: SalonService, private ratingService: RatingService, private confirmDialogService: ConfirmDialogSerice, private authService: AuthService) { }
 
 
   ngOnInit(): void {
-    // TODO: Replace hardcoded customer ID with dynamic value if necessary.
+    const userID = this.authService.getUserID();
 
     forkJoin({
-      visits: this.visitService.initializeVisitsByCustomerID(1),
+      visits: this.visitService.initializeVisitsByCustomerID(userID),
       salons: this.salonService.initializeSalons(),
-      services: this.serviceService.initializeServicesForCustomer(1),
-      ratings: this.ratingService.getAllRatingForCustomer(1)
+      services: this.serviceService.initializeServicesForCustomer(userID),
+      ratings: this.ratingService.getAllRatingForCustomer(userID).pipe(
+        catchError((error) => {
+          console.error('Error fetching ratings:', error);
+          return of([]);
+        })
+      ),
     })
       .pipe(
         switchMap(({ visits, salons, services, ratings }) => {
-          console.log(visits, salons, services)
+          console.log(visits, salons, services);
           this.serviceMap = this.serviceService.getServiceMap();
           this.salonMap = this.salonService.getSalonMap();
           this.visits = this.visitService.getVisits();
@@ -131,7 +137,7 @@ export class HistoryComponent implements OnInit {
           this.ratingMap.clear();
           ratings.forEach((rating) => {
             this.ratingMap.set(rating.visitID, rating);
-          })
+          });
 
           this.visitServiceMap = this.serviceService.createVisitServiceMap(services);
 
@@ -141,16 +147,16 @@ export class HistoryComponent implements OnInit {
       )
       .subscribe({
         next: (allServices) => {
-
           this.serviceMap = this.serviceService.getServiceMap();
           console.log(this.serviceMap, this.visitServiceMap);
         },
         error: (error) => {
-          console.error('Error loading data:', error);
-          this.openSnackBar("Coś poszło nie tak, odśwież stronę")
+          console.log('Error loading data:', error);
+          this.openSnackBar('Coś poszło nie tak, odśwież stronę');
         },
       });
   }
+
 
   isFutureTime(dateString: string, timeString: string): boolean {
     const combinedDate = new Date(`${dateString}T${timeString}`);
@@ -174,7 +180,7 @@ export class HistoryComponent implements OnInit {
               window.location.reload();
             },
             error: (error) => {
-              console.error('Error canceling visit:', error);
+              console.log('Error canceling visit:', error);
               this.openSnackBar("Coś poszło nie tak, odśwież stronę")
             },
           });

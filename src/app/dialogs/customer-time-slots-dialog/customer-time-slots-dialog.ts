@@ -178,12 +178,12 @@ export class CustomerTimeSlotsDialog implements OnInit {
     }
 
     rescheduleVisit() {
-        // TODO
         const startTime = this.timeslotsService.indexToHour(
             this.timeslotsService.timeslotsFormGroup.controls.time_slot.value
         ) + ":00";
-        const date = this.timeslotsService.timeslotsFormGroup.controls.day.value?.toISOString().split('T')[0];
 
+        let date = this.timeslotsService.timeslotsFormGroup.controls.day.value;
+        date?.setHours(1);
         if (date) {
             this.confirmDialogService
                 .confirm({
@@ -194,7 +194,7 @@ export class CustomerTimeSlotsDialog implements OnInit {
                 })
                 .subscribe((confirmed) => {
                     if (confirmed) {
-                        this.visitService.rescheduleVisit(this.data.visit.visitID, startTime, date, 1, "C").subscribe({
+                        this.visitService.rescheduleVisit(this.data.visit.visitID, startTime, date.toISOString().split('T')[0], this.data.visit.customerID, "C").subscribe({
                             next: (response) => {
                                 console.log('Visit rescheduled successfully:', response);
                                 // Reload the page
@@ -214,7 +214,6 @@ export class CustomerTimeSlotsDialog implements OnInit {
 
 
     remakeAppointment() {
-        // TODO
         let date = this.timeslotsService.timeslotsFormGroup.controls.day.value;
         date?.setHours(1);
 
@@ -225,7 +224,7 @@ export class CustomerTimeSlotsDialog implements OnInit {
                 this.timeslotsService.indexToHour(this.timeslotsService.timeslotsFormGroup.controls.time_slot.value) + ":00",
                 'RESERVED',
                 this.data.visit.employeeID,
-                1,
+                this.data.visit.customerID,
                 this.data.services
             );
             this.confirmDialogService

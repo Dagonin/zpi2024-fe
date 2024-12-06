@@ -32,6 +32,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { FindClientDialog } from '../dialogs/find-client-dialog/find-client-dialog';
 import { ConfirmDialogSerice } from '../dialogs/confirm-dialog/confirm-dialog.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-employee-panel',
@@ -70,14 +71,15 @@ export class EmployeePanelComponent {
   };
   viewDate = new Date();
 
-  constructor(private visitService: VisitService, public salonService: SalonService, private serviceService: ServiceService, private confirmDialogService: ConfirmDialogSerice) { }
+  constructor(private visitService: VisitService, public salonService: SalonService, private serviceService: ServiceService, private confirmDialogService: ConfirmDialogSerice, private authService: AuthService) { }
 
   ngOnInit(): void {
+    const userID = this.authService.getUserID();
+    console.log(userID)
     forkJoin({
-      // TODO id
-      visits: this.visitService.initializeVisitsByEmployeeID(1),
+      visits: this.visitService.initializeVisitsByEmployeeID(userID),
       salons: this.salonService.initializeSalons(),
-      services: this.serviceService.initializeServicesForEmployee(1),
+      services: this.serviceService.initializeServicesForEmployee(userID),
     })
       .pipe(
         tap(({ services }) => {
@@ -321,7 +323,6 @@ export class EmployeePanelComponent {
   }
 
   rescheduleVisit() {
-    // TODO
     this.confirmDialogService
       .confirm({
         title: 'Przekładanie wizyty',
@@ -340,7 +341,7 @@ export class EmployeePanelComponent {
             this.selectedVisit.meta.visitID,
             startTime,
             date,
-            1,
+            this.selectedVisit.meta.customer.customerID,
             'E'
           ).subscribe({
             next: (response) => {

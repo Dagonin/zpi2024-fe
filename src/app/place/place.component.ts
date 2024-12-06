@@ -35,6 +35,7 @@ import { Subject, switchMap, takeUntil } from 'rxjs';
 import { RatingService } from '../classes/rating/rating.service';
 import { ConfirmDialogSerice } from '../dialogs/confirm-dialog/confirm-dialog.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-place',
@@ -74,7 +75,8 @@ export class PlaceComponent implements OnInit, OnDestroy {
     private salonService: SalonService,
     public timeslotsService: TimeSlotsService,
     private ratingService: RatingService,
-    private confirmDialogService: ConfirmDialogSerice
+    private confirmDialogService: ConfirmDialogSerice,
+    private authService: AuthService
   ) { }
 
   selectedServicesChange = false;
@@ -377,7 +379,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
   }
 
   makeAppointment() {
-    let userId = 2;
+    let userId = this.authService.getUserID();
     if (this.flag) {
       userId = parseInt(this.flag);
     }
@@ -391,7 +393,6 @@ export class PlaceComponent implements OnInit, OnDestroy {
     console.log(barber, date);
 
     if (date && barber) {
-      //  TODO
       let newVisit = new visit(
         this.salon.salonID,
         date.toISOString().split('T')[0],

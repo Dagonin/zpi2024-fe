@@ -30,19 +30,19 @@ export const routes: Routes = [{
         import('./history/history.component').then((c) => c.HistoryComponent),
 }, {
     path: 'place/:salonid',
+    canActivate: [authGuard],
     loadComponent: () =>
         import('./place/place.component').then((c) => c.PlaceComponent),
 },
 {
     path: 'place/:salonid/:flag',
+    canActivate: [authGuard, employeeGuard],
     loadComponent: () =>
         import('./place/place.component').then((c) => c.PlaceComponent),
 },
 {
     path: 'emp_panel',
-    // TODO
-    // DODAC EMPLOYEE GUARD
-    canActivate: [authGuard],
+    canActivate: [authGuard, employeeGuard],
     loadComponent: () =>
         import('./employee-panel/employee-panel.component').then((c) => c.EmployeePanelComponent),
 }, {
