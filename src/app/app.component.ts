@@ -11,6 +11,8 @@ import { AuthService } from './auth/auth.service';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatDialog } from '@angular/material/dialog';
+import { UserProfileDialogComponent } from './dialogs/user-profile-dialog/user-profile-dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -57,6 +59,15 @@ export class AppComponent implements OnInit {
         this.username = localStorage.getItem('authUser');
       }
     );
+  }
+
+  readonly dialog = inject(MatDialog);
+
+  openProfileDialog() {
+    this.dialog.open(UserProfileDialogComponent, {
+      height: '500px',
+      width: '600px'
+    })
   }
 
   logout() {

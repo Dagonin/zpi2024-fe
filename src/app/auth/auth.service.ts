@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { RSAHelper } from './rsa-helper';
 import { LoginDTO } from '../classes/login/loginDTO';
 import { jwtDecode } from "jwt-decode";
+import { CustomerService } from '../classes/customer/customer.service';
+import { CustomerDTO } from '../classes/customer/customerDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -17,9 +19,8 @@ export class AuthService {
 
   private userRoleSubject: BehaviorSubject<string>;
   public userRole$: Observable<string>;
-  private rsa_helper: RSAHelper;
 
-  constructor(private http: HttpClient, private router: Router
+  constructor(private http: HttpClient, private router: Router, private customerService: CustomerService
   ) {
     const isLoggedIn = this.isLoggedIn();
     const getRole = this.getRole();
@@ -27,7 +28,6 @@ export class AuthService {
     this.isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
     this.userRoleSubject = new BehaviorSubject<string>(getRole);
     this.userRole$ = this.userRoleSubject.asObservable();
-    this.rsa_helper = new RSAHelper();
     if (isLoggedIn && this.isTokenExpired(this.getAuthToken())) {
       this.logoutOnExpiredToken();
     }
@@ -160,6 +160,17 @@ export class AuthService {
     }
   }
 
+  getUserID(): number {
+    const userID = localStorage.getItem("userID");
+    if (userID) {
+      return parseInt(userID);
+    }
+    return 0;
+  }
 
+  getUser() {
+    const userEmail = localStorage.getItem("authUser");
+    return this.customerService.getCustomerByEmail(userEmail!);
+  }
 
 }

@@ -170,6 +170,18 @@ export class VisitService {
 
   }
 
+
+
+  getNumberOfFinishedVisitsByCustomerID(customerID: number) {
+    const httpOptions =
+    {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    }
+    return this.http.get<number>(`${this.api_url}/doneForCustomer/${customerID}`, httpOptions)
+
+  }
+
+
 }
 
 
@@ -187,6 +199,8 @@ function getDistinctIDs(visits: { customerID: number; employeeID: number }[]): {
     distinctEmployeeIDs: Array.from(employeeIDs)
   };
 }
+
+
 
 
 

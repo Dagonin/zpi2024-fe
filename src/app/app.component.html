@@ -37,6 +37,8 @@
 
   <mat-menu #menu="matMenu">
     <button mat-menu-item [routerLink]="'/change_password'">Zmień hasło</button>
+
+    <button mat-menu-item (click)="openProfileDialog()">Profil</button>
     <button mat-menu-item (click)="logout()">Wyloguj się</button>
   </mat-menu>
 </mat-toolbar>
