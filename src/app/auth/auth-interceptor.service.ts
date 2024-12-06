@@ -7,6 +7,7 @@ import { AuthService } from "./auth.service";
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
     const authService = inject(AuthService);
     const router = inject(Router);
+
     const authToken = authService.getAuthToken();
 
     if (authToken) {
@@ -15,13 +16,18 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
                 Authorization: `Bearer ${authToken}`
             }
         });
-
     }
+
     return next(req).pipe(
         catchError((error) => {
-            if (error instanceof HttpErrorResponse && error.status === 401) {
-                router.navigate(['login']);
+            if (error instanceof HttpErrorResponse) {
+                if (error.status === 401) {
+                    console.warn('Unauthorized or expired token detected. Logging out...');
+                    authService.logout();
+                    router.navigate(['login']);
+                }
             }
+
             return throwError(() => error);
         })
     );

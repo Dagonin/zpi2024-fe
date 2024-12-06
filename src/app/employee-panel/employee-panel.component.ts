@@ -29,6 +29,9 @@ import { ServiceDTO } from '../classes/service/serviceDTO';
 import { SalonComponentService } from '../place/services/salon-component.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTabsModule } from '@angular/material/tabs';
+import { FindClientDialog } from '../dialogs/find-client-dialog/find-client-dialog';
+import { ConfirmDialogSerice } from '../dialogs/confirm-dialog/confirm-dialog.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-employee-panel',
@@ -67,7 +70,7 @@ export class EmployeePanelComponent {
   };
   viewDate = new Date();
 
-  constructor(private visitService: VisitService, public salonService: SalonService, private serviceService: ServiceService) { }
+  constructor(private visitService: VisitService, public salonService: SalonService, private serviceService: ServiceService, private confirmDialogService: ConfirmDialogSerice) { }
 
   ngOnInit(): void {
     forkJoin({
@@ -99,6 +102,19 @@ export class EmployeePanelComponent {
       });
   }
 
+
+  private _snackBar = inject(MatSnackBar);
+
+
+  openSnackBar(text: string) {
+    this._snackBar.open(text, "", {
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      duration: 5000,
+      panelClass: ['error_snack']
+    });
+
+  }
 
 
   private handleVisits(): void {
@@ -163,6 +179,9 @@ export class EmployeePanelComponent {
     });
   }
 
+  openCreateVisitDialog() {
+    this.dialog.open(FindClientDialog)
+  }
 
 
   resetDrag(flag?: boolean) {
@@ -306,20 +325,40 @@ export class EmployeePanelComponent {
 
   rescheduleVisit() {
     // TODO
-    console.log(this.selectedVisit)
-    const startTime = this.selectedVisit.start.toLocaleTimeString('en-US', { hour12: false });
-    const date = this.selectedVisit.start.toISOString().split('T')[0];
-    this.resetDrag(true);
-    this.visitService.rescheduleVisit(this.selectedVisit.meta.visitID, startTime, date, 1, "E").subscribe({
-      next(response) {
-        console.log(response)
+    this.confirmDialogService
+      .confirm({
+        title: 'Przekładanie wizyty',
+        message: `Czy jesteś pewny, że chcesz przełożyć tą wizyte?`,
+        confirmText: 'Tak',
+        cancelText: 'Nie',
+      })
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          console.log(this.selectedVisit);
+          const startTime = this.selectedVisit.start.toLocaleTimeString('en-US', { hour12: false });
+          const date = this.selectedVisit.start.toISOString().split('T')[0];
+          this.resetDrag(true);
 
-      },
-      error(error) {
-        console.log(error)
-      },
-    })
-
+          this.visitService.rescheduleVisit(
+            this.selectedVisit.meta.visitID,
+            startTime,
+            date,
+            1,
+            'E'
+          ).subscribe({
+            next: (response) => {
+              console.log('Reschedule successful:', response);
+              window.location.reload();
+            },
+            error: (error) => {
+              console.error('Error during rescheduling:', error);
+              this.openSnackBar("Coś poszło nie tak, odśwież stronę")
+            },
+          });
+        } else {
+          console.log('Reschedule canceled.');
+        }
+      });
   }
 
 

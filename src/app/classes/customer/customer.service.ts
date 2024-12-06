@@ -21,4 +21,12 @@ export class CustomerService {
     };
     return this.http.post<CustomerDTO[]>(`${this.api_url}/getAllById`, customersIDS, httpOptions);
   }
+
+  getCustomerByEmail(customerEmail: string) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
+    return this.http.post<CustomerDTO>(`${this.api_url}/find-by-email`, { email: customerEmail }, httpOptions);
+  }
+
 }

@@ -33,6 +33,8 @@ import { SalonService } from '../classes/Salon/salon.service';
 import { Salon } from '../classes/Salon/salon';
 import { Subject, switchMap, takeUntil } from 'rxjs';
 import { RatingService } from '../classes/rating/rating.service';
+import { ConfirmDialogSerice } from '../dialogs/confirm-dialog/confirm-dialog.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-place',
@@ -71,7 +73,8 @@ export class PlaceComponent implements OnInit, OnDestroy {
     private salonComponentService: SalonComponentService,
     private salonService: SalonService,
     public timeslotsService: TimeSlotsService,
-    private ratingService: RatingService
+    private ratingService: RatingService,
+    private confirmDialogService: ConfirmDialogSerice
   ) { }
 
   selectedServicesChange = false;
@@ -90,6 +93,19 @@ export class PlaceComponent implements OnInit, OnDestroy {
   minDate!: Date;
   maxDate!: Date;
 
+
+  private _snackBar = inject(MatSnackBar);
+
+
+  openSnackBar(text: string) {
+    this._snackBar.open(text, "", {
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      duration: 5000,
+      panelClass: ['error_snack']
+    });
+
+  }
   // myFilter = (d: Date | null): boolean => {
   //   const day = (d || new Date()).getDay();
   //   // Prevent Saturday and Sunday from being selected.
@@ -361,39 +377,57 @@ export class PlaceComponent implements OnInit, OnDestroy {
   }
 
   makeAppointment() {
+    let userId = 2;
     if (this.flag) {
-      this.dialog.open(UserEmailDialog);
+      userId = parseInt(this.flag);
     }
 
-    let date = this.timeslotsService.timeslotsFormGroup.controls.day.value
-    date?.setHours(1)
+    let date = this.timeslotsService.timeslotsFormGroup.controls.day.value;
+    date?.setHours(1);
 
-    //  to trzeba poprawić
-    let barber = this.employees[this.barbersFormGroup.controls.barber.value ?? 0].employeeID
-    console.log(barber, date)
-    // TODO 
+    // Get barber ID
+    let barber = this.employees[this.barbersFormGroup.controls.barber.value ?? 0].employeeID;
+
+    console.log(barber, date);
+
     if (date && barber) {
-      let newVisit = new visit(this.salon.salonID,
+      //  TODO
+      let newVisit = new visit(
+        this.salon.salonID,
         date.toISOString().split('T')[0],
         this.timeslotsService.indexToHour(this.timeslotsService.timeslotsFormGroup.controls.time_slot.value) + ":00",
         'RESERVED',
         barber,
-        2,
+        userId,
         this.checkboxService.getSelectedServicesIds()
-      )
-      this.salonComponentService.makeAppointment(newVisit).subscribe({
-        next: (response: any) => {
-          console.log(response)
-        },
-        error: (error) => {
-          console.error(error)
-        }
-      })
+      );
+
+      this.confirmDialogService
+        .confirm({
+          title: 'Potwierdź umówienie wizyty',
+          message: `Czy jesteś pewny, że chcesz się umówić na wizytę: ${barber} w dniu ${date.toDateString()}?`,
+          confirmText: 'Tak',
+          cancelText: 'Nie',
+        })
+        .subscribe((confirmed) => {
+          if (confirmed) {
+            this.salonComponentService.makeAppointment(newVisit).subscribe({
+              next: (response: any) => {
+                console.log('Appointment created successfully:', response);
+                window.location.reload();
+              },
+              error: (error) => {
+                console.error('Error creating appointment:', error);
+                this.openSnackBar("Coś poszło nie tak, odśwież stronę.")
+              },
+            });
+          } else {
+            console.log('Appointment creation aborted.');
+          }
+        });
     }
-
-
-
   }
+
 
 
   centerMap() {

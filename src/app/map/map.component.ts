@@ -165,7 +165,7 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.mapService.removeMap();
+    // this.mapService.removeMap();
   }
 
   centerMap() {

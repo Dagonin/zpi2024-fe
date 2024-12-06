@@ -19,6 +19,7 @@ export class VisitService {
 
 
   api_url = `http://localhost:8080/api/crud/visit`
+  api_url_appointment = `http://localhost:8080/api/crud/appointment-making`
 
 
   // TODO to chyba niepotrzebne
@@ -135,11 +136,30 @@ export class VisitService {
     {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     }
-    return this.http.patch<boolean>(`http://localhost:8080/api/crud/appointment-making/reschedule-visit/${visitID}`, RescheduleDTO, httpOptions)
+    return this.http.patch<boolean>(`${this.api_url_appointment}/reschedule-visit/${visitID}`, RescheduleDTO, httpOptions)
 
   }
 
 
+
+  cancelVisitEmployee(visitID: number) {
+    const httpOptions =
+    {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    }
+
+    return this.http.patch<boolean>(`${this.api_url_appointment}/cancel-employee/${visitID}`, httpOptions)
+
+  }
+
+  cancelVisitCustomer(visitID: number) {
+    const httpOptions =
+    {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    }
+    return this.http.patch<boolean>(`${this.api_url_appointment}/cancel-customer/${visitID}`, httpOptions)
+
+  }
 
 }
 
@@ -158,4 +178,6 @@ function getDistinctIDs(visits: { customerID: number; employeeID: number }[]): {
     distinctEmployeeIDs: Array.from(employeeIDs)
   };
 }
+
+
 

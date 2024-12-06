@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, inject, Inject, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Visit } from '../../classes/visit/visit';
@@ -6,6 +6,8 @@ import { VisitService } from '../../classes/visit/visit.service';
 import { CommonModule } from '@angular/common';
 import { MatDividerModule } from '@angular/material/divider';
 import { EmployeePanelComponent } from '../../employee-panel/employee-panel.component';
+import { ConfirmDialogSerice } from '../confirm-dialog/confirm-dialog.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-visits-dialog',
@@ -24,7 +26,21 @@ import { EmployeePanelComponent } from '../../employee-panel/employee-panel.comp
 })
 export class EmployeePanelVisitDialog implements OnInit {
 
-    constructor(@Inject(MAT_DIALOG_DATA) public data: any, @Inject(MatDialogRef<EmployeePanelComponent>) public dialogRef: any) {
+    constructor(@Inject(MAT_DIALOG_DATA) public data: any, @Inject(MatDialogRef<EmployeePanelComponent>) public dialogRef: any, private visitService: VisitService, private confirmDialogService: ConfirmDialogSerice) {
+    }
+
+
+    private _snackBar = inject(MatSnackBar);
+
+
+    openSnackBar(text: string) {
+        this._snackBar.open(text, "", {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            duration: 5000,
+            panelClass: ['error_snack']
+        });
+
     }
 
     ngOnInit(): void {
@@ -41,5 +57,33 @@ export class EmployeePanelVisitDialog implements OnInit {
             flag: true
         });
     }
+
+    cancelVisit() {
+        this.confirmDialogService
+            .confirm({
+                title: 'Anuluj wizytę',
+                message: `Czy jesteś pewny, że chcesz anulować tą wizytę?`,
+                confirmText: 'Tak',
+                cancelText: 'Nie',
+            })
+            .subscribe((confirmed) => {
+                if (confirmed) {
+                    // Proceed with API call if confirmed
+                    this.visitService.cancelVisitEmployee(this.data.event.meta.visitID).subscribe({
+                        next: (response) => {
+                            console.log('Visit canceled successfully:', response);
+                            window.location.reload();
+                        },
+                        error: (error) => {
+                            console.error('Error canceling visit:', error);
+                            this.openSnackBar("Coś poszło nie tak, odśwież stronę")
+                        },
+                    });
+                } else {
+                    console.log('Visit cancellation aborted.');
+                }
+            });
+    }
+
 
 }

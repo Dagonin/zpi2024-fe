@@ -46,7 +46,6 @@ export class LoginComponent {
 
   opened: boolean = false;
 
-  private _snackBar = inject(MatSnackBar);
 
   constructor(private formErrorService: FormErrorsService, private authService: AuthService, private router: Router) {
   }
@@ -81,6 +80,9 @@ export class LoginComponent {
 
     }
   }
+
+  private _snackBar = inject(MatSnackBar);
+
 
   openSnackBar(text: string) {
     this._snackBar.open(text, "", {

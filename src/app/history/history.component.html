@@ -22,7 +22,7 @@
               <button (click)="openDetailsDialog(visit.employeeID,visit.visitID, visit.salonID)"
                 mat-button>Szczegóły</button>
               <button (click)="openRescheduleDialog(visit.visitID,true)" mat-button>Przełóż wizytę</button>
-              <button (click)="openRescheduleDialog(visit.visitID,true)" mat-button>Anuluj wizytę</button>
+              <button (click)="cancelVisit(visit.visitID)" mat-button>Anuluj wizytę</button>
               <!-- <button (click)="openRatingDialog(visit.employeeID,visit.visitID, visit.salonID)"
                 mat-button>Oceń</button> -->
               @if (ratingMap.has(visit.visitID)) {

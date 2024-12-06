@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable, of, tap } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, of, tap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { RSAHelper } from './rsa-helper';
 import { LoginDTO } from '../classes/login/loginDTO';
@@ -28,45 +28,12 @@ export class AuthService {
     this.userRoleSubject = new BehaviorSubject<string>(getRole);
     this.userRole$ = this.userRoleSubject.asObservable();
     this.rsa_helper = new RSAHelper();
+    if (isLoggedIn && this.isTokenExpired(this.getAuthToken())) {
+      this.logoutOnExpiredToken();
+    }
   }
 
   api_url = `http://localhost:8080/api/auth`
-
-  // login(data: any) {
-  //   // console.log(data)
-  //   // console.log(this.rsa_helper.encryptWithPublicKey(data.password))
-
-  //   // return this.httpClient.post(`${this.baseUrl}/login`, data)
-  //   //   .pipe(tap((result) => {
-  //   //     localStorage.setItem('authUser', JSON.stringify(result));
-  //   //   }));
-
-  //   if(data.login === "admin" && data.password === "admin123"){
-  //     localStorage.setItem('authUser', data.login);
-  //     localStorage.setItem('role', 'admin');
-  //     this.isAuthenticatedSubject.next(true);
-  //     this.userRoleSubject.next('admin');
-  //     return true;
-  //   }
-
-  //   if(data.login === "employee" && data.password === "employee"){
-  //     localStorage.setItem('authUser', data.login);
-  //     localStorage.setItem('role', 'employee');
-  //     this.isAuthenticatedSubject.next(true);
-  //     this.userRoleSubject.next('employee');
-  //     return true;
-  //   }
-
-  //   if(data.login === "user1" && data.password === "useruser"){
-  //     localStorage.setItem('authUser', data.login);
-  //     localStorage.setItem('role', 'user');
-  //     this.isAuthenticatedSubject.next(true);
-  //     this.userRoleSubject.next('user');
-  //     return true;
-  //   }
-
-  //   return false;
-  // }
 
   login(email: string, password: string): Observable<any> {
 
@@ -145,14 +112,16 @@ export class AuthService {
 
 
 
-  logout() {
+  logout(): void {
     localStorage.removeItem('authUser');
     localStorage.removeItem('role');
+    localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('userID');
     this.isAuthenticatedSubject.next(false);
     this.userRoleSubject.next('');
-    this.router.navigate(['']);
+    this.router.navigate(['login']);
   }
-
   isLoggedIn() {
     return localStorage.getItem('authUser') !== null;
   }
@@ -162,6 +131,26 @@ export class AuthService {
   }
 
 
+  isTokenExpired(token: string | null): boolean {
+    if (!token) return true;
+    try {
+      const decodedToken: any = this.decodeJWT(token);
+      if (!decodedToken || !decodedToken.exp) {
+        return true;
+      }
+      const expirationDate = new Date(decodedToken.exp * 1000);
+      return expirationDate <= new Date();
+    } catch (error) {
+      console.error('Token decoding error:', error);
+      return true;
+    }
+  }
+
+  logoutOnExpiredToken(): void {
+    console.warn('JWT token has expired. Logging out...');
+    this.logout();
+  }
+
   private decodeJWT(token: string): any {
     try {
       return jwtDecode(token);
@@ -170,5 +159,7 @@ export class AuthService {
       return null;
     }
   }
+
+
 
 }

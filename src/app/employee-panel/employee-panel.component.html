@@ -6,7 +6,7 @@
         (click)="resetDrag()" mat-flat-button>Anuluj</button>
     </div>
     }@else {
-    <div id="make_appointment"><button mat-flat-button>Umów wizytę</button></div>
+    <div id="make_appointment"><button mat-flat-button (click)="openCreateVisitDialog()">Umów wizytę</button></div>
     }
     <mat-tab-group>
       <mat-tab label="Przyszłe wizyty">

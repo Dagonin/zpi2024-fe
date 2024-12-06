@@ -26,8 +26,10 @@
 
   <div>
     @if (data.bool) {
-    <button mat-flat-button matStepperPrevious (click)="rescheduleVisit()">Przełóż wizytę</button>
-    <button mat-flat-button matStepperPrevious (click)="remakeAppointment()">Umów ponownie</button>
+    <mat-dialog-actions>
+      <button mat-flat-button matStepperPrevious (click)="rescheduleVisit()">Przełóż wizytę</button>
+      <button mat-flat-button matStepperPrevious (click)="remakeAppointment()">Umów ponownie</button>
+    </mat-dialog-actions>
     }@else {
 
     }

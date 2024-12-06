@@ -17,6 +17,8 @@ import { RatingService } from '../classes/rating/rating.service';
 import { Rating } from '../classes/rating/rating';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CustomerTimeSlotsDialog } from '../dialogs/customer-time-slots-dialog/customer-time-slots-dialog';
+import { ConfirmDialogSerice } from '../dialogs/confirm-dialog/confirm-dialog.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-history',
@@ -43,6 +45,19 @@ export class HistoryComponent implements OnInit {
   salonMap: Map<number, Salon> = new Map();
   visitServiceMap: Map<number, number[]> = new Map();
   ratingMap: Map<number, Rating> = new Map();
+
+  private _snackBar = inject(MatSnackBar);
+
+
+  openSnackBar(text: string) {
+    this._snackBar.open(text, "", {
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      duration: 5000,
+      panelClass: ['error_snack']
+    });
+
+  }
 
   openRatingDialog(employeeID: number, visitID: number, salonID: number) {
     const dialogRef = this.dialog.open(RatingDialogComponent, {
@@ -84,12 +99,12 @@ export class HistoryComponent implements OnInit {
         bool: rescheduleBool,
         services: services
       },
-      height: '800px',
+      height: '850px',
       width: '1200px',
     });
   }
 
-  constructor(public visitService: VisitService, private serviceService: ServiceService, private salonService: SalonService, private ratingService: RatingService) { }
+  constructor(public visitService: VisitService, private serviceService: ServiceService, private salonService: SalonService, private ratingService: RatingService, private confirmDialogService: ConfirmDialogSerice) { }
 
 
   ngOnInit(): void {
@@ -132,6 +147,7 @@ export class HistoryComponent implements OnInit {
         },
         error: (error) => {
           console.error('Error loading data:', error);
+          this.openSnackBar("Coś poszło nie tak, odśwież stronę")
         },
       });
   }
@@ -140,6 +156,32 @@ export class HistoryComponent implements OnInit {
     const combinedDate = new Date(`${dateString}T${timeString}`);
     const now = new Date();
     return combinedDate.getTime() > now.getTime();
+  }
+
+  cancelVisit(visitID: number) {
+    this.confirmDialogService
+      .confirm({
+        title: 'Anuluj wizytę',
+        message: `Czy jesteś pewny, że chcesz anulować tą wizytę?`,
+        confirmText: 'Tak',
+        cancelText: 'Nie',
+      })
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          this.visitService.cancelVisitCustomer(visitID).subscribe({
+            next: (response) => {
+              console.log('Visit canceled successfully:', response);
+              window.location.reload();
+            },
+            error: (error) => {
+              console.error('Error canceling visit:', error);
+              this.openSnackBar("Coś poszło nie tak, odśwież stronę")
+            },
+          });
+        } else {
+          console.log('Visit cancellation aborted.');
+        }
+      });
   }
 
 

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, inject, Inject, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
@@ -20,6 +20,8 @@ import { MatInputModule } from '@angular/material/input';
 import { SalonComponentService } from '../../place/services/salon-component.service';
 import { VisitService } from '../../classes/visit/visit.service';
 import { visit } from '../../place/models/visit';
+import { ConfirmDialogSerice } from '../confirm-dialog/confirm-dialog.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
     selector: 'customer-time-slots-dialog',
@@ -52,7 +54,8 @@ export class CustomerTimeSlotsDialog implements OnInit {
         @Inject(MatDialogRef<HistoryComponent>) public dialogRef: any,
         public timeslotsService: TimeSlotsService,
         private salonComponentService: SalonComponentService,
-        private visitService: VisitService
+        private visitService: VisitService,
+        private confirmDialogService: ConfirmDialogSerice
     ) {
     }
 
@@ -70,6 +73,18 @@ export class CustomerTimeSlotsDialog implements OnInit {
     visitTime!: number;
     allowedDates!: string[];
     pickedDate!: Date;
+    private _snackBar = inject(MatSnackBar);
+
+
+    openSnackBar(text: string) {
+        this._snackBar.open(text, "", {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            duration: 5000,
+            panelClass: ['error_snack']
+        });
+
+    }
 
     myFilter = (date: Date | null): boolean => {
         if (!date) {
@@ -163,49 +178,82 @@ export class CustomerTimeSlotsDialog implements OnInit {
     }
 
     rescheduleVisit() {
-        const startTime = this.timeslotsService.indexToHour(this.timeslotsService.timeslotsFormGroup.controls.time_slot.value) + ":00"
-        const date = this.timeslotsService.timeslotsFormGroup.controls.day.value?.toISOString().split('T')[0]
-        if (date) {
-            this.visitService.rescheduleVisit(this.data.visit.visitID, startTime, date, 1, "C").subscribe({
-                next(response) {
-                    console.log(response)
+        // TODO
+        const startTime = this.timeslotsService.indexToHour(
+            this.timeslotsService.timeslotsFormGroup.controls.time_slot.value
+        ) + ":00";
+        const date = this.timeslotsService.timeslotsFormGroup.controls.day.value?.toISOString().split('T')[0];
 
-                },
-                error(error) {
-                    console.log(error)
-                },
-            })
+        if (date) {
+            this.confirmDialogService
+                .confirm({
+                    title: 'Przełóż wizytę',
+                    message: `Czy jesteś pewny, że chcesz przełożyc tą wizytę?`,
+                    confirmText: 'Tak',
+                    cancelText: 'Nie',
+                })
+                .subscribe((confirmed) => {
+                    if (confirmed) {
+                        this.visitService.rescheduleVisit(this.data.visit.visitID, startTime, date, 1, "C").subscribe({
+                            next: (response) => {
+                                console.log('Visit rescheduled successfully:', response);
+                                // Reload the page
+                                window.location.reload();
+                            },
+                            error: (error) => {
+                                console.error('Error rescheduling visit:', error);
+                                this.openSnackBar("Coś poszło nie tak, odśwież stronę")
+                            },
+                        });
+                    } else {
+                        console.log('Reschedule action canceled.');
+                    }
+                });
         }
     }
 
-    remakeAppointment() {
 
-        let date = this.timeslotsService.timeslotsFormGroup.controls.day.value
-        date?.setHours(1)
-        // TODO 
+    remakeAppointment() {
+        // TODO
+        let date = this.timeslotsService.timeslotsFormGroup.controls.day.value;
+        date?.setHours(1);
+
         if (date) {
-            let newVisit = new visit(this.data.visit.salonID,
+            const newVisit = new visit(
+                this.data.visit.salonID,
                 date.toISOString().split('T')[0],
                 this.timeslotsService.indexToHour(this.timeslotsService.timeslotsFormGroup.controls.time_slot.value) + ":00",
                 'RESERVED',
                 this.data.visit.employeeID,
                 1,
                 this.data.services
-            )
-            console.log(newVisit)
-            this.salonComponentService.makeAppointment(newVisit).subscribe({
-                next: (response: any) => {
-                    console.log(response)
-                },
-                error: (error) => {
-                    console.error(error)
-                }
-            })
+            );
+            this.confirmDialogService
+                .confirm({
+                    title: 'Umów ponownie',
+                    message: `Czy jesteś pewny, że chcesz się umówić ponownie?`,
+                    confirmText: 'Tak',
+                    cancelText: 'Nie',
+                })
+                .subscribe((confirmed) => {
+                    if (confirmed) {
+                        this.salonComponentService.makeAppointment(newVisit).subscribe({
+                            next: (response: any) => {
+                                console.log('Appointment remade successfully:', response);
+                                window.location.reload();
+                            },
+                            error: (error) => {
+                                console.error('Error remaking appointment:', error);
+                                this.openSnackBar("Coś poszło nie tak, odśwież stronę")
+                            },
+                        });
+                    } else {
+                        console.log('Remake action canceled.');
+                    }
+                });
         }
-
-
-
     }
+
 
 
 }
