@@ -1,0 +1,123 @@
+<!-- employee-dialog.component.html -->
+<h1 mat-dialog-title>{{ isEdit ? 'Edit' : 'Create' }} Employee</h1>
+
+<div mat-dialog-content>
+  <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+    <mat-grid-list cols="2" rowHeight="100px">
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+          <mat-label>Employee Name</mat-label>
+          <input matInput formControlName="employeeName" required />
+          <mat-error>Employee name is required</mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+          <mat-label>Employee Surname</mat-label>
+          <input matInput formControlName="employeeSurname" required />
+          <mat-error>Surname is required</mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+          <mat-label>Phone Number</mat-label>
+          <input matInput formControlName="employeeDialNumber" required />
+          <mat-error>Phone number is required</mat-error>
+          <mat-error>Phone number must be 10 digits</mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="employeeEmail" required />
+          <mat-error>Email is required</mat-error>
+          <mat-error>Enter a valid email address</mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" formControlName="encryptedEmployeePassword" required />
+          <mat-error>Password is required</mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+          <mat-label>Birthday Date</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="employeeBirthdayDate" required />
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error>Birthday date is required</mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+          <mat-label>Employment Date</mat-label>
+          <input matInput [matDatepicker]="employmentDatePicker" formControlName="employeeEmploymentDate" required />
+          <mat-datepicker #employmentDatePicker></mat-datepicker>
+          <mat-error>Employment date is required</mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+          <mat-label>Monthly Pay</mat-label>
+          <input matInput formControlName="employeeMonthlyPay" type="number" required />
+          <mat-error>Monthly pay is required</mat-error>
+          <mat-error>Pay must be greater than 0
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+          <mat-label>City</mat-label>
+          <input matInput formControlName="employeeCity" required />
+          <mat-error>City is required</mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+          <mat-label>Street</mat-label>
+          <input matInput formControlName="employeeStreet" required />
+          <mat-error>Street is required</mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+          <mat-label>Building Number</mat-label>
+          <input matInput formControlName="employeeBuildingNumber" required />
+          <mat-error>Building number is required</mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+          <mat-label>Apartment Number</mat-label>
+          <input matInput formControlName="employeeApartmentNumber" />
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+          <mat-label>Postal Code</mat-label>
+          <input matInput formControlName="employeePostalCode" required />
+          <mat-error>Postal code is required</mat-error>
+          <mat-error>Postal code must be 5 digits</mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </form>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button color="primary" (click)="onSubmit()" [disabled]="employeeForm.invalid">Save</button>
+</div>

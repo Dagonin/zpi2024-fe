@@ -1,37 +1,305 @@
 <div class="mat-elevation-z8">
-  <table mat-table [dataSource]="salons" class="mat-table" matSort>
+  <mat-accordion>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Salony</mat-panel-title>
+      </mat-expansion-panel-header>
+      <table mat-table [dataSource]="salons" class="mat-table" matSort #salonSort="matSort">
 
-    <ng-container matColumnDef="salonName">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Salon Name </th>
-      <td mat-cell *matCellDef="let salon"> {{salon.salonName}} </td>
-    </ng-container>
 
-    <ng-container matColumnDef="salonDialNumber">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Dial Number </th>
-      <td mat-cell *matCellDef="let salon"> {{salon.salonDialNumber}} </td>
-    </ng-container>
+        <ng-container matColumnDef="salonName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Salon Name </th>
+          <td mat-cell *matCellDef="let salon"> {{salon.salonName}} </td>
+        </ng-container>
 
-    <ng-container matColumnDef="salonCity">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> City </th>
-      <td mat-cell *matCellDef="let salon"> {{salon.salonCity}} </td>
-    </ng-container>
+        <ng-container matColumnDef="salonDialNumber">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Dial Number </th>
+          <td mat-cell *matCellDef="let salon"> {{salon.salonDialNumber}} </td>
+        </ng-container>
 
-    <ng-container matColumnDef="salonStreet">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Street </th>
-      <td mat-cell *matCellDef="let salon"> {{salon.salonStreet}} </td>
-    </ng-container>
+        <ng-container matColumnDef="salonCity">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> City </th>
+          <td mat-cell *matCellDef="let salon"> {{salon.salonCity}} </td>
+        </ng-container>
 
-    <ng-container matColumnDef="salonBuildingNumber">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Building No. </th>
-      <td mat-cell *matCellDef="let salon"> {{salon.salonBuildingNumber}} </td>
-    </ng-container>
+        <ng-container matColumnDef="salonStreet">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Street </th>
+          <td mat-cell *matCellDef="let salon"> {{salon.salonStreet}} </td>
+        </ng-container>
 
-    <ng-container matColumnDef="salonPostalCode">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Postal Code </th>
-      <td mat-cell *matCellDef="let salon"> {{salon.salonPostalCode}} </td>
-    </ng-container>
+        <ng-container matColumnDef="salonBuildingNumber">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Building No. </th>
+          <td mat-cell *matCellDef="let salon"> {{salon.salonBuildingNumber}} </td>
+        </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedSalonColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedSalonColumns;"></tr>
-  </table>
+        <ng-container matColumnDef="salonPostalCode">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Postal Code </th>
+          <td mat-cell *matCellDef="let salon"> {{salon.salonPostalCode}} </td>
+        </ng-container>
+        <ng-container matColumnDef="CRUD">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> CRUD </th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-flat-button (click)="openSalonDialog(false)">Dodaj</button>
+            <button mat-flat-button (click)="openSalonDialog(true,element.salonID)">Edytuj</button>
+            <button mat-flat-button>Usuń</button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedSalonColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedSalonColumns;"></tr>
+      </table>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Pracownicy</mat-panel-title>
+      </mat-expansion-panel-header>
+      <table mat-table [dataSource]="employees" class="mat-table" matSort #employeeSort="matSort">
+
+        <ng-container matColumnDef="employeeFullName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Full Name </th>
+          <td mat-cell *matCellDef="let employee">
+            {{ employee.employeeName }} {{ employee.employeeSurname }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="employeeDialNumber">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Dial Number </th>
+          <td mat-cell *matCellDef="let employee"> {{ employee.employeeDialNumber }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="employeeBirthday">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Birthday </th>
+          <td mat-cell *matCellDef="let employee"> {{ employee.employeeBirthdayDate | date: 'mediumDate' }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="employeeEmploymentDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Employment Date </th>
+          <td mat-cell *matCellDef="let employee"> {{ employee.employeeEmploymentDate | date: 'mediumDate' }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="employeeMonthlyPay">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Monthly Pay </th>
+          <td mat-cell *matCellDef="let employee"> {{ employee.employeeMonthlyPay | currency: "PLN" }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="employeeAddress">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Address </th>
+          <td mat-cell *matCellDef="let employee">
+            {{ employee.employeeStreet }}, {{ employee.employeeBuildingNumber }}
+            {{ employee.employeeApartmentNumber ? '/ ' + employee.employeeApartmentNumber : '' }}
+            {{ employee.employeeCity }} ({{ employee.employeePostalCode }})
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="CRUD">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> CRUD </th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-flat-button (click)="openEmployeeDialog(false)">Dodaj</button>
+            <button mat-flat-button (click)="openEmployeeDialog(true,element.employeeID)">Edytuj</button>
+            <button mat-flat-button>Usuń</button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedEmployeeColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedEmployeeColumns;"></tr>
+      </table>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Usługi</mat-panel-title>
+      </mat-expansion-panel-header>
+      <table mat-table [dataSource]="services" class="mat-table" matSort #serviceSort="matSort">
+
+        <ng-container matColumnDef="serviceName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nazwa usługi </th>
+          <td mat-cell *matCellDef="let service">
+            {{ service.serviceName }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="serviceSpan">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Czas trwania usługi</th>
+          <td mat-cell *matCellDef="let service">
+            {{ service.serviceSpan * 15 }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="servicePrice">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Koszt usługi </th>
+          <td mat-cell *matCellDef="let service">
+            {{ service.servicePrice | currency: "PLN"  }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="serviceDescription">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Opis usługi </th>
+          <td mat-cell *matCellDef="let service">
+            {{ service.serviceDescription }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="serviceCategory">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Kategoria usługi </th>
+          <td mat-cell *matCellDef="let service">
+            {{ serviceCategoryMap.get(service.serviceCategoryID)?.categoryName }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="CRUD">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> CRUD </th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-flat-button (click)="openServiceDialog(false)">Dodaj</button>
+            <button mat-flat-button (click)="openServiceDialog(true,element.serviceID)">Edytuj</button>
+            <button mat-flat-button>Usuń</button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedServiceColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedServiceColumns;"></tr>
+      </table>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Kategorie usług</mat-panel-title>
+      </mat-expansion-panel-header>
+      <table mat-table [dataSource]="categories" class="mat-table" matSort #categorySort="matSort">
+
+        <ng-container matColumnDef="categoryName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nazwa kategorii usług </th>
+          <td mat-cell *matCellDef="let category">
+            {{ category.categoryName }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="categoryDescription">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Opis</th>
+          <td mat-cell *matCellDef="let category">
+            {{ category.categoryDescription }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="CRUD">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> CRUD </th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-flat-button (click)="openServiceCategoryDialog(false)">Dodaj</button>
+            <button mat-flat-button (click)="openServiceCategoryDialog(true,element.serviceCategoryId)">Edytuj</button>
+            <button mat-flat-button>Usuń</button>
+          </td>
+        </ng-container>
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedCategoryColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedCategoryColumns;"></tr>
+      </table>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Godziny otwarcia</mat-panel-title>
+      </mat-expansion-panel-header>
+      <table mat-table [dataSource]="openingHours" matSort #openingHourSort="matSort">
+
+        <ng-container matColumnDef="weekday">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Weekday </th>
+          <td mat-cell *matCellDef="let openingHour"> {{ openingHour.weekday }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="openingHour">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Opening Hour </th>
+          <td mat-cell *matCellDef="let openingHour"> {{ openingHour.openingHour }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="closingHour">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Closing Hour </th>
+          <td mat-cell *matCellDef="let openingHour"> {{ openingHour.closingHour}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="salonName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Salon Name </th>
+          <td mat-cell *matCellDef="let openingHour"> {{ salonsMap.get(openingHour.salonID)?.salonName }} </td>
+        </ng-container>
+        <ng-container matColumnDef="CRUD">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> CRUD </th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-flat-button (click)="openOpeningHoursDialog(false)">Dodaj</button>
+            <button mat-flat-button (click)="openOpeningHoursDialog(true,element.openingHoursID)">Edytuj</button>
+            <button mat-flat-button>Usuń</button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedOpeningHoursColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedOpeningHoursColumns;"></tr>
+      </table>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Przypisy do salonów</mat-panel-title>
+      </mat-expansion-panel-header>
+      <table mat-table [dataSource]="assignments" matSort #assignmentSort="matSort">
+        <ng-container matColumnDef="assignmentDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Data </th>
+          <td mat-cell *matCellDef="let assignment"> {{ assignment.assigmentDate | date: 'mediumDate' }} </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="salonName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Salon Name </th>
+          <td mat-cell *matCellDef="let assignment"> {{ salonsMap.get(assignment.salonID)?.salonName }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="employeeName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Employee Name </th>
+          <td mat-cell *matCellDef="let assignment"> {{ employeesMap.get(assignment.employeeID)?.employeeName }}
+            {{employeesMap.get(assignment.employeeID)?.employeeSurname}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="CRUD">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> CRUD </th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-flat-button (click)="openAssignmentDialog(false)">Dodaj</button>
+            <button mat-flat-button (click)="openAssignmentDialog(true,element.assigmentID)">Edytuj</button>
+            <button mat-flat-button>Usuń</button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedAssignmentColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedAssignmentColumns;"></tr>
+      </table>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Kwalifikacje pracowików</mat-panel-title>
+      </mat-expansion-panel-header>
+      <table mat-table [dataSource]="qualifications" matSort #qualificationSort="matSort">
+
+        <ng-container matColumnDef="employeeName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Employee Name </th>
+          <td mat-cell *matCellDef="let qualification">
+            {{ employeesMap.get(qualification.employeeID)?.employeeName }}
+            {{ employeesMap.get(qualification.employeeID)?.employeeSurname }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="serviceCategory">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Service Category </th>
+          <td mat-cell *matCellDef="let qualification">
+            {{ serviceCategoryMap.get(qualification.serviceCategoryID)?.categoryName }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="CRUD">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> CRUD </th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-flat-button (click)="openQualificationDialog(false)">Dodaj</button>
+            <button mat-flat-button
+              (click)="openQualificationDialog(true, element.employeeQualificationID)">Edytuj</button>
+            <button mat-flat-button>Usuń</button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedQualificationColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedQualificationColumns;"></tr>
+      </table>
+    </mat-expansion-panel>
+
+  </mat-accordion>
 </div>

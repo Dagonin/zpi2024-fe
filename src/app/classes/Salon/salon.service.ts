@@ -12,7 +12,8 @@ export class SalonService {
     salons: Salon[] = [];
     salonMap: Map<number, Salon> = new Map();
     openingHours: OpeningHours[] = [];
-    openingHoursMap: Map<number, OpeningHours[]> = new Map();
+    // openingHoursMap: Map<number, OpeningHours[]> = new Map();
+    openingHoursMap: Map<number, OpeningHours> = new Map();
     api_url = `http://localhost:8080/api/crud/salons`
     opening_hours_api_url = `http://localhost:8080/api/crud/opening-hours`
 
@@ -93,13 +94,15 @@ export class SalonService {
                 this.openingHours = response;
                 this.openingHoursMap.clear();
 
-                response.forEach((openingHour) => {
-                    const salonID = openingHour.salonID;
-                    if (!this.openingHoursMap.has(salonID)) {
-                        this.openingHoursMap.set(salonID, []);
-                    }
-                    this.openingHoursMap.get(salonID)?.push(openingHour);
-                });
+                response.forEach((openingHour) => this.openingHoursMap.set(openingHour.openingHoursID, openingHour))
+
+                // response.forEach((openingHour) => {
+                //     const salonID = openingHour.salonID;
+                //     if (!this.openingHoursMap.has(salonID)) {
+                //         this.openingHoursMap.set(salonID, []);
+                //     }
+                //     this.openingHoursMap.get(salonID)?.push(openingHour);
+                // });
             }),
             catchError((error) => {
                 console.error('Failed to initialize opening hours:', error);

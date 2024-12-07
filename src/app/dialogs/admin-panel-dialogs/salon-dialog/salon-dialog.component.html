@@ -1,0 +1,81 @@
+<!-- salon-dialog.component.html -->
+<h1 mat-dialog-title>{{ isEdit ? 'Edit' : 'Create' }} Salon</h1>
+
+<div mat-dialog-content>
+  <form [formGroup]="salonForm" (ngSubmit)="onSubmit()">
+    <mat-grid-list cols="2" rowHeight="100px">
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+          <mat-label>Salon Name</mat-label>
+          <input matInput formControlName="salonName" required />
+          <mat-error>Salon name is required</mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+          <mat-label>Dial Number</mat-label>
+          <input matInput formControlName="salonDialNumber" required />
+          <mat-error>Phone number is required</mat-error>
+          <mat-error>Phone number must be 10 digits
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+          <mat-label>City</mat-label>
+          <input matInput formControlName="salonCity" required />
+          <mat-error>City is required</mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+          <mat-label>Street</mat-label>
+          <input matInput formControlName="salonStreet" required />
+          <mat-error>Street is required</mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+          <mat-label>Building Number</mat-label>
+          <input matInput formControlName="salonBuildingNumber" required />
+          <mat-error>Building number is required</mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+          <mat-label>Postal Code</mat-label>
+          <input matInput formControlName="salonPostalCode" required />
+          <mat-error>Postal code is required</mat-error>
+          <mat-error>Postal code must be 5 digits
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+          <mat-label>Latitude</mat-label>
+          <input matInput formControlName="latitude" required type="number" />
+          <mat-error>Latitude is required</mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+          <mat-label>Longitude</mat-label>
+          <input matInput formControlName="longitude" required type="number" />
+          <mat-error>Longitude is required</mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </form>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button color="primary" (click)="onSubmit()" [disabled]="salonForm.invalid">Save</button>
+</div>

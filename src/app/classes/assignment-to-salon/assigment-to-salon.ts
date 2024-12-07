@@ -1,12 +1,12 @@
 export class AssignmentToSalon {
-    assignmentID: number;
-    assignmentDate: string;
+    assigmentID: number;
+    assigmentDate: string;
     salonID: number;
     employeeID: number;
 
-    constructor(assignmentID: number, assignmentDate: string, salonID: number, employeeID: number) {
-        this.assignmentID = assignmentID;
-        this.assignmentDate = assignmentDate;
+    constructor(assigmentID: number, assigmentDate: string, salonID: number, employeeID: number) {
+        this.assigmentID = assigmentID;
+        this.assigmentDate = assigmentDate;
         this.salonID = salonID;
         this.employeeID = employeeID;
     }

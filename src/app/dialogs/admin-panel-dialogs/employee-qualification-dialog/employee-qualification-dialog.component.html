@@ -1,0 +1,39 @@
+<h1 mat-dialog-title>{{ isEdit ? 'Edit' : 'Create' }} Employee Qualification</h1>
+
+<div mat-dialog-content>
+  <form [formGroup]="qualificationForm" (ngSubmit)="onSubmit()">
+    <mat-grid-list cols="2" rowHeight="100px">
+      <!-- Employee Select -->
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+          <mat-label>Employee</mat-label>
+          <mat-select formControlName="employeeID" required>
+            <mat-option *ngFor="let employee of employees" [value]="employee.employeeID">
+              {{ employee.employeeName }} {{ employee.employeeSurname }}
+            </mat-option>
+          </mat-select>
+          <mat-error>Employee is required</mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <!-- Service Category Select -->
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+          <mat-label>Service Category</mat-label>
+          <mat-select formControlName="serviceCategoryID" required>
+            <mat-option *ngFor="let category of serviceCategories" [value]="category.serviceCategoryId">
+              {{ category.categoryName }}
+            </mat-option>
+          </mat-select>
+          <mat-error>Service Category is
+            required</mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </form>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button color="primary" (click)="onSubmit()" [disabled]="qualificationForm.invalid">Save</button>
+</div>

@@ -11,7 +11,8 @@ export class AssignmentToSalonService {
     private api_url = 'http://localhost:8080/api/crud/assignment-to-salon'; // Replace with your actual API URL
 
     assignments: AssignmentToSalon[] = [];
-    assignmentsMap: Map<number, AssignmentToSalon[]> = new Map();
+    // assignmentsMap: Map<number, AssignmentToSalon[]> = new Map();
+    assignmentsMap: Map<number, AssignmentToSalon> = new Map();
     // assignmentsByEmployee: Map<number, AssignmentToSalon[]> = new Map();
 
     constructor(private http: HttpClient) { }
@@ -36,19 +37,21 @@ export class AssignmentToSalonService {
                 this.assignmentsMap.clear();
                 // this.assignmentsByEmployee.clear();
 
-                response.forEach((assignment) => {
-                    const salonID = assignment.salonID;
-                    if (!this.assignmentsMap.has(salonID)) {
-                        this.assignmentsMap.set(salonID, []);
-                    }
-                    this.assignmentsMap.get(salonID)?.push(assignment);
+                response.forEach((assignment) => this.assignmentsMap.set(assignment.assigmentID, assignment))
+                console.log(response)
+                // response.forEach((assignment) => {
+                //     const salonID = assignment.salonID;
+                //     if (!this.assignmentsMap.has(salonID)) {
+                //         this.assignmentsMap.set(salonID, []);
+                //     }
+                //     this.assignmentsMap.get(salonID)?.push(assignment);
 
-                    // const employeeID = assignment.getEmployeeID();
-                    // if (!this.assignmentsByEmployee.has(employeeID)) {
-                    //     this.assignmentsByEmployee.set(employeeID, []);
-                    // }
-                    // this.assignmentsByEmployee.get(employeeID)?.push(assignment);
-                });
+                //     // const employeeID = assignment.getEmployeeID();
+                //     // if (!this.assignmentsByEmployee.has(employeeID)) {
+                //     //     this.assignmentsByEmployee.set(employeeID, []);
+                //     // }
+                //     // this.assignmentsByEmployee.get(employeeID)?.push(assignment);
+                // });
             }),
             catchError((error) => {
                 console.error('Failed to initialize assignments:', error);
