@@ -81,6 +81,33 @@ export class ServiceService {
   }
 
 
+  getAllServices() {
+    const httpOptions =
+    {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    }
+    return this.http.get<ServiceDTO[]>(`${this.service_api_url}`, httpOptions)
+  }
+
+
+
+
+
+  initializeServices() {
+    return this.getAllServices().pipe(
+      tap((response: any) => {
+        this.services = response;
+        this.mapServices();
+      }),
+      catchError((error) => {
+        console.error('Failed to initialize services:', error);
+        return throwError(() => new Error('Could not load services'));
+      })
+    );
+  }
+
+
+
 
   initializeServicesByListOfIds(servicesIDs: number[]) {
     return this.getAllServicesByListOfIds(servicesIDs).pipe(
@@ -139,6 +166,8 @@ export class ServiceService {
 
 
 
+
+
   getDistinctIDs(services: { serviceInVisitId: number; serviceID: number, visitID: number }[]): number[] {
     const serviceIDs = new Set<number>();
 
@@ -163,6 +192,9 @@ export class ServiceService {
 
     return visitServiceMap;
   }
+
+
+
 
 
 }

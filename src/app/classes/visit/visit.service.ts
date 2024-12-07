@@ -1,6 +1,5 @@
 import { inject, Injectable, OnInit } from '@angular/core';
 import { Visit } from './visit';
-import { BarberService } from '../barber/barber.service';
 import { SalonService } from '../Salon/salon.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';

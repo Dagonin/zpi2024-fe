@@ -1,25 +1,30 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, ViewChild } from '@angular/core';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { Barber } from '../classes/barber/barber';
 import { MatListModule } from '@angular/material/list';
-import { BarberService } from '../classes/barber/barber.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
-import { ContactInfoDialogComponent } from '../dialogs/contact-info-dialog/contact-info-dialog.component';
-import { DeleteDialogComponent } from '../dialogs/delete-dialog/delete-dialog.component';
-import { EditBarberDialogComponent } from '../dialogs/edit-barber-dialog/edit-barber-dialog.component';
-import { VisitsDialogComponent } from '../dialogs/visits-dialog/visits-dialog.component';
-import { AddBarberDialogComponent } from '../dialogs/add-barber-dialog/add-barber-dialog.component';
-import { EditPlaceDialogComponent } from '../dialogs/edit-place-dialog/edit-place-dialog.component';
-import { AddPlaceDialogComponent } from '../dialogs/add-place-dialog/add-place-dialog.component';
-import { DynamicDatabase, DynamicDataSource, DynamicFlatNode } from './admin-panel-places';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeModule } from '@angular/material/tree';
 import { AuthService } from '../auth/auth.service';
 import { Salon } from '../classes/Salon/salon';
 import { SalonService } from '../classes/Salon/salon.service';
+import { EmployeeService } from '../classes/employee/employee.service';
+import { ServiceService } from '../classes/service/service.service';
+import { forkJoin, switchMap } from 'rxjs';
+import { Employee } from '../classes/employee/employee';
+import { EmployeeQualificationService } from '../classes/employee-qualification/employe-qualification.service';
+import { EmployeeQualification } from '../classes/employee-qualification/employee-qualification';
+import { ServiceDTO } from '../classes/service/serviceDTO';
+import { OpeningHours } from '../classes/Salon/opening-hours';
+import { ServiceCategoryService } from '../classes/service/service-category.service';
+import { ServiceCategoryDTO } from '../classes/service/service-categoryDTO';
+import { AssignmentToSalonService } from '../classes/assignment-to-salon/assignment-to-salon.service';
+import { AssignmentToSalon } from '../classes/assignment-to-salon/assigment-to-salon';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTab } from '@angular/material/tabs';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 
 @Component({
   selector: 'app-admin-panel',
@@ -30,92 +35,73 @@ import { SalonService } from '../classes/Salon/salon.service';
     MatListModule,
     MatIconModule,
     MatButtonModule,
-    MatTreeModule
+    MatTableModule,
+    MatSortModule
   ],
   templateUrl: './admin-panel.component.html',
   styleUrl: './admin-panel.component.css'
 })
 export class AdminPanelComponent implements OnInit {
-  readonly panelOpenState = signal(false);
-  readonly panelOpenStateBarbers = signal(false);
 
-  userRole = localStorage.getItem('role');
 
-  salons: Salon[] = [];
-  barbers: Barber[] = [];
-
-  treeControl: FlatTreeControl<DynamicFlatNode>;
-
-  dataSource: DynamicDataSource;
-
-  getLevel = (node: DynamicFlatNode) => node.level;
-
-  isExpandable = (node: DynamicFlatNode) => node.expandable;
-
-  hasChild = (_: number, _nodeData: DynamicFlatNode) => _nodeData.expandable;
 
   constructor(
     private salonService: SalonService,
-    private barberService: BarberService,
+    private employeeService: EmployeeService,
+    private serviceService: ServiceService,
+    private employeeQualificationService: EmployeeQualificationService,
+    private serviceCategoryService: ServiceCategoryService,
+    private assignmentService: AssignmentToSalonService,
     public dialog: MatDialog,
-    private database: DynamicDatabase,
-    private authService: AuthService
   ) {
-    this.treeControl = new FlatTreeControl<DynamicFlatNode>(this.getLevel, this.isExpandable);
-    this.dataSource = new DynamicDataSource(this.treeControl, database);
-
-    this.dataSource.data = database.initialData();
   }
 
+  salonsMap: Map<number, Salon> = new Map();
+  employeesMap: Map<number, Employee> = new Map();
+  employeeQualificationsMap: Map<number, EmployeeQualification> = new Map();
+  servicesMap: Map<number, ServiceDTO> = new Map();
+  openingHoursMap: Map<number, OpeningHours[]> = new Map();
+  serviceCategoryMap: Map<number, ServiceCategoryDTO> = new Map();
+  assignmentsMap: Map<number, AssignmentToSalon[]> = new Map();
 
-  openDialogContact(barber: Barber) {
-    this.dialog.open(ContactInfoDialogComponent, {
-      data: barber,
-    });
-  }
 
-  openDialogEditBarber(barber: Barber) {
-    this.dialog.open(EditBarberDialogComponent, {
-      data: barber,
-    })
-  }
-
-  openDialogEditPlace(salon: Salon) {
-    console.log(salon)
-    this.dialog.open(EditPlaceDialogComponent, {
-      data: salon
-    })
-  }
-
-  openDialogDelete() {
-    const dialogRef = this.dialog.open(DeleteDialogComponent);
-    dialogRef.afterClosed().subscribe((confirmed: Boolean) => {
-      console.log('The dialog was closed');
-      console.log(confirmed);
-    });
-  }
-
-  openDialogHistory() {
-    this.dialog.open(VisitsDialogComponent)
-  }
-
-  openDialogPlaces() {
-    // this.dialog.open(PlacesDialogComponent,{
-    //   data: this.places
-    // })
-  }
-
-  openDialogAddBarber() {
-    this.dialog.open(AddBarberDialogComponent)
-  }
-
-  openDialogAddPlace() {
-    this.dialog.open(AddPlaceDialogComponent)
-  }
+  displayedSalonColumns = ['salonName', 'salonDialNumber', 'salonCity', 'salonStreet', 'salonBuildingNumber', 'salonPostalCode'];
+  displayedEmployeeColumns = ['employeeFullName', 'employeeDialNumber', 'employeeBirthday', 'employeeEmploymentDate', 'employeeMonthlyPay', 'employeeAddress'];
+  salons!: MatTableDataSource<Salon>;
+  employees!: MatTableDataSource<Employee>;
 
   ngOnInit(): void {
-    this.salons = this.salonService.getSalons();
-    this.barbers = this.barberService.getBarbers();
-    this.userRole = this.authService.getRole();
+    forkJoin({
+      salons: this.salonService.initializeSalons(),
+      employees: this.employeeService.initializeEmployees(),
+      employeeQualifications: this.employeeQualificationService.initializeEmployeeQualifications(),
+      services: this.serviceService.initializeServices(),
+      openingHours: this.salonService.initializeOpeningHours(),
+      serviceCategories: this.serviceCategoryService.initializeServiceCategories(),
+      assignments: this.assignmentService.initializeAssignments()
+    }).subscribe(({ salons, employees, employeeQualifications, services, openingHours, serviceCategories, assignments }) => {
+      console.log(salons, employees, employeeQualifications, services, openingHours, serviceCategories, assignments)
+
+      this.salons = new MatTableDataSource(salons);
+      this.employees = new MatTableDataSource(employees);
+
+      this.salonsMap = this.salonService.getSalonMap();
+      this.employeesMap = this.employeeService.getEmployeesMap();
+      this.employeeQualificationsMap = this.employeeQualificationService.getEmployeeQualificationsMap();
+      this.servicesMap = this.serviceService.getServiceMap();
+      this.openingHoursMap = this.salonService.getOpeningHoursMap();
+      this.serviceCategoryMap = this.serviceCategoryService.getServiceCategoryMap();
+      this.assignmentsMap = this.assignmentService.getAssignmentsMap();
+
+      // console.log(this.salonsMap, this.employeesMap, this.employeeQualificationsMap, this.servicesMap, this.openingHoursMap, this.serviceCategoryMap, this.assignmentsMap)
+
+    })
+
   }
+
+  @ViewChild(MatSort) sort!: MatSort;
+
+
+
+
 }

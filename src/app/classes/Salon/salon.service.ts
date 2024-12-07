@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
-import { BarberService } from '../barber/barber.service';
 import { Salon } from './salon';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, Observable, tap, throwError } from 'rxjs';
+import { OpeningHours } from './opening-hours';
 
 @Injectable({
     providedIn: 'root'
@@ -11,16 +11,11 @@ export class SalonService {
 
     salons: Salon[] = [];
     salonMap: Map<number, Salon> = new Map();
+    openingHours: OpeningHours[] = [];
+    openingHoursMap: Map<number, OpeningHours[]> = new Map();
     api_url = `http://localhost:8080/api/crud/salons`
+    opening_hours_api_url = `http://localhost:8080/api/crud/opening-hours`
 
-    //   places: Place[] = [
-    //     new Place('1', 'Kraków', '30-610', 'Konstantego Jelskiego 11', [49.99919, 19.94411], false, [this.barberService.getBarber('1'), this.barberService.getBarber('2')]),
-    //     new Place('2', 'Katowice', '40-526', 'Meteorologów 13', [50.24043, 19.01211], false, [this.barberService.getBarber('1'), this.barberService.getBarber('2')]),
-    //     new Place('3', 'Wrocław', '51-670', 'Edwarda Dembowskiego', [51.10656, 17.09845], false, [this.barberService.getBarber('1'), this.barberService.getBarber('2')]),
-    //     new Place('4', 'Wrocław', '51-670', 'Edwarda Dembowskiego', [51.10656, 17.09845], false, [this.barberService.getBarber('1'), this.barberService.getBarber('2')]),
-    //     new Place('5', 'Wrocław', '51-670', 'Edwarda Dembowskiego', [51.10656, 17.09845], false, [this.barberService.getBarber('1'), this.barberService.getBarber('2')]),
-    //     new Place('6', 'Wrocław', '51-670', 'Edwarda Dembowskiego', [51.10656, 17.09845], false, [this.barberService.getBarber('1'), this.barberService.getBarber('2')])
-    //   ];
 
     constructor(private http: HttpClient) { }
 
@@ -40,6 +35,10 @@ export class SalonService {
         return this.salonMap;
     }
 
+    getOpeningHoursMap() {
+        return this.openingHoursMap;
+    }
+
     getSalonsCities() {
         let salonCities: string[] = [];
         this.salons.forEach(salon => {
@@ -48,22 +47,6 @@ export class SalonService {
         return salonCities;
     }
 
-    // TODO
-
-
-    getPlaceTreeBarbers() {
-        // let dataTree = new Map<string, string[]>();
-        // this.places.forEach(place => {
-        //     let barberList: string[] = [];
-        //     place.barbers.forEach(barber => {
-        //         barberList.push((barber.name + ' ' + barber.surname));
-
-        //     })
-        //     dataTree.set(place.city, barberList)
-        // })
-        // return dataTree;
-        return new Map<string, string[]>()
-    }
 
 
     getSalonById(salonId: string) {
@@ -92,6 +75,35 @@ export class SalonService {
             catchError((error) => {
                 console.error('Failed to initialize salons:', error);
                 return throwError(() => new Error('Could not load salons'));
+            })
+        );
+    }
+
+
+    getAllOpeningHours(): Observable<OpeningHours[]> {
+        const httpOptions = {
+            headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+        };
+        return this.http.get<OpeningHours[]>(`${this.opening_hours_api_url}`, httpOptions);
+    }
+
+    initializeOpeningHours(): Observable<OpeningHours[]> {
+        return this.getAllOpeningHours().pipe(
+            tap((response: OpeningHours[]) => {
+                this.openingHours = response;
+                this.openingHoursMap.clear();
+
+                response.forEach((openingHour) => {
+                    const salonID = openingHour.salonID;
+                    if (!this.openingHoursMap.has(salonID)) {
+                        this.openingHoursMap.set(salonID, []);
+                    }
+                    this.openingHoursMap.get(salonID)?.push(openingHour);
+                });
+            }),
+            catchError((error) => {
+                console.error('Failed to initialize opening hours:', error);
+                return throwError(() => new Error('Could not load opening hours'));
             })
         );
     }
