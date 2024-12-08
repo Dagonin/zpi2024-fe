@@ -3,10 +3,9 @@
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>Salony</mat-panel-title>
+        <button mat-flat-button (click)="openSalonDialog(false)">Dodaj</button>
       </mat-expansion-panel-header>
       <table mat-table [dataSource]="salons" class="mat-table" matSort #salonSort="matSort">
-
-
         <ng-container matColumnDef="salonName">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Salon Name </th>
           <td mat-cell *matCellDef="let salon"> {{salon.salonName}} </td>
@@ -39,9 +38,8 @@
         <ng-container matColumnDef="CRUD">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> CRUD </th>
           <td mat-cell *matCellDef="let element">
-            <button mat-flat-button (click)="openSalonDialog(false)">Dodaj</button>
             <button mat-flat-button (click)="openSalonDialog(true,element.salonID)">Edytuj</button>
-            <button mat-flat-button>Usuń</button>
+            <button mat-flat-button (click)="deleteItemService.deleteSalon(element.salonID)">Usuń</button>
           </td>
         </ng-container>
 
@@ -52,6 +50,7 @@
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>Pracownicy</mat-panel-title>
+        <button mat-flat-button (click)="openEmployeeDialog(false)">Dodaj</button>
       </mat-expansion-panel-header>
       <table mat-table [dataSource]="employees" class="mat-table" matSort #employeeSort="matSort">
 
@@ -93,9 +92,9 @@
         <ng-container matColumnDef="CRUD">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> CRUD </th>
           <td mat-cell *matCellDef="let element">
-            <button mat-flat-button (click)="openEmployeeDialog(false)">Dodaj</button>
+
             <button mat-flat-button (click)="openEmployeeDialog(true,element.employeeID)">Edytuj</button>
-            <button mat-flat-button>Usuń</button>
+            <button mat-flat-button (click)="deleteItemService.deleteEmployee(element.employeeID)">Usuń</button>
           </td>
         </ng-container>
 
@@ -107,6 +106,7 @@
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>Usługi</mat-panel-title>
+        <button mat-flat-button (click)="openServiceDialog(false)">Dodaj</button>
       </mat-expansion-panel-header>
       <table mat-table [dataSource]="services" class="mat-table" matSort #serviceSort="matSort">
 
@@ -147,9 +147,8 @@
         <ng-container matColumnDef="CRUD">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> CRUD </th>
           <td mat-cell *matCellDef="let element">
-            <button mat-flat-button (click)="openServiceDialog(false)">Dodaj</button>
             <button mat-flat-button (click)="openServiceDialog(true,element.serviceID)">Edytuj</button>
-            <button mat-flat-button>Usuń</button>
+            <button mat-flat-button (click)="deleteItemService.deleteService(element.serviceID)">Usuń</button>
           </td>
         </ng-container>
 
@@ -161,6 +160,7 @@
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>Kategorie usług</mat-panel-title>
+        <button mat-flat-button (click)="openServiceCategoryDialog(false)">Dodaj</button>
       </mat-expansion-panel-header>
       <table mat-table [dataSource]="categories" class="mat-table" matSort #categorySort="matSort">
 
@@ -180,9 +180,10 @@
         <ng-container matColumnDef="CRUD">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> CRUD </th>
           <td mat-cell *matCellDef="let element">
-            <button mat-flat-button (click)="openServiceCategoryDialog(false)">Dodaj</button>
+
             <button mat-flat-button (click)="openServiceCategoryDialog(true,element.serviceCategoryId)">Edytuj</button>
-            <button mat-flat-button>Usuń</button>
+            <button mat-flat-button
+              (click)="deleteItemService.deleteServiceCategory(element.serviceCategoryId)">Usuń</button>
           </td>
         </ng-container>
 
@@ -195,6 +196,7 @@
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>Godziny otwarcia</mat-panel-title>
+        <button mat-flat-button (click)="openOpeningHoursDialog(false)">Dodaj</button>
       </mat-expansion-panel-header>
       <table mat-table [dataSource]="openingHours" matSort #openingHourSort="matSort">
 
@@ -220,9 +222,9 @@
         <ng-container matColumnDef="CRUD">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> CRUD </th>
           <td mat-cell *matCellDef="let element">
-            <button mat-flat-button (click)="openOpeningHoursDialog(false)">Dodaj</button>
+
             <button mat-flat-button (click)="openOpeningHoursDialog(true,element.openingHoursID)">Edytuj</button>
-            <button mat-flat-button>Usuń</button>
+            <button mat-flat-button (click)="deleteItemService.deleteOpeningHours(element.openingHoursID)">Usuń</button>
           </td>
         </ng-container>
 
@@ -233,7 +235,8 @@
 
     <mat-expansion-panel>
       <mat-expansion-panel-header>
-        <mat-panel-title>Przypisy do salonów</mat-panel-title>
+        <mat-panel-title>Przydziały do salonów</mat-panel-title>
+        <button mat-flat-button (click)="openAssignmentDialog(false)">Dodaj</button>
       </mat-expansion-panel-header>
       <table mat-table [dataSource]="assignments" matSort #assignmentSort="matSort">
         <ng-container matColumnDef="assignmentDate">
@@ -256,9 +259,9 @@
         <ng-container matColumnDef="CRUD">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> CRUD </th>
           <td mat-cell *matCellDef="let element">
-            <button mat-flat-button (click)="openAssignmentDialog(false)">Dodaj</button>
+
             <button mat-flat-button (click)="openAssignmentDialog(true,element.assigmentID)">Edytuj</button>
-            <button mat-flat-button>Usuń</button>
+            <button mat-flat-button (click)="deleteItemService.deleteassignment(element.assigmentID)">Usuń</button>
           </td>
         </ng-container>
 
@@ -270,6 +273,7 @@
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>Kwalifikacje pracowików</mat-panel-title>
+        <button mat-flat-button (click)="openQualificationDialog(false)">Dodaj</button>
       </mat-expansion-panel-header>
       <table mat-table [dataSource]="qualifications" matSort #qualificationSort="matSort">
 
@@ -289,10 +293,11 @@
         <ng-container matColumnDef="CRUD">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> CRUD </th>
           <td mat-cell *matCellDef="let element">
-            <button mat-flat-button (click)="openQualificationDialog(false)">Dodaj</button>
+
             <button mat-flat-button
               (click)="openQualificationDialog(true, element.employeeQualificationID)">Edytuj</button>
-            <button mat-flat-button>Usuń</button>
+            <button mat-flat-button
+              (click)="deleteItemService.deleteEmployeeQualifiaction(element.employeeQualificationID)">Usuń</button>
           </td>
         </ng-container>
 

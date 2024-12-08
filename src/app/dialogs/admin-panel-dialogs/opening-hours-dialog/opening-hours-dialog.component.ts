@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { OpeningHours } from '../../../classes/Salon/opening-hours';
 import { Salon } from '../../../classes/Salon/salon';
+import { SalonService } from '../../../classes/Salon/salon.service';
 
 @Component({
   selector: 'app-opening-hours-dialog',
@@ -33,7 +34,8 @@ export class OpeningHoursDialogComponent {
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<OpeningHoursDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { openingHours: OpeningHours, salons: Salon[] }
+    @Inject(MAT_DIALOG_DATA) public data: { openingHours: OpeningHours, salons: Salon[] },
+    private salonService: SalonService
   ) {
     this.salons = data.salons;
     this.isEdit = !!data.openingHours;
@@ -43,6 +45,7 @@ export class OpeningHoursDialogComponent {
   private initializeForm(openingHours: OpeningHours) {
     console.log(this.data)
     this.openingHoursForm = this.fb.group({
+      openingHoursID: [openingHours ? openingHours.openingHoursID : null],
       salonID: [openingHours ? openingHours.salonID : null, Validators.required],
       weekday: [openingHours ? openingHours.weekday : '', Validators.required],
       openingHour: [openingHours ? openingHours.openingHour : '', Validators.required],
@@ -52,8 +55,37 @@ export class OpeningHoursDialogComponent {
 
   onSubmit() {
     if (this.openingHoursForm.valid) {
-      const formData = this.openingHoursForm.value;
-      this.dialogRef.close(formData); // Close dialog and pass the form data
+      console.log()
+      let openingHours: OpeningHours = this.openingHoursForm.getRawValue()
+      if (openingHours.closingHour.length != 8) {
+        openingHours.closingHour = openingHours.closingHour + ":00";
+      }
+      if (openingHours.openingHour.length != 8) {
+        openingHours.openingHour = openingHours.openingHour + ":00";
+      }
+      console.log(openingHours)
+      if (!this.isEdit) {
+        this.salonService.addOpeningHours(openingHours).subscribe({
+          next(response) {
+            console.log(response)
+            window.location.reload();
+          },
+          error(error) {
+            console.log(error)
+          }
+        })
+      } else {
+        this.salonService.editOpeningHours(openingHours).subscribe({
+          next(response) {
+            console.log(response)
+            window.location.reload();
+          },
+          error(error) {
+            console.log(error)
+          }
+        })
+      }
+      this.dialogRef.close(this.openingHoursForm.value); // Close dialog and pass the form data
     }
   }
 

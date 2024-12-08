@@ -10,6 +10,7 @@ import { Employee } from '../../../classes/employee/employee';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { EmployeeService } from '../../../classes/employee/employee.service';
 
 
 @Component({
@@ -38,16 +39,18 @@ export class EmployeeDialogComponent {
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<EmployeeDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { employee: Employee, isEdit: boolean }
+    @Inject(MAT_DIALOG_DATA) public data: { employee: Employee, isEdit: boolean },
+    private employeeService: EmployeeService
   ) {
     this.isEdit = data.isEdit; // Set the edit flag
 
     // Initialize the form with either empty or existing data
     this.employeeForm = this.fb.group({
+      employeeID: [this.isEdit ? this.data.employee.employeeID : null],
       employeeName: [this.isEdit ? this.data.employee.employeeName : '', Validators.required],
       employeeSurname: [this.isEdit ? this.data.employee.employeeSurname : '', Validators.required],
-      employeeDialNumber: [this.isEdit ? this.data.employee.employeeDialNumber : '', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
-      encryptedEmployeePassword: [this.isEdit ? this.data.employee.encryptedEmployeePassword : '', Validators.required],
+      employeeDialNumber: [this.isEdit ? this.data.employee.employeeDialNumber : '', [Validators.required]],
+      encryptedEmployeePassword: ['', Validators.required],
       employeeEmail: [this.isEdit ? this.data.employee.employeeEmail : '', [Validators.required, Validators.email]],
       employeeBirthdayDate: [this.isEdit ? this.data.employee.employeeBirthdayDate : '', Validators.required],
       employeeEmploymentDate: [this.isEdit ? this.data.employee.employeeEmploymentDate : '', Validators.required],
@@ -56,7 +59,7 @@ export class EmployeeDialogComponent {
       employeeStreet: [this.isEdit ? this.data.employee.employeeStreet : '', Validators.required],
       employeeBuildingNumber: [this.isEdit ? this.data.employee.employeeBuildingNumber : '', Validators.required],
       employeeApartmentNumber: [this.isEdit ? this.data.employee.employeeApartmentNumber : ''],
-      employeePostalCode: [this.isEdit ? this.data.employee.employeePostalCode : '', [Validators.required, Validators.pattern('^[0-9]{5}$')]]
+      employeePostalCode: [this.isEdit ? this.data.employee.employeePostalCode : '', [Validators.required]]
     });
   }
 
@@ -66,7 +69,29 @@ export class EmployeeDialogComponent {
 
   onSubmit(): void {
     if (this.employeeForm.valid) {
-      // Pass the form value back to the calling component
+      console.log(this.employeeForm.getRawValue())
+
+      if (!this.isEdit) {
+        this.employeeService.addEmployee(this.employeeForm.getRawValue()).subscribe({
+          next(response) {
+            console.log(response)
+            window.location.reload();
+          },
+          error(error) {
+            console.log(error)
+          }
+        })
+      } else {
+        this.employeeService.editEmployee(this.employeeForm.getRawValue()).subscribe({
+          next(response) {
+            console.log(response)
+            window.location.reload();
+          },
+          error(error) {
+            console.log(error)
+          }
+        })
+      }
       this.dialogRef.close(this.employeeForm.value);
     }
   }

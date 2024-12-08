@@ -113,4 +113,51 @@ export class SalonService {
 
 
 
+    addSalon(newSalon: Salon) {
+        const httpOptions = {
+            headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+        };
+        console.log(newSalon)
+        return this.http.post<boolean>(`${this.api_url}`, newSalon, httpOptions);
+    }
+
+    editSalon(newSalon: Salon) {
+        const httpOptions = {
+            headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+        };
+        console.log(newSalon)
+        return this.http.put<boolean>(`${this.api_url}`, newSalon, httpOptions);
+    }
+
+    deleteSalon(salonID: number) {
+        const httpOptions = {
+            headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+        };
+        return this.http.delete<boolean>(`${this.api_url}/${salonID}`, httpOptions);
+    }
+
+
+    addOpeningHours(newOpeningHours: OpeningHours) {
+        const httpOptions = {
+            headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+        };
+        return this.http.post<boolean>(`${this.opening_hours_api_url}`, newOpeningHours, httpOptions);
+    }
+
+    editOpeningHours(newOpeningHours: OpeningHours) {
+        const httpOptions = {
+            headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+        };
+        return this.http.put<boolean>(`${this.opening_hours_api_url}`, newOpeningHours, httpOptions);
+    }
+
+    deleteOpeningHours(OpeningHoursID: number) {
+        const httpOptions = {
+            headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+        };
+        return this.http.delete<boolean>(`${this.opening_hours_api_url}/${OpeningHoursID}`, httpOptions);
+    }
+
+
+
 }

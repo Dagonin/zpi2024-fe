@@ -194,6 +194,26 @@ export class ServiceService {
   }
 
 
+  addService(newService: ServiceDTO) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
+    return this.http.post<boolean>(`${this.service_api_url}`, newService, httpOptions);
+  }
+  editService(newService: ServiceDTO) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
+    return this.http.put<boolean>(`${this.service_api_url}`, newService, httpOptions);
+  }
+
+  deleteService(serviceID: number) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
+    return this.http.delete<boolean>(`${this.service_api_url}/${serviceID}`, httpOptions);
+  }
+
 
 
 

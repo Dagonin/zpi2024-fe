@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatInputModule } from '@angular/material/input';
 import { ServiceCategoryDTO } from '../../../classes/service/service-categoryDTO';
+import { ServiceCategoryService } from '../../../classes/service/service-category.service';
 
 @Component({
   selector: 'app-service-category-dialog',
@@ -29,7 +30,8 @@ export class ServiceCategoryDialogComponent {
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<ServiceCategoryDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { category: ServiceCategoryDTO }
+    @Inject(MAT_DIALOG_DATA) public data: { category: ServiceCategoryDTO },
+    private serviceCategoryService: ServiceCategoryService
   ) {
     this.isEdit = !!data.category;
     this.initializeForm(data.category);
@@ -38,6 +40,7 @@ export class ServiceCategoryDialogComponent {
   private initializeForm(serviceCategory: ServiceCategoryDTO) {
     console.log(this.data)
     this.categoryForm = this.fb.group({
+      serviceCategoryId: [serviceCategory ? serviceCategory.serviceCategoryId : null],
       categoryName: [serviceCategory ? serviceCategory.categoryName : '', Validators.required],
       categoryDescription: [serviceCategory ? serviceCategory.categoryDescription : '', Validators.required]
     });
@@ -45,8 +48,31 @@ export class ServiceCategoryDialogComponent {
 
   onSubmit() {
     if (this.categoryForm.valid) {
-      const formData = this.categoryForm.value;
-      this.dialogRef.close(formData);
+
+
+      if (!this.isEdit) {
+        this.serviceCategoryService.addServiceCategory(this.categoryForm.getRawValue()).subscribe({
+          next(response) {
+            console.log(response)
+            window.location.reload();
+          },
+          error(error) {
+            console.log(error)
+          }
+        })
+      } else {
+        this.serviceCategoryService.editServiceCategory(this.categoryForm.getRawValue()).subscribe({
+          next(response) {
+            console.log(response)
+            window.location.reload();
+          },
+          error(error) {
+            console.log(error)
+          }
+        })
+      }
+
+      this.dialogRef.close(this.categoryForm.value);
     }
   }
 

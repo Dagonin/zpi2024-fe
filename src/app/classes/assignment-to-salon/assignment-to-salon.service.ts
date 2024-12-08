@@ -59,4 +59,28 @@ export class AssignmentToSalonService {
             })
         );
     }
+
+
+    addAssignmentToSalon(assignment: AssignmentToSalon) {
+        const httpOptions = {
+            headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+        };
+        return this.http.post<boolean>(`${this.api_url}`, assignment, httpOptions);
+    }
+    editAssignmentToSalon(assignment: AssignmentToSalon) {
+        const httpOptions = {
+            headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+        };
+        return this.http.put<boolean>(`${this.api_url}`, assignment, httpOptions);
+    }
+
+    deleteAssignmentToSalon(assignmentID: number) {
+        const httpOptions = {
+            headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+        };
+        return this.http.delete<boolean>(`${this.api_url}/${assignmentID}`, httpOptions);
+    }
+
+
+
 }

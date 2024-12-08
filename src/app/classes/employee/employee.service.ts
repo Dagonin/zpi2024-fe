@@ -52,4 +52,25 @@ export class EmployeeService {
   }
 
 
+  addEmployee(newEmployee: Employee) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
+    return this.http.post<boolean>(`${this.api_url}`, newEmployee, httpOptions);
+  }
+  editEmployee(newEmployee: Employee) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
+    return this.http.put<boolean>(`${this.api_url}`, newEmployee, httpOptions);
+  }
+
+  deleteEmployee(employeeID: number) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
+    return this.http.delete<boolean>(`${this.api_url}/${employeeID}`, httpOptions);
+  }
+
+
 }

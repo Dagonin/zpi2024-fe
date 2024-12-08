@@ -45,6 +45,26 @@ export class EmployeeQualificationService {
         );
     }
 
+    addEmployeeQualification(newEmployeeQualification: EmployeeQualification) {
+        const httpOptions = {
+            headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+        };
+        return this.http.post<boolean>(`${this.api_url}`, newEmployeeQualification, httpOptions);
+    }
+    editEmployeeQualification(newEmployeeQualification: EmployeeQualification) {
+        const httpOptions = {
+            headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+        };
+        return this.http.put<boolean>(`${this.api_url}`, newEmployeeQualification, httpOptions);
+    }
+
+    deleteEmployeeQualification(employeeQualificationID: number) {
+        const httpOptions = {
+            headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+        };
+        return this.http.delete<boolean>(`${this.api_url}/${employeeQualificationID}`, httpOptions);
+    }
+
 
 
 }

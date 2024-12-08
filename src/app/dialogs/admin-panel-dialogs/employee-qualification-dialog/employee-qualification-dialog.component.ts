@@ -10,6 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { EmployeeQualification } from '../../../classes/employee-qualification/employee-qualification';
 import { Employee } from '../../../classes/employee/employee';
 import { ServiceCategoryDTO } from '../../../classes/service/service-categoryDTO';
+import { EmployeeQualificationService } from '../../../classes/employee-qualification/employe-qualification.service';
 
 @Component({
   selector: 'app-employee-qualification-dialog',
@@ -35,7 +36,8 @@ export class EmployeeQualificationDialogComponent {
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<EmployeeQualificationDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { qualification: EmployeeQualification, employees: Employee[], categories: ServiceCategoryDTO[] }
+    @Inject(MAT_DIALOG_DATA) public data: { qualification: EmployeeQualification, employees: Employee[], categories: ServiceCategoryDTO[] },
+    private employeeQualificationService: EmployeeQualificationService
   ) {
     this.employees = data.employees;
     this.serviceCategories = data.categories;
@@ -53,8 +55,28 @@ export class EmployeeQualificationDialogComponent {
 
   onSubmit() {
     if (this.qualificationForm.valid) {
-      const formData = this.qualificationForm.value;
-      this.dialogRef.close(formData); // Close dialog and pass the form data
+      if (!this.isEdit) {
+        this.employeeQualificationService.addEmployeeQualification(this.qualificationForm.getRawValue()).subscribe({
+          next(response) {
+            console.log(response)
+            window.location.reload();
+          },
+          error(error) {
+            console.log(error)
+          }
+        })
+      } else {
+        this.employeeQualificationService.editEmployeeQualification(this.qualificationForm.getRawValue()).subscribe({
+          next(response) {
+            console.log(response)
+            window.location.reload();
+          },
+          error(error) {
+            console.log(error)
+          }
+        })
+      }
+      this.dialogRef.close(this.qualificationForm.value);
     }
   }
 

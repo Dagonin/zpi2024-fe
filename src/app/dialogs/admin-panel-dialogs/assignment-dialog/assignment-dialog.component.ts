@@ -10,6 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { AssignmentToSalon } from '../../../classes/assignment-to-salon/assigment-to-salon';
 import { Employee } from '../../../classes/employee/employee';
 import { Salon } from '../../../classes/Salon/salon';
+import { AssignmentToSalonService } from '../../../classes/assignment-to-salon/assignment-to-salon.service';
 
 @Component({
   selector: 'app-assignment-dialog',
@@ -35,7 +36,8 @@ export class AssignmentDialogComponent {
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<AssignmentDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { assignment: AssignmentToSalon, salons: Salon[], employees: Employee[] }
+    @Inject(MAT_DIALOG_DATA) public data: { assignment: AssignmentToSalon, salons: Salon[], employees: Employee[] },
+    private assignmentService: AssignmentToSalonService
   ) {
     this.salons = data.salons;
     this.employees = data.employees;
@@ -46,17 +48,38 @@ export class AssignmentDialogComponent {
   private initializeForm(assignment: AssignmentToSalon) {
     console.log(this.data)
     this.assignmentForm = this.fb.group({
-      assignmentID: [assignment ? assignment.assigmentID : null],
+      assigmentID: [assignment ? assignment.assigmentID : null],
       salonID: [assignment ? assignment.salonID : null, Validators.required],
       employeeID: [assignment ? assignment.employeeID : null, Validators.required],
-      assignmentDate: [assignment ? assignment.assigmentDate : '', Validators.required]
+      assigmentDate: [assignment ? assignment.assigmentDate : '', Validators.required]
     });
   }
 
   onSubmit() {
     if (this.assignmentForm.valid) {
-      const formData = this.assignmentForm.value;
-      this.dialogRef.close(formData); // Close dialog and pass the form data
+      if (!this.isEdit) {
+        this.assignmentService.addAssignmentToSalon(this.assignmentForm.getRawValue()).subscribe({
+          next(response) {
+            console.log(response)
+            window.location.reload();
+          },
+          error(error) {
+            console.log(error)
+          }
+        })
+      } else {
+        this.assignmentService.editAssignmentToSalon(this.assignmentForm.getRawValue()).subscribe({
+          next(response) {
+            console.log(response)
+            window.location.reload();
+          },
+          error(error) {
+            console.log(error)
+          }
+        })
+      }
+
+      this.dialogRef.close(this.assignmentForm.value);
     }
   }
 

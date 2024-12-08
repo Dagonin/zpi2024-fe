@@ -49,4 +49,25 @@ export class ServiceCategoryService {
     }
 
 
+    addServiceCategory(newServiceCategory: ServiceCategoryDTO) {
+        const httpOptions = {
+            headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+        };
+        return this.http.post<boolean>(`${this.api_url}`, newServiceCategory, httpOptions);
+    }
+    editServiceCategory(newServiceCategory: ServiceCategoryDTO) {
+        const httpOptions = {
+            headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+        };
+        return this.http.put<boolean>(`${this.api_url}`, newServiceCategory, httpOptions);
+    }
+
+    deleteServiceCategory(serviceCategoryID: number) {
+        const httpOptions = {
+            headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+        };
+        return this.http.delete<boolean>(`${this.api_url}/${serviceCategoryID}`, httpOptions);
+    }
+
+
 }

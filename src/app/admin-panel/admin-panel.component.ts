@@ -32,6 +32,8 @@ import { ServiceCategoryDialogComponent } from '../dialogs/admin-panel-dialogs/s
 import { OpeningHoursDialogComponent } from '../dialogs/admin-panel-dialogs/opening-hours-dialog/opening-hours-dialog.component';
 import { AssignmentDialogComponent } from '../dialogs/admin-panel-dialogs/assignment-dialog/assignment-dialog.component';
 import { EmployeeQualificationDialogComponent } from '../dialogs/admin-panel-dialogs/employee-qualification-dialog/employee-qualification-dialog.component';
+import { ConfirmDialogSerice } from '../dialogs/confirm-dialog/confirm-dialog.service';
+import { DeleteItemService } from './delete-item.service';
 
 @Component({
   selector: 'app-admin-panel',
@@ -60,6 +62,7 @@ export class AdminPanelComponent implements OnInit {
     private serviceCategoryService: ServiceCategoryService,
     private assignmentService: AssignmentToSalonService,
     public dialog: MatDialog,
+    public deleteItemService: DeleteItemService
   ) {
   }
 
@@ -253,6 +256,8 @@ export class AdminPanelComponent implements OnInit {
       }
     });
   }
+
+
 
 
 
