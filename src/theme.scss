@@ -38,18 +38,29 @@ $disabled_color: #888888;
 
 :root {
   @include mat.form-field-overrides((
-    focus-active-indicator-color: black,
+    focus-active-indicator-color: white,
     focus-outline-color: $primary,
-    focus-label-text-color: $primary
+    focus-label-text-color: $primary,
+    label-text-color: white,
+    input-text-color: $primary,
+    select-option-text-color: $primary,
+    input-text-placeholder-color: white,
+    hover-label-text-color: white,
+    hover-active-indicator-color: $primary,
+    hover-outline-color: white 
   ));
 
   @include mat.button-overrides((
-    container-color: $background,
+    container-color: $primary,
+    label-text-color: black,
+
   ));
 
   @include mat.button-toggle-overrides((
-    background-color: $background,
-    // selected-state-background-color: $primary
+    background-color: $gray_background,
+    selected-state-background-color: $primary,
+    selected-state-text-color: black,
+    text-color: white
   ));
 
 
@@ -60,8 +71,9 @@ $disabled_color: #888888;
 
 
   @include mat.dialog-overrides((
-    container-color: black,
+    container-color: $background,
     subhead-color: $primary,
+    supporting-text-color: $color
   ));
 
   @include mat.tabs-overrides((
@@ -105,6 +117,14 @@ $disabled_color: #888888;
     calendar-date-hover-state-background-color: $primary,
     calendar-date-today-selected-state-outline-color: $gray_background,
   ));
+
+  @include mat.menu-overrides((
+    item-label-text-color: $primary,
+    container-color: $background,
+    divider-color: $gray_background
+  ));
+
+
 
   // NOT WORKING
 

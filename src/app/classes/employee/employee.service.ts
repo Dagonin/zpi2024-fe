@@ -56,7 +56,7 @@ export class EmployeeService {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     };
-    return this.http.post<boolean>(`${this.api_url}`, newEmployee, httpOptions);
+    return this.http.post<boolean>(`http://localhost:8080/api/auth/employee/register`, newEmployee, httpOptions);
   }
   editEmployee(newEmployee: Employee) {
     const httpOptions = {

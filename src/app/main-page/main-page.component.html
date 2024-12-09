@@ -1,52 +1,52 @@
 <div id="main-view" class="view">
 
-    <div id="main_container">
-        <h2 id="main_h2">Oferujemy najlepsze usługi
-            <br> w najwygodniejszy dla ciebie sposób
-          </h2>
-          <button id="main_btn" mat-flat-button (click)="scroll(footer)">Sprawdź lokale</button>
+  <div id="main_container">
+    <h2 id="main_h2">Oferujemy najlepsze usługi
+      <br> w najwygodniejszy dla ciebie sposób
+    </h2>
+    <button id="main_btn" mat-flat-button (click)="scroll(footer)">Sprawdź lokale</button>
 
-    </div>
+  </div>
 </div>
 
 <div id="nd-view" class="view">
-    <h2 id="nd_h2">Nasze usługi:</h2>
-    <div class="cols3_container">
-        <div class="cols3 c1">a
-            <img src="/assets/1.jpg" alt="">
-        </div>
-        <div class="cols3 c2">b
-            <img src="/assets/2.jpg" alt="">
-        </div>
-        <div class="cols3 c3">c
-            <img src="/assets/3.jpg" alt="">
-        </div>
+  <h2 id="nd_h2">Nasze usługi:</h2>
+  <div class="cols3_container">
+    <div class="cols3 c1">a
+      <img src="/assets/1.jpg" alt="">
     </div>
+    <div class="cols3 c2">b
+      <img src="/assets/2.jpg" alt="">
+    </div>
+    <div class="cols3 c3">c
+      <img src="/assets/3.jpg" alt="">
+    </div>
+  </div>
 
 </div>
 
 <app-map></app-map>
 
 <div #footer id="footer">
-    <h2>SKONTAKTUJ SIE Z NAMI</h2>
-    
-    <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
-        <p>
-            <mat-form-field appearance="fill">
-              <mat-label>Login</mat-label>
-              <input formControlName="login" matInput>
-            </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field appearance="fill">
-              <mat-label>Hasło</mat-label>
-              <input formControlName="password" type="password" matInput>
-            </mat-form-field>
-          </p>
-          
-          <div class="example-button-row">
-            <button mat-stroked-button>Login</button>
-          </div>
-        
-        </form>
+  <h2>SKONTAKTUJ SIE Z NAMI</h2>
+
+  <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+    <p>
+      <mat-form-field appearance="outline">
+        <mat-label>Login</mat-label>
+        <input formControlName="login" matInput>
+      </mat-form-field>
+    </p>
+    <p>
+      <mat-form-field appearance="outline">
+        <mat-label>Hasło</mat-label>
+        <input formControlName="password" type="password" matInput>
+      </mat-form-field>
+    </p>
+
+    <div class="example-button-row">
+      <button mat-flat-button>Login</button>
+    </div>
+
+  </form>
 </div>

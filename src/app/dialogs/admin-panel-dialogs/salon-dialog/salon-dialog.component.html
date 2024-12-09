@@ -1,74 +1,70 @@
 <!-- salon-dialog.component.html -->
-<h1 mat-dialog-title>{{ isEdit ? 'Edit' : 'Create' }} Salon</h1>
+<h1 mat-dialog-title>{{ isEdit ? 'Edytuj' : 'Dodaj' }} Salon</h1>
 
 <div mat-dialog-content>
   <form [formGroup]="salonForm" (ngSubmit)="onSubmit()">
     <mat-grid-list cols="2" rowHeight="100px">
       <mat-grid-tile>
-        <mat-form-field appearance="fill">
-          <mat-label>Salon Name</mat-label>
+        <mat-form-field appearance="outline">
+          <mat-label>Nazwa salonu</mat-label>
           <input matInput formControlName="salonName" required />
-          <mat-error>Salon name is required</mat-error>
+          <mat-error>Nazwa salon jest wymagana</mat-error>
         </mat-form-field>
       </mat-grid-tile>
 
       <mat-grid-tile>
-        <mat-form-field appearance="fill">
-          <mat-label>Dial Number</mat-label>
+        <mat-form-field appearance="outline">
+          <mat-label>Numer telefonu</mat-label>
           <input matInput formControlName="salonDialNumber" required />
-          <mat-error>Phone number is required</mat-error>
-          <mat-error>Phone number must be 10 digits
-          </mat-error>
+          <mat-error>Numer telefonu jest wymagany</mat-error>
         </mat-form-field>
       </mat-grid-tile>
 
       <mat-grid-tile>
-        <mat-form-field appearance="fill">
-          <mat-label>City</mat-label>
+        <mat-form-field appearance="outline">
+          <mat-label>Miasto</mat-label>
           <input matInput formControlName="salonCity" required />
-          <mat-error>City is required</mat-error>
+          <mat-error>Miasto jest wymagane</mat-error>
         </mat-form-field>
       </mat-grid-tile>
 
       <mat-grid-tile>
-        <mat-form-field appearance="fill">
-          <mat-label>Street</mat-label>
+        <mat-form-field appearance="outline">
+          <mat-label>Ulica</mat-label>
           <input matInput formControlName="salonStreet" required />
-          <mat-error>Street is required</mat-error>
+          <mat-error>Ulica jest wymagana</mat-error>
         </mat-form-field>
       </mat-grid-tile>
 
       <mat-grid-tile>
-        <mat-form-field appearance="fill">
-          <mat-label>Building Number</mat-label>
+        <mat-form-field appearance="outline">
+          <mat-label>Nr. budynku</mat-label>
           <input matInput formControlName="salonBuildingNumber" required />
-          <mat-error>Building number is required</mat-error>
+          <mat-error>Nr. budynku jest wymagany</mat-error>
         </mat-form-field>
       </mat-grid-tile>
 
       <mat-grid-tile>
-        <mat-form-field appearance="fill">
-          <mat-label>Postal Code</mat-label>
+        <mat-form-field appearance="outline">
+          <mat-label>Kod pocztowy</mat-label>
           <input matInput formControlName="salonPostalCode" required />
-          <mat-error>Postal code is required</mat-error>
-          <mat-error>Postal code must be 5 digits
-          </mat-error>
+          <mat-error>Kod pocztowy jest wymagany</mat-error>
         </mat-form-field>
       </mat-grid-tile>
 
       <mat-grid-tile>
-        <mat-form-field appearance="fill">
-          <mat-label>Latitude</mat-label>
+        <mat-form-field appearance="outline">
+          <mat-label>Szerokość geograficzna</mat-label>
           <input matInput formControlName="latitude" required type="number" />
-          <mat-error>Latitude is required</mat-error>
+          <mat-error>Szerokość geograficzna jest wymagana</mat-error>
         </mat-form-field>
       </mat-grid-tile>
 
       <mat-grid-tile>
-        <mat-form-field appearance="fill">
-          <mat-label>Longitude</mat-label>
+        <mat-form-field appearance="outline">
+          <mat-label>Długość geograficzna </mat-label>
           <input matInput formControlName="longitude" required type="number" />
-          <mat-error>Longitude is required</mat-error>
+          <mat-error>Długość geograficzna jest wymagana</mat-error>
         </mat-form-field>
       </mat-grid-tile>
     </mat-grid-list>
@@ -76,6 +72,6 @@
 </div>
 
 <div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button color="primary" (click)="onSubmit()" [disabled]="salonForm.invalid">Save</button>
+  <button mat-flat-button (click)="onNoClick()">Anuluj</button>
+  <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="salonForm.invalid">Zapisz</button>
 </div>

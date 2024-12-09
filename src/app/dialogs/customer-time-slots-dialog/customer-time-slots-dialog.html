@@ -1,33 +1,36 @@
-<form [formGroup]="timeslotsService.timeslotsFormGroup">
-  <div class="form-field-container">
-    <mat-form-field>
-      <mat-label>Wybierz dzień</mat-label>
-      <input formControlName="day" [min]="minDate" [max]="maxDate" [matDatepickerFilter]="myFilter" matInput
-        [matDatepicker]="picker" (dateChange)="enableTimeSlots()" />
-      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-  </div>
-
-  <div class="scrollable-list">
-    <div *ngFor="let timeSlot of timeslotsService.timeSlots; let i = index" class="time-slot" [ngClass]="{
-        hovered: hoveredIndex !== null && i >= hoveredIndex && i < hoveredIndex + visitTime,
-        disabled: timeSlot[2] === true
-      }" (mouseenter)="onMouseEnter(i)" (mouseleave)="onMouseLeave()" (click)="selectTimeSlots(i)">
-      {{ timeSlot[0] }}:{{ timeSlot[1] === 0 ? '00' : timeSlot[1] }}
-      <input class="invisible" type="checkbox" [checked]="timeSlot[3]" />
+<div id="body">
+  <form [formGroup]="timeslotsService.timeslotsFormGroup">
+    <div class="form-field-container">
+      <mat-form-field class="datePicker" appearance="outline">
+        <mat-label>Wybierz dzień</mat-label>
+        <input formControlName="day" [min]="minDate" [max]="maxDate" [matDatepickerFilter]="myFilter" matInput
+          [matDatepicker]="picker" (dateChange)="enableTimeSlots()" />
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
     </div>
-  </div>
 
-  <div class="action-buttons">
-    <mat-dialog-actions>
-      <button mat-button mat-dialog-close>Zamknij</button>
-      <button *ngIf="data.bool" mat-flat-button matStepperPrevious (click)="rescheduleVisit()">
-        Przełóż wizytę
-      </button>
-      <button *ngIf="!data.bool" mat-flat-button matStepperPrevious (click)="remakeAppointment()">
-        Umów ponownie
-      </button>
-    </mat-dialog-actions>
-  </div>
-</form>
+    <div class="scrollable-list">
+      <div *ngFor="let timeSlot of timeslotsService.timeSlots; let i = index" class="time-slot" [ngClass]="{
+          hovered: hoveredIndex !== null && i >= hoveredIndex && i < hoveredIndex + visitTime,
+          disabled: timeSlot[2] === true
+        }" (mouseenter)="onMouseEnter(i)" (mouseleave)="onMouseLeave()" (click)="selectTimeSlots(i)">
+        {{ timeSlot[0] }}:{{ timeSlot[1] === 0 ? '00' : timeSlot[1] }}
+        <input class="invisible" type="checkbox" [checked]="timeSlot[3]" />
+      </div>
+    </div>
+
+    <div class="action-buttons">
+      <mat-dialog-actions>
+        <button mat-flat-button mat-dialog-close>Zamknij</button>
+        <button *ngIf="data.bool" mat-flat-button matStepperPrevious (click)="rescheduleVisit()">
+          Przełóż wizytę
+        </button>
+        <button *ngIf="!data.bool" mat-flat-button matStepperPrevious (click)="remakeAppointment()">
+          Umów ponownie
+        </button>
+      </mat-dialog-actions>
+    </div>
+  </form>
+
+</div>

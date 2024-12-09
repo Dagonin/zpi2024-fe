@@ -8,21 +8,36 @@
           <mat-list-item class="list_item">
             @let emp = employeeMap.get(visit.employeeID);
             @let salon = salonMap.get(visit.salonID);
-            <span matListItemTitle>{{visit.visitDate}} {{visit.visitStartTime}} </span>
-            <span matListItemLine>{{salon?.salonName}} {{salon?.salonCity}} {{salon?.salonStreet}}</span>
-            <span matListItemLine>{{emp?.employeeName}} {{emp?.employeeSurname}} {{emp?.employeeDialNumber}}
-              {{emp?.employeeEmail}}</span>
+            @let services = visitServiceMap.get(visit.visitID);
+            <span matListItemTitle>
+              <mat-icon fontIcon="event"></mat-icon>{{visit.visitDate}} {{visit.visitStartTime}}
+            </span>
+            <span matListItemLine>
+              <mat-icon fontIcon="location_on"></mat-icon> {{salon?.salonName}} {{salon?.salonCity}}
+              {{salon?.salonStreet}}
+            </span>
+            <span matListItemLine>
+              <mat-icon fontIcon="person"></mat-icon> {{emp?.employeeName}}
+              {{emp?.employeeSurname}}
+              {{emp?.employeeDialNumber}}
+              {{emp?.employeeEmail}}
+            </span>
+            <span matListItemLine>
+              <mat-icon fontIcon="credit_card"></mat-icon>
+              {{serviceService.calculateServicesPrice(services) | currency: "PLN"}}
+              <mat-icon fontIcon="schedule"></mat-icon>{{serviceService.calculateServicesTime(services)}} minut
+            </span>
 
             <span matListItemLine>
-              @for (serviceID of visitServiceMap.get(visit.visitID); track $index) {
+              @for (serviceID of services; track $index) {
               <div>{{serviceMap.get(serviceID)?.serviceName}} </div>
               }
             </span>
             <div matListItemLine>
               <button (click)="openDetailsDialog(visit.employeeID,visit.visitID, visit.salonID)"
-                mat-button>Szczegóły</button>
-              <button (click)="openRescheduleDialog(visit.visitID,true)" mat-button>Przełóż wizytę</button>
-              <button (click)="cancelVisit(visit.visitID)" mat-button>Anuluj wizytę</button>
+                mat-flat-button>Lokalizacja</button>
+              <button (click)="openRescheduleDialog(visit.visitID,true)" mat-flat-button>Przełóż wizytę</button>
+              <button (click)="cancelVisit(visit.visitID)" mat-flat-button>Anuluj wizytę</button>
               <!-- <button (click)="openRatingDialog(visit.employeeID,visit.visitID, visit.salonID)"
                 mat-button>Oceń</button> -->
               @if (ratingMap.has(visit.visitID)) {
@@ -46,21 +61,30 @@
           <mat-list-item class="list_item">
             @let emp = employeeMap.get(visit.employeeID);
             @let salon = salonMap.get(visit.salonID);
-            <span matListItemTitle>{{visit.visitDate}} {{visit.visitStartTime}} </span>
-            <span matListItemLine>{{salon?.salonName}} {{salon?.salonCity}} {{salon?.salonStreet}}</span>
-            <span matListItemLine>{{emp?.employeeName}} {{emp?.employeeSurname}} {{emp?.employeeDialNumber}}
-              {{emp?.employeeEmail}}</span>
-
+            @let services = visitServiceMap.get(visit.visitID);
+            <span matListItemTitle>
+              <mat-icon fontIcon="event"></mat-icon>{{visit.visitDate}} {{visit.visitStartTime}}
+            </span>
             <span matListItemLine>
-              @for (serviceID of visitServiceMap.get(visit.visitID); track $index) {
-              <div>{{serviceMap.get(serviceID)?.serviceName}} </div>
-              }
+              <mat-icon fontIcon="location_on"></mat-icon> {{salon?.salonName}} {{salon?.salonCity}}
+              {{salon?.salonStreet}}
+            </span>
+            <span matListItemLine>
+              <mat-icon fontIcon="person"></mat-icon> {{emp?.employeeName}}
+              {{emp?.employeeSurname}}
+              {{emp?.employeeDialNumber}}
+              {{emp?.employeeEmail}}
+            </span>
+            <span matListItemLine>
+              <mat-icon fontIcon="credit_card"></mat-icon>
+              {{serviceService.calculateServicesPrice(services) | currency: "PLN"}}
+              <mat-icon fontIcon="schedule"></mat-icon>{{serviceService.calculateServicesTime(services)}} minut
             </span>
             <div matListItemLine> <button (click)="openRatingDialog(visit.employeeID,visit.visitID, visit.salonID)"
-                mat-button>Oceń</button>
+                mat-flat-button>Oceń</button>
               <button (click)="openDetailsDialog(visit.employeeID,visit.visitID, visit.salonID)"
-                mat-button>Szczegóły</button>
-              <button (click)="openRescheduleDialog(visit.visitID,false)" mat-button>Umów ponownie</button>
+                mat-flat-button>Lokalizacja</button>
+              <button (click)="openRescheduleDialog(visit.visitID,false)" mat-flat-button>Umów ponownie</button>
               @if (ratingMap.has(visit.visitID)) {
               <span>Ocenione {{ratingMap.get(visit.visitID)?.ratingValue}}</span>
               }
@@ -81,20 +105,29 @@
           <mat-list-item class="list_item">
             @let emp = employeeMap.get(visit.employeeID);
             @let salon = salonMap.get(visit.salonID);
-            <span matListItemTitle>{{visit.visitDate}} {{visit.visitStartTime}} </span>
-            <span matListItemLine>{{salon?.salonName}} {{salon?.salonCity}} {{salon?.salonStreet}}</span>
-            <span matListItemLine>{{emp?.employeeName}} {{emp?.employeeSurname}} {{emp?.employeeDialNumber}}
-              {{emp?.employeeEmail}}</span>
-
+            @let services = visitServiceMap.get(visit.visitID);
+            <span matListItemTitle>
+              <mat-icon fontIcon="event"></mat-icon>{{visit.visitDate}} {{visit.visitStartTime}}
+            </span>
             <span matListItemLine>
-              @for (serviceID of visitServiceMap.get(visit.visitID); track $index) {
-              <div>{{serviceMap.get(serviceID)?.serviceName}} </div>
-              }
+              <mat-icon fontIcon="location_on"></mat-icon> {{salon?.salonName}} {{salon?.salonCity}}
+              {{salon?.salonStreet}}
+            </span>
+            <span matListItemLine>
+              <mat-icon fontIcon="person"></mat-icon> {{emp?.employeeName}}
+              {{emp?.employeeSurname}}
+              {{emp?.employeeDialNumber}}
+              {{emp?.employeeEmail}}
+            </span>
+            <span matListItemLine>
+              <mat-icon fontIcon="credit_card"></mat-icon>
+              {{serviceService.calculateServicesPrice(services) | currency: "PLN"}}
+              <mat-icon fontIcon="schedule"></mat-icon>{{serviceService.calculateServicesTime(services)}} minut
             </span>
             <div matListItemLine>
               <button (click)="openDetailsDialog(visit.employeeID,visit.visitID, visit.salonID)"
-                mat-button>Szczegóły</button>
-              <button (click)="openRescheduleDialog(visit.visitID,false)" mat-button>Umów ponownie</button>
+                mat-flat-button>Lokalizacja</button>
+              <button (click)="openRescheduleDialog(visit.visitID,false)" mat-flat-button>Umów ponownie</button>
 
             </div>
 

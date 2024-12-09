@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { Router, RouterLink } from '@angular/router';
 import { FormErrorsService } from '../../form-errors/form-errors.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-forgotten-password',
@@ -33,7 +34,7 @@ export class ForgottenPasswordComponent {
   }, { updateOn: 'change' })
 
 
-  constructor(private formErrorService: FormErrorsService, private router: Router) {
+  constructor(private formErrorService: FormErrorsService, private router: Router, private http: HttpClient) {
   }
 
 
@@ -48,5 +49,29 @@ export class ForgottenPasswordComponent {
   errorMessage(vals: any, name: string) {
     return this.formErrorService.errorMessage(vals, name);
   }
+
+
+
+  lostPassword() {
+    this.sendPasswordLostEmail().subscribe({
+      next(value) {
+        console.log(value)
+      },
+      error(err) {
+        console.log(err)
+      },
+    })
+  }
+
+
+  sendPasswordLostEmail() {
+    const email = this.forgotten_passwordForm.getRawValue();
+    console.log(email)
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    };
+    return this.http.post<boolean>(`http://localhost:8080/api/crud/customer/password-change-request`, email, httpOptions);
+  }
+
 
 }

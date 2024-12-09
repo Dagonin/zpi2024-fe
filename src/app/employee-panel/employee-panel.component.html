@@ -26,11 +26,30 @@
                   @for (visit of day.value; track $index) {
                   @let customer = customerMap.get(visit.customerID);
                   @let salon = salonService.getSalon(visit.salonID);
+                  @let services = visitServiceMap.get(visit.visitID);
                   <mat-list-item class="visit-item">
                     <div class="visit-content">
-                      <div>{{ visit.visitStartTime }} {{ customer?.customerName }} {{ customer?.customerSurname }}</div>
-                      <div>{{ customer?.customerDialNumber }} {{ customer?.customerEmail }}</div>
-                      <div>{{salon?.salonName}} {{salon?.salonCity}} {{salon?.salonStreet}}</div>
+                      <div>
+                        <mat-icon fontIcon="schedule"></mat-icon> {{ visit.visitStartTime }} <mat-icon
+                          fontIcon="person"></mat-icon>
+                        {{ customer?.customerName }} {{ customer?.customerSurname }}
+                      </div>
+                      <div>
+                        <mat-icon fontIcon="call"></mat-icon>{{ customer?.customerDialNumber }}
+                      </div>
+                      <div>
+                        <mat-icon fontIcon="mail"></mat-icon> {{ customer?.customerEmail }}
+                      </div>
+                      <div>
+                        <mat-icon fontIcon="location_on"></mat-icon>{{salon?.salonName}} {{salon?.salonCity}}
+                        {{salon?.salonStreet}}
+                      </div>
+                      <span matListItemLine>
+                        <mat-icon fontIcon="credit_card"></mat-icon>
+                        {{serviceService.calculateServicesPrice(services) | currency: "PLN"}}
+                        <mat-icon fontIcon="schedule"></mat-icon>{{serviceService.calculateServicesTime(services)}}
+                        minut
+                      </span>
                       <div>
                         @for (serviceID of visitServiceMap.get(visit.visitID); track $index) {
                         <div>{{serviceMap.get(serviceID)?.serviceName}} </div>
@@ -64,11 +83,30 @@
                   @for (visit of day.value; track $index) {
                   @let customer = customerMap.get(visit.customerID);
                   @let salon = salonService.getSalon(visit.salonID);
+                  @let services = visitServiceMap.get(visit.visitID);
                   <mat-list-item class="visit-item">
                     <div class="visit-content">
-                      <div>{{ visit.visitStartTime }} {{ customer?.customerName }} {{ customer?.customerSurname }}</div>
-                      <div>{{ customer?.customerDialNumber }} {{ customer?.customerEmail }}</div>
-                      <div>{{salon?.salonName}} {{salon?.salonCity}} {{salon?.salonStreet}}</div>
+                      <div>
+                        <mat-icon fontIcon="schedule"></mat-icon> {{ visit.visitStartTime }} <mat-icon
+                          fontIcon="person"></mat-icon>
+                        {{ customer?.customerName }} {{ customer?.customerSurname }}
+                      </div>
+                      <div>
+                        <mat-icon fontIcon="call"></mat-icon>{{ customer?.customerDialNumber }}
+                      </div>
+                      <div>
+                        <mat-icon fontIcon="mail"></mat-icon> {{ customer?.customerEmail }}
+                      </div>
+                      <div>
+                        <mat-icon fontIcon="location_on"></mat-icon>{{salon?.salonName}} {{salon?.salonCity}}
+                        {{salon?.salonStreet}}
+                      </div>
+                      <span>
+                        <mat-icon fontIcon="credit_card"></mat-icon>
+                        {{serviceService.calculateServicesPrice(services) | currency: "PLN"}}
+                        <mat-icon fontIcon="schedule"></mat-icon>{{serviceService.calculateServicesTime(services)}}
+                        minut
+                      </span>
                       <div>
                         @for (serviceID of visitServiceMap.get(visit.visitID); track $index) {
                         <div>{{serviceMap.get(serviceID)?.serviceName}} </div>

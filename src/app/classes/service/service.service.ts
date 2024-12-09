@@ -34,6 +34,28 @@ export class ServiceService {
     return this.serviceMap;
   }
 
+  calculateServicesPrice(services: number[] | undefined) {
+    let price = 0;
+    if (services) {
+      services.forEach(serviceID => {
+        price += this.serviceMap.get(serviceID)?.servicePrice ?? 0;
+      })
+    }
+
+    return price;
+  }
+
+  calculateServicesTime(services: number[] | undefined) {
+    let time = 0;
+    if (services) {
+      services.forEach(serviceID => {
+        time += (this.serviceMap.get(serviceID)?.serviceSpan ?? 0) * 15;
+      })
+    }
+
+    return time;
+  }
+
   private mapServices() {
     this.serviceMap.clear();
     this.services.forEach((service) => this.serviceMap.set(service.serviceID, service));

@@ -5,7 +5,7 @@
   <form [formGroup]="openingHoursForm" (ngSubmit)="onSubmit()">
     <mat-grid-list cols="2" rowHeight="100px">
       <mat-grid-tile>
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="outline">
           <mat-label>Salon</mat-label>
           <mat-select formControlName="salonID" required>
             <mat-option *ngFor="let salon of salons" [value]="salon.salonID">
@@ -17,7 +17,7 @@
       </mat-grid-tile>
 
       <mat-grid-tile>
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="outline">
           <mat-label>Weekday</mat-label>
           <input matInput formControlName="weekday" type="number" required />
           <mat-error>Weekday is required</mat-error>
@@ -25,7 +25,7 @@
       </mat-grid-tile>
 
       <mat-grid-tile>
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="outline">
           <mat-label>Opening Hour</mat-label>
           <input matInput formControlName="openingHour" type="time" required />
           <mat-error>Opening hour is required
@@ -34,7 +34,7 @@
       </mat-grid-tile>
 
       <mat-grid-tile>
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="outline">
           <mat-label>Closing Hour</mat-label>
           <input matInput formControlName="closingHour" type="time" required />
           <mat-error>Closing hour is required
@@ -46,6 +46,6 @@
 </div>
 
 <div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button color="primary" (click)="onSubmit()" [disabled]="openingHoursForm.invalid">Save</button>
+  <button mat-flat-button (click)="onNoClick()">Cancel</button>
+  <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="openingHoursForm.invalid">Save</button>
 </div>

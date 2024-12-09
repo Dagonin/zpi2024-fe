@@ -2,17 +2,27 @@
 
 @let customer = data.event.meta.customer;
 <mat-dialog-content>
-  {{data.event.title}}
-  <div>{{customer.customerName}} {{customer.customerSurname}}</div>
-  <div>{{customer.customerDialNumber}}</div>
-  <div>{{customer.customerEmail}}</div>
+  <mat-icon fontIcon="schedule"></mat-icon>{{data.event.start | date: "hh:mm"}}
+  <div>
+    <mat-icon fontIcon="person"></mat-icon> {{customer.customerName}} {{customer.customerSurname}}
+  </div>
+  <div>
+    <mat-icon fontIcon="call"></mat-icon>{{customer.customerDialNumber}}
+  </div>
+  <div>
+    <mat-icon fontIcon="mail"></mat-icon>{{customer.customerEmail}}
+  </div>
+  <div>
+    <mat-icon fontIcon="credit_card"></mat-icon>{{calculateServicesPrice()}}
+    <mat-icon fontIcon="schedule"></mat-icon>{{calculateServicesTime()}}
+  </div>
   @for (service of data.event.meta.services; track $index) {
   <div>{{service.serviceName}} </div>
   }
   <mat-divider></mat-divider>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-raised-button mat-dialog-close (click)="close()">Zamknij</button>
-  <button mat-raised-button mat-dialog-close (click)="cancelVisit()">Odwołaj</button>
-  <button mat-raised-button mat-dialog-close (click)="moveVisit()">Przenieś</button>
+  <button mat-flat-button mat-dialog-close (click)="close()">Zamknij</button>
+  <button mat-flat-button mat-dialog-close (click)="cancelVisit()">Odwołaj</button>
+  <button mat-flat-button mat-dialog-close (click)="moveVisit()">Przenieś</button>
 </mat-dialog-actions>

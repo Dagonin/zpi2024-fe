@@ -1,14 +1,12 @@
-<h2 mat-dialog-title>Wizyta</h2>
+<h2 mat-dialog-title>Lokalizacja salonu</h2>
 
 <mat-dialog-content>
-  asdasdasd
   <mat-divider></mat-divider>
 
   <div id="mapp">
-    <button (click)="centerMap()" id="refreshButton">Reset mapy</button>
+    <button mat-flat-button (click)="centerMap()" id="refreshButton">Reset mapy</button>
   </div>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-raised-button mat-dialog-close (click)="close()">Anuluj wizytę</button>
-  <button mat-raised-button mat-dialog-close (click)="close()">Zamknij</button>
+  <button mat-flat-button mat-dialog-close (click)="close()">Zamknij</button>
 </mat-dialog-actions>

@@ -20,6 +20,7 @@ import { CustomerTimeSlotsDialog } from '../dialogs/customer-time-slots-dialog/c
 import { ConfirmDialogSerice } from '../dialogs/confirm-dialog/confirm-dialog.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../auth/auth.service';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-history',
@@ -29,7 +30,8 @@ import { AuthService } from '../auth/auth.service';
     CommonModule,
     MatButtonModule,
     MatDialogModule,
-    MatTabsModule
+    MatTabsModule,
+    MatIcon
   ],
   templateUrl: './history.component.html',
   styleUrl: './history.component.css'
@@ -69,7 +71,7 @@ export class HistoryComponent implements OnInit {
         rating: this.ratingMap.get(visitID)
       },
       height: '400px',
-      width: '600px',
+      width: '300px',
     });
   }
 
@@ -105,7 +107,7 @@ export class HistoryComponent implements OnInit {
     });
   }
 
-  constructor(public visitService: VisitService, private serviceService: ServiceService, private salonService: SalonService, private ratingService: RatingService, private confirmDialogService: ConfirmDialogSerice, private authService: AuthService) { }
+  constructor(public visitService: VisitService, public serviceService: ServiceService, private salonService: SalonService, private ratingService: RatingService, private confirmDialogService: ConfirmDialogSerice, private authService: AuthService) { }
 
 
   ngOnInit(): void {

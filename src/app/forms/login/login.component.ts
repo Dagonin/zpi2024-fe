@@ -35,7 +35,7 @@ import { MatSnackBar, MatSnackBarAction, MatSnackBarActions, MatSnackBarLabel, M
 export class LoginComponent {
 
   protected loginForm = new FormGroup({
-    user_type: new FormControl('', Validators.required),
+    user_type: new FormControl('C', Validators.required),
     login: new FormControl('', [Validators.required, Validators.minLength(5)]),
     password: new FormControl('', [Validators.required, Validators.minLength(8)]),
 
@@ -54,6 +54,7 @@ export class LoginComponent {
   onSubmit() {
 
     const vals = this.loginForm.getRawValue();
+
     if (this.loginForm.valid) {
       console.log(vals)
       if (vals.user_type == "C") {

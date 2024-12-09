@@ -61,3 +61,16 @@ mat-button-toggle {
 #logo_name {
   width: 250px;
 }
+
+.nav_button {
+  padding-bottom: 0;
+  height: 50%;
+}
+
+.nav_button:hover {
+  cursor: pointer;
+}
+
+.menu {
+  z-index: 5000;
+}

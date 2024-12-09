@@ -151,7 +151,7 @@ export class AdminPanelComponent implements OnInit {
       salon = this.salonsMap.get(salonID);
     }
     const dialogRef = this.dialog.open(SalonDialogComponent, {
-      width: '400px',
+      width: '500px',
       height: '600px',
       data: {
         isEdit: isEdit,
@@ -166,7 +166,7 @@ export class AdminPanelComponent implements OnInit {
       employee = this.employeesMap.get(employeeID);
     }
     const dialogRef = this.dialog.open(EmployeeDialogComponent, {
-      width: '400px',
+      width: '500px',
       height: '900px',
       data: {
         isEdit: isEdit,
@@ -181,7 +181,7 @@ export class AdminPanelComponent implements OnInit {
       service = this.servicesMap.get(serviceID);
     }
     const dialogRef = this.dialog.open(ServiceDialogComponent, {
-      width: '400px',
+      width: '500px',
       height: '500px',
       data: {
         isEdit: isEdit,
@@ -197,7 +197,7 @@ export class AdminPanelComponent implements OnInit {
       category = this.serviceCategoryMap.get(categoryID);
     }
     const dialogRef = this.dialog.open(ServiceCategoryDialogComponent, {
-      width: '400px',
+      width: '500px',
       height: '500px',
       data: {
         isEdit: isEdit,
@@ -212,7 +212,7 @@ export class AdminPanelComponent implements OnInit {
       openingHours = this.openingHoursMap.get(OpeningHoursID);
     }
     const dialogRef = this.dialog.open(OpeningHoursDialogComponent, {
-      width: '400px',
+      width: '500px',
       height: '500px',
       data: {
         isEdit: isEdit,
@@ -229,7 +229,7 @@ export class AdminPanelComponent implements OnInit {
     }
     console.log(this.assignmentsMap)
     const dialogRef = this.dialog.open(AssignmentDialogComponent, {
-      width: '400px',
+      width: '500px',
       height: '500px',
       data: {
         isEdit: isEdit,
@@ -246,7 +246,7 @@ export class AdminPanelComponent implements OnInit {
       qualification = this.employeeQualificationsMap.get(qualificationID);
     }
     const dialogRef = this.dialog.open(EmployeeQualificationDialogComponent, {
-      width: '400px',
+      width: '500px',
       height: '500px',
       data: {
         isEdit: isEdit,

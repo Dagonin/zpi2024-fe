@@ -1,11 +1,11 @@
-import { Component, importProvidersFrom, inject } from '@angular/core';
+import { Component, importProvidersFrom, Inject, inject } from '@angular/core';
 import { VisitService } from '../classes/visit/visit.service';
 import { Visit } from '../classes/visit/visit';
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DOCUMENT } from '@angular/common';
 import { MatListModule } from '@angular/material/list';
 import {
   CalendarEvent,
@@ -33,6 +33,7 @@ import { FindClientDialog } from '../dialogs/find-client-dialog/find-client-dial
 import { ConfirmDialogSerice } from '../dialogs/confirm-dialog/confirm-dialog.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../auth/auth.service';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-employee-panel',
@@ -50,12 +51,15 @@ import { AuthService } from '../auth/auth.service';
     CalendarModule,
     MatButtonModule,
     MatTooltipModule,
-    MatTabsModule
+    MatTabsModule,
+    MatIconModule
   ],
   templateUrl: './employee-panel.component.html',
-  styleUrl: './employee-panel.component.css'
+  styleUrl: './employee-panel.component.scss'
 })
 export class EmployeePanelComponent {
+
+
 
   visits: Visit[] = [];
   customerMap: Map<number, CustomerDTO> = new Map();
@@ -71,7 +75,14 @@ export class EmployeePanelComponent {
   };
   viewDate = new Date();
 
-  constructor(private visitService: VisitService, public salonService: SalonService, private serviceService: ServiceService, private confirmDialogService: ConfirmDialogSerice, private authService: AuthService) { }
+
+  constructor(
+    private visitService: VisitService,
+    public salonService: SalonService,
+    public serviceService: ServiceService,
+    private confirmDialogService: ConfirmDialogSerice,
+    private authService: AuthService,
+  ) { }
 
   ngOnInit(): void {
     const userID = this.authService.getUserID();
@@ -161,7 +172,8 @@ export class EmployeePanelComponent {
 
   openDialog(startEvent: any) {
     const dialogRef = this.dialog.open(EmployeePanelVisitDialog, {
-      data: startEvent
+      data: startEvent,
+
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
@@ -182,7 +194,10 @@ export class EmployeePanelComponent {
   }
 
   openCreateVisitDialog() {
-    this.dialog.open(FindClientDialog)
+    this.dialog.open(FindClientDialog, {
+      height: '300px',
+      width: '200px'
+    })
   }
 
 

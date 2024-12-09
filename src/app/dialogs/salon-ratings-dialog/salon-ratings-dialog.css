@@ -1,5 +1,4 @@
 * {
-    background-color: black;
     color: white;
 }
 
@@ -8,7 +7,8 @@ p {
 }
 
 .mat-item {
-    border: 2px solid gold;
+    border: 2px solid var(--primary);
     border-radius: 8px;
     margin-bottom: 1rem;
+    background-color: var(--gray-background);
 }

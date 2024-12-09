@@ -2,6 +2,7 @@
     width: 100%;
     height: 93%;
     display: flex;
+    background-color: var(--background);
 }
 
 #visits {
@@ -72,3 +73,9 @@
     cursor: pointer;
     /* Indicate the area is interactive */
 }
+
+
+// ::ng-deep .cal-hour-segment{
+//     background-color: var(--gray-background) ;
+//     border-color: black !important;
+// }

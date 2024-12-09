@@ -1,8 +1,8 @@
 #body {
     display: inline-flex;
     padding: 1rem;
-    /* background-color: black;
-    color: white; */
+    background-color: var(--background);
+    color: var(--primary);
 }
 
 #map {
@@ -20,7 +20,19 @@
     top: 20px;
     right: 20px;
     padding: 10px;
-    z-index: 5000;
+    z-index: 1000;
+    background-color: var(--primary);
+    color: var(--background);
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+
+    &:hover {
+        background-color: var(--hover-border);
+        transform: scale(1.1);
+    }
 }
 
 

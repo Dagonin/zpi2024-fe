@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import '../node_modules/angular-calendar/css/angular-calendar.css';
+
 @import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Carattere&family=Noto+Serif+Display:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
 
 $primary: #EFBF04;
@@ -51,3 +52,28 @@ body {
     align-items: center;
 }
 
+button{
+    margin: 5px;
+}
+
+h1{
+    color: white;
+}
+
+::-webkit-scrollbar {
+    width: 4px;
+    overflow-y: scroll;
+    background: grey;
+    box-shadow: inset 0 0 4px #707070;
+    visibility:hidden;
+}
+
+::-webkit-scrollbar-thumb {
+    background: black;
+    visibility:hidden;
+    border-radius: 10px;
+}
+
+mat-icon{
+    vertical-align: middle
+}

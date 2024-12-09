@@ -3,14 +3,14 @@
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <h3>Zaloguj się</h3>
       <p id="user_toggle">
-        <mat-button-toggle-group formControlName="user_type" aria-label="Font Style" value="C">
-          <mat-button-toggle checked value="C">Klient</mat-button-toggle>
+        <mat-button-toggle-group formControlName="user_type" aria-label="Font Style">
+          <mat-button-toggle value="C">Klient</mat-button-toggle>
           <mat-button-toggle value="E">Pracownik</mat-button-toggle>
         </mat-button-toggle-group>
       </p>
 
       <p>
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="outline">
           <mat-label>Login</mat-label>
           <input formControlName="login" matInput>
           @if (loginForm.get('login')?.invalid) {
@@ -19,7 +19,7 @@
         </mat-form-field>
       </p>
       <p>
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="outline">
           <mat-label>Hasło</mat-label>
           <input formControlName="password" type="password" matInput>
           @if (loginForm.get('password')?.invalid) {
@@ -29,7 +29,7 @@
       </p>
 
       <div class="example-button-row">
-        <button mat-stroked-button>Login</button>
+        <button mat-flat-button>Login</button>
       </div>
 
     </form>

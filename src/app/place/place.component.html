@@ -3,7 +3,7 @@
     <div id="leftPanel">
       <mat-stepper class="stepper" linear #stepper (selectionChange)="stepperChange($event)">
         <mat-step class="mat-step" [stepControl]="servicesFormGroup" [editable]="true">
-          <button mat-raised-button (click)="clearSelected()">
+          <button mat-flat-button (click)="clearSelected()">
             Anuluj zaznaczenie
           </button>
           <form [formGroup]="servicesFormGroup">
@@ -56,7 +56,8 @@
                 <mat-radio-button [value]="$index">
                   <mat-list-item>
                     <span matListItemTitle>{{employee.employeeName}} {{employee.employeeSurname}}
-                      {{employee.rating}}</span>
+                      <mat-icon style="font-size: 19px; color: gold; vertical-align: middle;" fontIcon="star">
+                      </mat-icon>{{employee.rating}}</span>
                     <span matListItemLine>{{employee.employeeDialNumber}}</span>
                   </mat-list-item>
                 </mat-radio-button>
@@ -77,7 +78,7 @@
         </mat-step>
         <mat-step class="mat-step" [stepControl]="timeslotsService.timeslotsFormGroup" [editable]="true">
           <form [formGroup]="timeslotsService.timeslotsFormGroup">
-            <mat-form-field>
+            <mat-form-field appearance="outline">
               <mat-label>Wybierz dzień</mat-label>
               <input formControlName="day" [min]="minDate" [max]="maxDate" [matDatepickerFilter]="myFilter" matInput
                 [matDatepicker]="picker" (dateChange)="enableTimeSlots()">
@@ -113,7 +114,7 @@
 
     <div id="rightPanel">
       <div id="mapp">
-        <button (click)="centerMap()" id="refreshButton">Reset mapy</button>
+        <button mat-flat-button (click)="centerMap()" id="refreshButton">Reset mapy</button>
       </div>
 
       <mat-card appearance="outlined" id="resumeCard">
@@ -143,7 +144,7 @@
           @if (this.timeslotsService.timeslotsFormGroup.controls.time_slot.value) {
           {{this.timeslotsService.indexToHour(this.timeslotsService.timeslotsFormGroup.controls.time_slot.value)}}
           <br>
-          <button mat-raised-button (click)="makeAppointment()">Umów wizytę</button>
+          <button mat-flat-button (click)="makeAppointment()">Umów wizytę</button>
           }
 
 

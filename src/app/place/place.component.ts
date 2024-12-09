@@ -36,6 +36,7 @@ import { RatingService } from '../classes/rating/rating.service';
 import { ConfirmDialogSerice } from '../dialogs/confirm-dialog/confirm-dialog.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../auth/auth.service';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-place',
@@ -59,6 +60,7 @@ import { AuthService } from '../auth/auth.service';
     MatProgressSpinnerModule,
     MatCardModule,
     MatRadioModule,
+    MatIconModule
   ],
   templateUrl: './place.component.html',
   styleUrl: './place.component.css'

@@ -1,66 +1,72 @@
-form{
-    width: 100%;
-    text-align: center;
-    margin: auto;
-    padding: 5px;
+form {
+  width: 100%;
+  text-align: center;
+  margin: auto;
+  padding: 5px;
+
 }
 
-form p{
+form p {
   display: block;
-    width: 100%;
-    text-align: center;
+  width: 100%;
+  text-align: center;
 }
 
 .tel-input-container {
-    display: inline-flex;
-  }
-  
-  .tel-input-element {
-    border: none;
-    background: none;
-    padding: 0;
-    outline: none;
-    font: inherit;
-    text-align: center;
-    color: currentcolor;
-  }
+  display: inline-flex;
+}
 
-  .area{
-    width: 25%;
-  }
+.tel-input-element {
+  border: none;
+  background: none;
+  padding: 0;
+  outline: none;
+  font: inherit;
+  text-align: center;
+  color: currentcolor;
+}
 
-  .number{
-    width: 75%;
-  }
-  
-  .example-tel-input-spacer {
-    opacity: 0;
-    transition: opacity 200ms;
-  }
-  
-  :host.example-floating .example-tel-input-spacer {
-    opacity: 1;
-  }
-  
-  #background{
-    height: 93vh;
-    width: 100%;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-image: url('/assets/login_bg1.jpg');
+.area {
+  width: 25%;
+}
+
+.number {
+  width: 75%;
+}
+
+.example-tel-input-spacer {
+  opacity: 0;
+  transition: opacity 200ms;
+}
+
+:host.example-floating .example-tel-input-spacer {
+  opacity: 1;
+}
+
+#background {
+  height: 93vh;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url('/assets/login_bg1.jpg');
 }
 
 
-#form{
-    background-color: white;
-    height: 65%;
-    width: 25%;
-    margin: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 2rem;
-    align-content: center;
-    
+#form {
+  background-color: var(--background);
+  height: 700px;
+  width: 400px;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 2rem;
+  align-content: center;
+
+}
+
+
+h3 {
+  color: white;
 }

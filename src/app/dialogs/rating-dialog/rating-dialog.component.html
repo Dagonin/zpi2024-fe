@@ -22,13 +22,13 @@
     <input type="radio" id="rating1" name="rating" value="1" [(ngModel)]="selectedRating" />
     <label class="half" for="rating1" title="1/2 star"></label>
   </fieldset>
-  <mat-form-field class="example-full-width">
+  <mat-form-field appearance="outline" class="example-full-width">
     <mat-label>Zostaw komentarz</mat-label>
     <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="2" cdkAutosizeMaxRows="9"
       [(ngModel)]="text"></textarea>
   </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-button mat-dialog-close>Zamknij</button>
-  <button [disabled]="!selectedRating" mat-button mat-dialog-close (click)="rateBarber()">Oceń</button>
+  <button mat-flat-button mat-dialog-close>Zamknij</button>
+  <button [disabled]="!selectedRating" mat-flat-button mat-dialog-close (click)="rateBarber()">Oceń</button>
 </mat-dialog-actions>

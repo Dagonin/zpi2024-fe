@@ -2,6 +2,8 @@
   background-image: url('/assets/vintage_barber_shop.jpg');
   width: 100%;
   height: 93%;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 

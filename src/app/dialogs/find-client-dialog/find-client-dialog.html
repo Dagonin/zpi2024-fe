@@ -1,6 +1,6 @@
 <mat-dialog-content>
   <form [formGroup]="form" (ngSubmit)="checkIfExists()">
-    <mat-form-field>
+    <mat-form-field appearance="outline">
       <mat-label>Wybierz salon</mat-label>
       <mat-select formControlName="salon">
         @for (salon of salons; track $index) {
@@ -8,17 +8,17 @@
         }
       </mat-select>
     </mat-form-field>
-    <mat-form-field>
+    <mat-form-field appearance="outline">
       <mat-label>Adres e-mail klienta</mat-label>
       <input formControlName="email" matInput type="text" required>
     </mat-form-field>
-    <button type="submit" mat-button>Sprawdź</button>
+    <button type="submit" mat-flat-button>Sprawdź</button>
   </form>
   <div>
     @switch (foundFlag) {
     @case (1) {
     Znalazł
-    <button mat-button (click)="redirect()">Przejdź</button>
+    <button mat-flat-button (click)="redirect()">Przejdź</button>
     }
     @case (2) {
     Nie zlazazł

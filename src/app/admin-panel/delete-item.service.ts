@@ -62,30 +62,30 @@ export class DeleteItemService {
             });
     }
 
-    deleteEmployee(ID: number) {
-        this.confirmDialogService
-            .confirm({
-                title: 'Usuń pracownika',
-                message: `Czy jesteś pewny, że chcesz usunać tego pracownika?`,
-                confirmText: 'Tak',
-                cancelText: 'Nie',
-            })
-            .subscribe((confirmed) => {
-                if (confirmed) {
-                    this.employeeService.deleteEmployee(ID).subscribe({
-                        next: (response) => {
-                            window.location.reload();
-                        },
-                        error: (error) => {
-                            console.log('Error deleting employee:', error);
-                            this.openSnackBar("Coś poszło nie tak, odśwież stronę")
-                        },
-                    });
-                } else {
-                    console.log('Employee deletion aborted');
-                }
-            });
-    }
+    // deleteEmployee(ID: number) {
+    //     this.confirmDialogService
+    //         .confirm({
+    //             title: 'Usuń pracownika',
+    //             message: `Czy jesteś pewny, że chcesz usunać tego pracownika?`,
+    //             confirmText: 'Tak',
+    //             cancelText: 'Nie',
+    //         })
+    //         .subscribe((confirmed) => {
+    //             if (confirmed) {
+    //                 this.employeeService.deleteEmployee(ID).subscribe({
+    //                     next: (response) => {
+    //                         window.location.reload();
+    //                     },
+    //                     error: (error) => {
+    //                         console.log('Error deleting employee:', error);
+    //                         this.openSnackBar("Coś poszło nie tak, odśwież stronę")
+    //                     },
+    //                 });
+    //             } else {
+    //                 console.log('Employee deletion aborted');
+    //             }
+    //         });
+    // }
 
     deleteService(ID: number) {
         this.confirmDialogService

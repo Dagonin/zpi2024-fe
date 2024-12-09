@@ -8,6 +8,9 @@ import { MatDividerModule } from '@angular/material/divider';
 import { EmployeePanelComponent } from '../../employee-panel/employee-panel.component';
 import { ConfirmDialogSerice } from '../confirm-dialog/confirm-dialog.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ServiceService } from '../../classes/service/service.service';
+import { MatIconModule } from '@angular/material/icon';
+import { ServiceDTO } from '../../classes/service/serviceDTO';
 
 @Component({
     selector: 'app-visits-dialog',
@@ -19,14 +22,19 @@ import { MatSnackBar } from '@angular/material/snack-bar';
         MatDialogClose,
         MatButtonModule,
         CommonModule,
-        MatDividerModule
+        MatDividerModule,
+        MatIconModule
     ],
     templateUrl: './employee-panel-visit-dialog.html',
     styleUrl: './employee-panel-visit-dialog.css'
 })
 export class EmployeePanelVisitDialog implements OnInit {
 
-    constructor(@Inject(MAT_DIALOG_DATA) public data: any, @Inject(MatDialogRef<EmployeePanelComponent>) public dialogRef: any, private visitService: VisitService, private confirmDialogService: ConfirmDialogSerice) {
+    constructor(@Inject(MAT_DIALOG_DATA) public data: any,
+        @Inject(MatDialogRef<EmployeePanelComponent>) public dialogRef: any,
+        private visitService: VisitService,
+        private confirmDialogService: ConfirmDialogSerice,
+    ) {
     }
 
 
@@ -42,6 +50,28 @@ export class EmployeePanelVisitDialog implements OnInit {
         });
 
     }
+
+    calculateServicesPrice() {
+        let price = 0;
+
+        this.data.event.meta.services.forEach((service: ServiceDTO) => {
+            price += service.servicePrice;
+        })
+
+        return price;
+    }
+
+    calculateServicesTime() {
+        let time = 0;
+
+        this.data.event.meta.services.forEach((service: ServiceDTO) => {
+            time += service.serviceSpan * 15;
+        })
+
+        return time;
+    }
+
+
 
     ngOnInit(): void {
         console.log(this.data)
