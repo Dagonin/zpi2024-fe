@@ -27,15 +27,18 @@ export class UserProfileDialogComponent {
 
   numberOfVisits: number = 0;
   customer!: CustomerDTO
-
+  badgeArray!: boolean[];
 
   ngOnInit() {
     this.authService.getUser().subscribe({
       next: (user) => {
         this.customer = user
+        console.log(user)
         this.visitService.getNumberOfFinishedVisitsByCustomerID(user.customerID).subscribe({
           next: (response) => {
+            console.log(response)
             this.numberOfVisits = response
+            this.badgeArray = this.getStampsArray();
           },
           error: (error) => {
             console.log(error);
@@ -49,19 +52,19 @@ export class UserProfileDialogComponent {
   }
 
   getNumberOfBadges(): number {
-    return Math.floor(this.numberOfVisits / 10); // 1 badge for each 10 visits
+    return Math.floor(this.numberOfVisits % 10);
   }
 
 
   getStampsArray(): boolean[] {
     const totalBadges = this.getNumberOfBadges();
     return Array(10)
-      .fill(true, 0, totalBadges) // Filled stars for earned badges
-      .fill(false, totalBadges); // Empty stars for remaining badges
+      .fill(true, 0, totalBadges)
+      .fill(false, totalBadges);
   }
 
   isRowBreak(index: number): boolean {
-    return (index + 1) % 5 === 0; // Break after every 5 items
+    return (index + 1) % 5 === 0;
   }
 
 }

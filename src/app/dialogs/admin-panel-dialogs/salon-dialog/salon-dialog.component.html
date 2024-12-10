@@ -1,5 +1,5 @@
 <!-- salon-dialog.component.html -->
-<h1 mat-dialog-title>{{ isEdit ? 'Edytuj' : 'Dodaj' }} Salon</h1>
+<h1 class="center" mat-dialog-title>{{ isEdit ? 'Edytuj' : 'Dodaj' }} Salon</h1>
 
 <div mat-dialog-content>
   <form [formGroup]="salonForm" (ngSubmit)="onSubmit()">
@@ -71,7 +71,7 @@
   </form>
 </div>
 
-<div mat-dialog-actions>
+<div class="center" mat-dialog-actions>
   <button mat-flat-button (click)="onNoClick()">Anuluj</button>
   <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="salonForm.invalid">Zapisz</button>
 </div>

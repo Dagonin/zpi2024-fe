@@ -1,59 +1,59 @@
 <!-- service-dialog.component.html -->
-<h1 mat-dialog-title>{{ isEdit ? 'Edit' : 'Create' }} Service</h1>
+<h1 class="center" mat-dialog-title>{{ isEdit ? 'Edytuj' : 'Dodaj' }} Usługe</h1>
 
 <div mat-dialog-content>
   <form [formGroup]="serviceForm" (ngSubmit)="onSubmit()">
     <mat-grid-list cols="2" rowHeight="100px">
       <mat-grid-tile>
         <mat-form-field appearance="outline">
-          <mat-label>Service Name</mat-label>
+          <mat-label>Nazwa usługi</mat-label>
           <input matInput formControlName="serviceName" required />
-          <mat-error>Service name is required</mat-error>
+          <mat-error>Nazwa usługi jest wymagana</mat-error>
         </mat-form-field>
       </mat-grid-tile>
 
       <mat-grid-tile>
         <mat-form-field appearance="outline">
-          <mat-label>Service Span (in minutes)</mat-label>
+          <mat-label>Czas trwania usługi (15 minut)</mat-label>
           <input matInput formControlName="serviceSpan" type="number" required />
-          <mat-error>Service span is required</mat-error>
-          <mat-error>Span must be greater than 0</mat-error>
+          <mat-error>Czas trwania usługi jest wymagany</mat-error>
+          <mat-error>Czas trwania usługi musi byc większy niż 0</mat-error>
         </mat-form-field>
       </mat-grid-tile>
 
       <mat-grid-tile>
         <mat-form-field appearance="outline">
-          <mat-label>Service Price</mat-label>
+          <mat-label>Koszt usługi</mat-label>
           <input matInput formControlName="servicePrice" type="number" required />
-          <mat-error>Service price is required</mat-error>
-          <mat-error>Price must be greater than 0</mat-error>
+          <mat-error>Koszt usługi jest wymagany</mat-error>
+          <mat-error>Koszt usługi musi byc większy niż 0</mat-error>
         </mat-form-field>
       </mat-grid-tile>
 
       <mat-grid-tile>
         <mat-form-field appearance="outline">
-          <mat-label>Service Category</mat-label>
+          <mat-label>Kategoria usługi</mat-label>
           <mat-select formControlName="serviceCategoryID" required>
             <mat-option *ngFor="let category of categories" [value]="category.serviceCategoryId">
               {{ category.categoryName }}
             </mat-option>
           </mat-select>
-          <mat-error>Service category is required</mat-error>
+          <mat-error>Kategoria usługi jest wymagana</mat-error>
         </mat-form-field>
       </mat-grid-tile>
 
-      <mat-grid-tile [colspan]="2">
+      <mat-grid-tile [colspan]="1">
         <mat-form-field appearance="outline">
-          <mat-label>Service Description</mat-label>
-          <textarea matInput formControlName="serviceDescription" rows="4" required></textarea>
-          <mat-error>Service description is required</mat-error>
+          <mat-label>Opis usługi</mat-label>
+          <textarea matInput formControlName="serviceDescription" rows="2" required></textarea>
+          <mat-error>Opis usługi jest wymagany</mat-error>
         </mat-form-field>
       </mat-grid-tile>
     </mat-grid-list>
   </form>
 </div>
 
-<div mat-dialog-actions>
-  <button mat-flat-button (click)="onNoClick()">Cancel</button>
-  <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="serviceForm.invalid">Save</button>
+<div class="center" mat-dialog-actions>
+  <button mat-flat-button (click)="onNoClick()">Anuluj</button>
+  <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="serviceForm.invalid">Zapisz</button>
 </div>

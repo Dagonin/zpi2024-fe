@@ -64,12 +64,14 @@ export class RatingDialogComponent {
   rateBarber(): void {
     if (this.selectedRating !== null) {
       console.log('Selected rating:', this.selectedRating / 2);
+      console.log(this.text)
 
-      const rating = new Rating(14443, this.selectedRating, this.text, this.data.employee.employeeID, this.data.visit.visitID);
+      const rating = new Rating(14443, this.selectedRating / 2, this.text, this.data.employee.employeeID, this.data.visit.visitID);
       console.log(rating);
       this.ratingService.addRatingToDatabase(rating).subscribe({
         next(value) {
           console.log(value)
+          window.location.reload();
         },
         error(error) {
           console.log(error)

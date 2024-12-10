@@ -344,6 +344,7 @@ export class PlaceComponent implements OnInit, OnDestroy {
       this.salonComponentService.getAllAvailabilityDatesForEmployee(this.salon.salonID, this.employees[this.barbersFormGroup.controls.barber.value].employeeID ?? 0).subscribe({
         next: (response: any) => {
           console.log(response);
+
           this.allowedDates = response;
         },
         error: (error) => {

@@ -1,28 +1,28 @@
-<h1 mat-dialog-title>{{ isEdit ? 'Edit' : 'Create' }} Service Category</h1>
+<h1 class="center" mat-dialog-title>{{ isEdit ? 'Edytuj' : 'Dodaj' }} Kategorie usług</h1>
 
 <div mat-dialog-content>
   <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
     <mat-grid-list cols="2" rowHeight="100px">
       <mat-grid-tile>
         <mat-form-field appearance="outline">
-          <mat-label>Category Name</mat-label>
+          <mat-label>Nazwa kategorii</mat-label>
           <input matInput formControlName="categoryName" required />
-          <mat-error>Category name is required</mat-error>
+          <mat-error>Nazwa kategorii jest wymagana</mat-error>
         </mat-form-field>
       </mat-grid-tile>
 
-      <mat-grid-tile [colspan]="2">
+      <mat-grid-tile [colspan]="1">
         <mat-form-field appearance="outline">
-          <mat-label>Category Description</mat-label>
-          <textarea matInput formControlName="categoryDescription" rows="4" required></textarea>
-          <mat-error>Category description is required</mat-error>
+          <mat-label>Opis kategorii</mat-label>
+          <textarea matInput formControlName="categoryDescription" rows="2" required></textarea>
+          <mat-error>Opis kategorii jest wymagany</mat-error>
         </mat-form-field>
       </mat-grid-tile>
     </mat-grid-list>
   </form>
 </div>
 
-<div mat-dialog-actions>
-  <button mat-flat-button (click)="onNoClick()">Cancel</button>
-  <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="categoryForm.invalid">Save</button>
+<div class="center" mat-dialog-actions>
+  <button mat-flat-button (click)="onNoClick()">Anuluj</button>
+  <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="categoryForm.invalid">Zapisz</button>
 </div>

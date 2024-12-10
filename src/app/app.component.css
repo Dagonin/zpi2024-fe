@@ -45,7 +45,7 @@ mat-button-toggle {
 
 #nav_buttons span {
   text-align: center;
-  color: goldenrod;
+  color: var(--primary);
   font-family: "Noto Serif Display", serif;
   font-weight: 700;
   font-size: 30px;

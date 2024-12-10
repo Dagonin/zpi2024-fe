@@ -2,19 +2,19 @@
 
 @let customer = data.event.meta.customer;
 <mat-dialog-content>
-  <mat-icon fontIcon="schedule"></mat-icon>{{data.event.start | date: "hh:mm"}}
+  <mat-icon fontIcon="schedule"></mat-icon> {{data.event.start | date: "hh:mm"}}
   <div>
     <mat-icon fontIcon="person"></mat-icon> {{customer.customerName}} {{customer.customerSurname}}
   </div>
   <div>
-    <mat-icon fontIcon="call"></mat-icon>{{customer.customerDialNumber}}
+    <mat-icon fontIcon="call"></mat-icon> {{customer.customerDialNumber}}
   </div>
   <div>
-    <mat-icon fontIcon="mail"></mat-icon>{{customer.customerEmail}}
+    <mat-icon fontIcon="mail"></mat-icon> {{customer.customerEmail}}
   </div>
   <div>
-    <mat-icon fontIcon="credit_card"></mat-icon>{{calculateServicesPrice()}}
-    <mat-icon fontIcon="schedule"></mat-icon>{{calculateServicesTime()}}
+    <mat-icon fontIcon="credit_card"></mat-icon> {{calculateServicesPrice() | currency: "PLN"}}
+    <mat-icon fontIcon="schedule"></mat-icon> {{calculateServicesTime()}} minut
   </div>
   @for (service of data.event.meta.services; track $index) {
   <div>{{service.serviceName}} </div>

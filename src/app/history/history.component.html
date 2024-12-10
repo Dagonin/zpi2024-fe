@@ -80,14 +80,20 @@
               {{serviceService.calculateServicesPrice(services) | currency: "PLN"}}
               <mat-icon fontIcon="schedule"></mat-icon>{{serviceService.calculateServicesTime(services)}} minut
             </span>
-            <div matListItemLine> <button (click)="openRatingDialog(visit.employeeID,visit.visitID, visit.salonID)"
+            @if (ratingMap.has(visit.visitID)) {
+            <span matListItemLine>
+              <mat-icon style="color: gold;" fontIcon="star"></mat-icon> {{ratingMap.get(visit.visitID)?.ratingValue}}
+            </span>
+            }
+            <div matListItemLine>
+              @if (!ratingMap.has(visit.visitID)) {
+              <button (click)="openRatingDialog(visit.employeeID,visit.visitID, visit.salonID)"
                 mat-flat-button>Oceń</button>
+              }
               <button (click)="openDetailsDialog(visit.employeeID,visit.visitID, visit.salonID)"
                 mat-flat-button>Lokalizacja</button>
               <button (click)="openRescheduleDialog(visit.visitID,false)" mat-flat-button>Umów ponownie</button>
-              @if (ratingMap.has(visit.visitID)) {
-              <span>Ocenione {{ratingMap.get(visit.visitID)?.ratingValue}}</span>
-              }
+
 
             </div>
 

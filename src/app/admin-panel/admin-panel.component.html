@@ -7,32 +7,32 @@
       </mat-expansion-panel-header>
       <table mat-table [dataSource]="salons" class="mat-table" matSort #salonSort="matSort">
         <ng-container matColumnDef="salonName">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Salon Name </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nazwa salonu </th>
           <td mat-cell *matCellDef="let salon"> {{salon.salonName}} </td>
         </ng-container>
 
         <ng-container matColumnDef="salonDialNumber">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Dial Number </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Numer telefonu </th>
           <td mat-cell *matCellDef="let salon"> {{salon.salonDialNumber}} </td>
         </ng-container>
 
         <ng-container matColumnDef="salonCity">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> City </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Miasto </th>
           <td mat-cell *matCellDef="let salon"> {{salon.salonCity}} </td>
         </ng-container>
 
         <ng-container matColumnDef="salonStreet">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Street </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Ulica </th>
           <td mat-cell *matCellDef="let salon"> {{salon.salonStreet}} </td>
         </ng-container>
 
         <ng-container matColumnDef="salonBuildingNumber">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Building No. </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Numer budynku </th>
           <td mat-cell *matCellDef="let salon"> {{salon.salonBuildingNumber}} </td>
         </ng-container>
 
         <ng-container matColumnDef="salonPostalCode">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Postal Code </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Kod pocztowy </th>
           <td mat-cell *matCellDef="let salon"> {{salon.salonPostalCode}} </td>
         </ng-container>
         <ng-container matColumnDef="CRUD">
@@ -55,34 +55,34 @@
       <table mat-table [dataSource]="employees" class="mat-table" matSort #employeeSort="matSort">
 
         <ng-container matColumnDef="employeeFullName">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Full Name </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Imie i nazwisko </th>
           <td mat-cell *matCellDef="let employee">
             {{ employee.employeeName }} {{ employee.employeeSurname }}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="employeeDialNumber">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Dial Number </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Numer telefonu </th>
           <td mat-cell *matCellDef="let employee"> {{ employee.employeeDialNumber }} </td>
         </ng-container>
 
         <ng-container matColumnDef="employeeBirthday">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Birthday </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Data urodzenia </th>
           <td mat-cell *matCellDef="let employee"> {{ employee.employeeBirthdayDate | date: 'mediumDate' }} </td>
         </ng-container>
 
         <ng-container matColumnDef="employeeEmploymentDate">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Employment Date </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Data zatrudnienia </th>
           <td mat-cell *matCellDef="let employee"> {{ employee.employeeEmploymentDate | date: 'mediumDate' }} </td>
         </ng-container>
 
         <ng-container matColumnDef="employeeMonthlyPay">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Monthly Pay </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Pensja </th>
           <td mat-cell *matCellDef="let employee"> {{ employee.employeeMonthlyPay | currency: "PLN" }} </td>
         </ng-container>
 
         <ng-container matColumnDef="employeeAddress">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Address </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Adres </th>
           <td mat-cell *matCellDef="let employee">
             {{ employee.employeeStreet }}, {{ employee.employeeBuildingNumber }}
             {{ employee.employeeApartmentNumber ? '/ ' + employee.employeeApartmentNumber : '' }}
@@ -201,22 +201,22 @@
       <table mat-table [dataSource]="openingHours" matSort #openingHourSort="matSort">
 
         <ng-container matColumnDef="weekday">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Weekday </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Dzień tygodnia </th>
           <td mat-cell *matCellDef="let openingHour"> {{ openingHour.weekday }} </td>
         </ng-container>
 
         <ng-container matColumnDef="openingHour">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Opening Hour </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Godzina otwarcia </th>
           <td mat-cell *matCellDef="let openingHour"> {{ openingHour.openingHour }} </td>
         </ng-container>
 
         <ng-container matColumnDef="closingHour">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Closing Hour </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Godzina zamknięcia/th>
           <td mat-cell *matCellDef="let openingHour"> {{ openingHour.closingHour}} </td>
         </ng-container>
 
         <ng-container matColumnDef="salonName">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Salon Name </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nazwa salonu </th>
           <td mat-cell *matCellDef="let openingHour"> {{ salonsMap.get(openingHour.salonID)?.salonName }} </td>
         </ng-container>
         <ng-container matColumnDef="CRUD">
@@ -246,12 +246,12 @@
 
 
         <ng-container matColumnDef="salonName">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Salon Name </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nazwa salonu </th>
           <td mat-cell *matCellDef="let assignment"> {{ salonsMap.get(assignment.salonID)?.salonName }} </td>
         </ng-container>
 
         <ng-container matColumnDef="employeeName">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Employee Name </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Pracownik </th>
           <td mat-cell *matCellDef="let assignment"> {{ employeesMap.get(assignment.employeeID)?.employeeName }}
             {{employeesMap.get(assignment.employeeID)?.employeeSurname}} </td>
         </ng-container>
@@ -278,14 +278,14 @@
       <table mat-table [dataSource]="qualifications" matSort #qualificationSort="matSort">
 
         <ng-container matColumnDef="employeeName">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Employee Name </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Pracownik </th>
           <td mat-cell *matCellDef="let qualification">
             {{ employeesMap.get(qualification.employeeID)?.employeeName }}
             {{ employeesMap.get(qualification.employeeID)?.employeeSurname }} </td>
         </ng-container>
 
         <ng-container matColumnDef="serviceCategory">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Service Category </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Kategoria usług </th>
           <td mat-cell *matCellDef="let qualification">
             {{ serviceCategoryMap.get(qualification.serviceCategoryID)?.categoryName }} </td>
         </ng-container>

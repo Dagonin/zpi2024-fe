@@ -198,7 +198,7 @@ export class AdminPanelComponent implements OnInit {
     }
     const dialogRef = this.dialog.open(ServiceCategoryDialogComponent, {
       width: '500px',
-      height: '500px',
+      height: '250px',
       data: {
         isEdit: isEdit,
         category: category,
@@ -213,7 +213,7 @@ export class AdminPanelComponent implements OnInit {
     }
     const dialogRef = this.dialog.open(OpeningHoursDialogComponent, {
       width: '500px',
-      height: '500px',
+      height: '350px',
       data: {
         isEdit: isEdit,
         openingHours: openingHours,
@@ -230,7 +230,7 @@ export class AdminPanelComponent implements OnInit {
     console.log(this.assignmentsMap)
     const dialogRef = this.dialog.open(AssignmentDialogComponent, {
       width: '500px',
-      height: '500px',
+      height: '350px',
       data: {
         isEdit: isEdit,
         assignment: assignment,
@@ -247,7 +247,7 @@ export class AdminPanelComponent implements OnInit {
     }
     const dialogRef = this.dialog.open(EmployeeQualificationDialogComponent, {
       width: '500px',
-      height: '500px',
+      height: '250px',
       data: {
         isEdit: isEdit,
         qualification: qualification,

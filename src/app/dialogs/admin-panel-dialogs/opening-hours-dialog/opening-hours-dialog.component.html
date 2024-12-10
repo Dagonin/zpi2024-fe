@@ -1,5 +1,5 @@
 <!-- opening-hours-dialog.component.html -->
-<h1 mat-dialog-title>{{ isEdit ? 'Edit' : 'Create' }} Opening Hours</h1>
+<h1 class="center" mat-dialog-title>{{ isEdit ? 'Edytuj' : 'Dodaj' }} Godziny otwarcia</h1>
 
 <div mat-dialog-content>
   <form [formGroup]="openingHoursForm" (ngSubmit)="onSubmit()">
@@ -12,32 +12,32 @@
               {{ salon.salonName }}
             </mat-option>
           </mat-select>
-          <mat-error>Salon is required</mat-error>
+          <mat-error>Salon jest wymagany</mat-error>
         </mat-form-field>
       </mat-grid-tile>
 
       <mat-grid-tile>
         <mat-form-field appearance="outline">
-          <mat-label>Weekday</mat-label>
+          <mat-label>Dzień tygodnia</mat-label>
           <input matInput formControlName="weekday" type="number" required />
-          <mat-error>Weekday is required</mat-error>
+          <mat-error>Dzień tygodnia jest wymagany</mat-error>
         </mat-form-field>
       </mat-grid-tile>
 
       <mat-grid-tile>
         <mat-form-field appearance="outline">
-          <mat-label>Opening Hour</mat-label>
+          <mat-label>Godzina otwarcia</mat-label>
           <input matInput formControlName="openingHour" type="time" required />
-          <mat-error>Opening hour is required
+          <mat-error>Godzina otwarcia jest wymagana
           </mat-error>
         </mat-form-field>
       </mat-grid-tile>
 
       <mat-grid-tile>
         <mat-form-field appearance="outline">
-          <mat-label>Closing Hour</mat-label>
+          <mat-label>Godzina zamknięcia</mat-label>
           <input matInput formControlName="closingHour" type="time" required />
-          <mat-error>Closing hour is required
+          <mat-error>Godzina zamknięcia jest wymagany
           </mat-error>
         </mat-form-field>
       </mat-grid-tile>
@@ -45,7 +45,7 @@
   </form>
 </div>
 
-<div mat-dialog-actions>
-  <button mat-flat-button (click)="onNoClick()">Cancel</button>
-  <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="openingHoursForm.invalid">Save</button>
+<div class="center" mat-dialog-actions>
+  <button mat-flat-button (click)="onNoClick()">Anuluj</button>
+  <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="openingHoursForm.invalid">Zapisz</button>
 </div>

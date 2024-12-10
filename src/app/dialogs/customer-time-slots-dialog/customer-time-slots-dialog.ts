@@ -86,12 +86,24 @@ export class CustomerTimeSlotsDialog implements OnInit {
 
     }
 
+
+
     myFilter = (date: Date | null): boolean => {
         if (!date) {
-            return false
-        };
+            return false;
+        }
+
+        const tomorrow = new Date();
+        tomorrow.setHours(0, 0, 0, 0);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+
         const adjustedDate = new Date(date);
         adjustedDate.setDate(adjustedDate.getDate() + 1);
+
+        if (adjustedDate <= tomorrow) {
+            return false;
+        }
+
         const dateString = adjustedDate.toISOString().split('T')[0];
         return this.allowedDates.includes(dateString);
     };

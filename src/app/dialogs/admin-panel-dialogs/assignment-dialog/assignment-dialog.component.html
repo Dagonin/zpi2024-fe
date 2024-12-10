@@ -1,5 +1,5 @@
 <!-- assignment-dialog.component.html -->
-<h1 mat-dialog-title>{{ isEdit ? 'Edit' : 'Create' }} Assignment</h1>
+<h1 class="center" mat-dialog-title>{{ isEdit ? 'Edytuj' : 'Dodaj' }} Przydział do salonu</h1>
 
 <div mat-dialog-content>
   <form [formGroup]="assignmentForm" (ngSubmit)="onSubmit()">
@@ -13,36 +13,36 @@
               {{ salon.salonName }}
             </mat-option>
           </mat-select>
-          <mat-error>Salon is required</mat-error>
+          <mat-error>Salon jest wymagany</mat-error>
         </mat-form-field>
       </mat-grid-tile>
 
       <!-- Employee Select -->
       <mat-grid-tile>
         <mat-form-field appearance="outline">
-          <mat-label>Employee</mat-label>
+          <mat-label>Pracownik</mat-label>
           <mat-select formControlName="employeeID" required>
             <mat-option *ngFor="let employee of employees" [value]="employee.employeeID">
               {{ employee.employeeName }} {{ employee.employeeSurname }}
             </mat-option>
           </mat-select>
-          <mat-error>Employee is required</mat-error>
+          <mat-error>Pracownik jest wymagany</mat-error>
         </mat-form-field>
       </mat-grid-tile>
 
       <!-- Assignment Date -->
       <mat-grid-tile>
         <mat-form-field appearance="outline">
-          <mat-label>Assignment Date</mat-label>
+          <mat-label>Data przypisania</mat-label>
           <input matInput formControlName="assigmentDate" type="date" required />
-          <mat-error>Assignment date is required</mat-error>
+          <mat-error>Data przypisania jest wymagana</mat-error>
         </mat-form-field>
       </mat-grid-tile>
     </mat-grid-list>
   </form>
 </div>
 
-<div mat-dialog-actions>
-  <button mat-flat-button (click)="onNoClick()">Cancel</button>
-  <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="assignmentForm.invalid">Save</button>
+<div class="center" mat-dialog-actions>
+  <button mat-flat-button (click)="onNoClick()">Anuluj</button>
+  <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="assignmentForm.invalid">Zapisz</button>
 </div>

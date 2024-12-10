@@ -1,31 +1,30 @@
 <!-- employee-dialog.component.html -->
-<h1 mat-dialog-title>{{ isEdit ? 'Edit' : 'Create' }} Employee</h1>
+<h1 class="center" mat-dialog-title>{{ isEdit ? 'Edytuj' : 'Dodaj' }} Pracownika</h1>
 
 <div mat-dialog-content>
   <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
     <mat-grid-list cols="2" rowHeight="100px">
       <mat-grid-tile>
         <mat-form-field appearance="outline">
-          <mat-label>Employee Name</mat-label>
+          <mat-label>Imie</mat-label>
           <input matInput formControlName="employeeName" required />
-          <mat-error>Employee name is required</mat-error>
+          <mat-error>Imie jest wymagane</mat-error>
         </mat-form-field>
       </mat-grid-tile>
 
       <mat-grid-tile>
         <mat-form-field appearance="outline">
-          <mat-label>Employee Surname</mat-label>
+          <mat-label>Nazwisko</mat-label>
           <input matInput formControlName="employeeSurname" required />
-          <mat-error>Surname is required</mat-error>
+          <mat-error>Nazwisko jest wymagane</mat-error>
         </mat-form-field>
       </mat-grid-tile>
 
       <mat-grid-tile>
         <mat-form-field appearance="outline">
-          <mat-label>Phone Number</mat-label>
+          <mat-label>Numer telefonu</mat-label>
           <input matInput formControlName="employeeDialNumber" required />
-          <mat-error>Phone number is required</mat-error>
-          <mat-error>Phone number must be 10 digits</mat-error>
+          <mat-error>Numer telefonu jest wymagany</mat-error>
         </mat-form-field>
       </mat-grid-tile>
 
@@ -33,91 +32,87 @@
         <mat-form-field appearance="outline">
           <mat-label>Email</mat-label>
           <input matInput formControlName="employeeEmail" required />
-          <mat-error>Email is required</mat-error>
-          <mat-error>Enter a valid email address</mat-error>
+          <mat-error>Email jest wymagany</mat-error>
         </mat-form-field>
       </mat-grid-tile>
 
       <mat-grid-tile>
         <mat-form-field appearance="outline">
-          <mat-label>Password</mat-label>
+          <mat-label>Hasło</mat-label>
           <input matInput type="password" formControlName="encryptedEmployeePassword" required />
-          <mat-error>Password is required</mat-error>
+          <mat-error>Hasło jest wymagane</mat-error>
         </mat-form-field>
       </mat-grid-tile>
 
       <mat-grid-tile>
         <mat-form-field appearance="outline">
-          <mat-label>Birthday Date</mat-label>
+          <mat-label>Data urodzenia</mat-label>
           <input matInput [matDatepicker]="picker" formControlName="employeeBirthdayDate" required />
           <mat-datepicker #picker></mat-datepicker>
-          <mat-error>Birthday date is required</mat-error>
+          <mat-error>Data urodzenia jest wymagana</mat-error>
         </mat-form-field>
       </mat-grid-tile>
 
       <mat-grid-tile>
         <mat-form-field appearance="outline">
-          <mat-label>Employment Date</mat-label>
+          <mat-label>Data zatrudnienia</mat-label>
           <input matInput [matDatepicker]="employmentDatePicker" formControlName="employeeEmploymentDate" required />
           <mat-datepicker #employmentDatePicker></mat-datepicker>
-          <mat-error>Employment date is required</mat-error>
+          <mat-error>Data zatrudnienia jest wymagana</mat-error>
         </mat-form-field>
       </mat-grid-tile>
 
       <mat-grid-tile>
         <mat-form-field appearance="outline">
-          <mat-label>Monthly Pay</mat-label>
+          <mat-label>Pensja</mat-label>
           <input matInput formControlName="employeeMonthlyPay" type="number" required />
-          <mat-error>Monthly pay is required</mat-error>
-          <mat-error>Pay must be greater than 0
-          </mat-error>
+          <mat-error>Pensja jest wymagana</mat-error>
         </mat-form-field>
       </mat-grid-tile>
 
       <mat-grid-tile>
         <mat-form-field appearance="outline">
-          <mat-label>City</mat-label>
+          <mat-label>Miasto</mat-label>
           <input matInput formControlName="employeeCity" required />
-          <mat-error>City is required</mat-error>
+          <mat-error>Miasto jest wymagane</mat-error>
         </mat-form-field>
       </mat-grid-tile>
 
       <mat-grid-tile>
         <mat-form-field appearance="outline">
-          <mat-label>Street</mat-label>
+          <mat-label>Ulica</mat-label>
           <input matInput formControlName="employeeStreet" required />
-          <mat-error>Street is required</mat-error>
+          <mat-error>Ulica jest wymagana</mat-error>
         </mat-form-field>
       </mat-grid-tile>
 
       <mat-grid-tile>
         <mat-form-field appearance="outline">
-          <mat-label>Building Number</mat-label>
+          <mat-label>Numer budynku</mat-label>
           <input matInput formControlName="employeeBuildingNumber" required />
-          <mat-error>Building number is required</mat-error>
+          <mat-error>Numer budynku jest wymagany</mat-error>
         </mat-form-field>
       </mat-grid-tile>
 
       <mat-grid-tile>
         <mat-form-field appearance="outline">
-          <mat-label>Apartment Number</mat-label>
+          <mat-label>Numer mieszkania</mat-label>
           <input matInput formControlName="employeeApartmentNumber" />
         </mat-form-field>
       </mat-grid-tile>
 
       <mat-grid-tile>
         <mat-form-field appearance="outline">
-          <mat-label>Postal Code</mat-label>
+          <mat-label>Kod pocztowy</mat-label>
           <input matInput formControlName="employeePostalCode" required />
-          <mat-error>Postal code is required</mat-error>
-          <mat-error>Postal code must be 5 digits</mat-error>
+          <mat-error>Kod pocztowy jest wymagany</mat-error>
         </mat-form-field>
       </mat-grid-tile>
     </mat-grid-list>
   </form>
 </div>
 
-<div mat-dialog-actions>
-  <button mat-flat-button (click)="onNoClick()">Cancel</button>
-  <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="employeeForm.invalid">Save</button>
+<div class="center" mat-dialog-actions>
+  <button mat-flat-button (click)="onNoClick()">Anuluj</button>
+  <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="employeeForm.invalid">Zapisz</button>
 </div>
