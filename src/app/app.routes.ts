@@ -3,6 +3,7 @@ import { authGuard } from './auth/auth.guard';
 import { negateAuthGuard } from './auth/negate-auth.guard';
 import { employeeGuard } from './auth/employee.guard';
 import { MainPageComponent } from './main-page/main-page.component';
+import { negateEmployeeGuard } from './auth/negate-employee.guard';
 
 export const routes: Routes = [{
     path: 'login',
@@ -47,7 +48,7 @@ export const routes: Routes = [{
         import('./employee-panel/employee-panel.component').then((c) => c.EmployeePanelComponent),
 }, {
     path: 'adm_panel',
-    // canActivate: [authGuard, employeeGuard],
+    canActivate: [authGuard, employeeGuard],
     loadComponent: () =>
         import('./admin-panel/admin-panel.component').then((c) => c.AdminPanelComponent),
 }, {
@@ -55,7 +56,7 @@ export const routes: Routes = [{
     loadComponent: () =>
         import('./forms/forgotten-password/forgotten-password.component').then((c) => c.ForgottenPasswordComponent),
 }, {
-    path: 'change_password',
+    path: 'customer/:requestid',
     loadComponent: () =>
         import('./forms/change-password/change-password.component').then((c) => c.ChangePasswordComponent),
 }, {

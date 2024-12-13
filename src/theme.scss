@@ -124,6 +124,13 @@ $disabled_color: #888888;
     divider-color: $gray_background
   ));
 
+  @include mat.select-overrides((
+    panel-background-color: $gray_background,
+    enabled-trigger-text-color: $color,
+    placeholder-text-color: $primary,
+    enabled-arrow-color: $color,
+    focused-arrow-color: $primary
+  ));
 
 
   // NOT WORKING

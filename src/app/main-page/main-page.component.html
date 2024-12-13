@@ -1,70 +1,114 @@
-<div id="main-view" class="view">
+  <div id="main-view" class="view">
 
-  <div id="main_container">
-    <h2 id="main_h2">Oferujemy najlepsze usługi
-      <br> w najwygodniejszy dla ciebie sposób
-    </h2>
-    <button id="main_btn" mat-flat-button (click)="scroll(footer)">Sprawdź lokale</button>
+    <div id="main_container">
+      <h2 id="main_h2">Oferujemy najlepsze usługi
+        <br> w najwygodniejszy dla ciebie sposób
+      </h2>
+      <button id="main_btn" mat-flat-button (click)="scroll(footer)">Sprawdź lokale</button>
 
-  </div>
-</div>
-
-<div id="nd-view" class="view">
-  <h2 id="nd_h2">Nasze usługi:</h2>
-  <div class="cols3_container">
-    <div class="cols3 c1">
-      <h2>Fryzury</h2>
-      <span>Usługi związane z fryzjerstwem, takie jak strzyżenie i stylizacja włosów.</span>
-      <!-- <img src="/assets/1.jpg" alt=""> -->
-    </div>
-    <div class="cols3 c2">
-      <h2>Koloryzacja</h2>
-      <span> Usługi związane z farbowaniem i koloryzacją włosów.</span>
-      <!-- <img src="/assets/2.jpg" alt=""> -->
-    </div>
-    <div class="cols3 c3">
-      <h2>Manicure</h2>
-      <span>Zabiegi pielęgnacyjne i stylizacyjne dla dłoni i paznokci.</span>
-      <!-- <img src="/assets/3.jpg" alt=""> -->
     </div>
   </div>
-  <div class="cols3_container">
-    <div class="cols3 c1">
-      <h2>Pielęgnacja włosów</h2>
-      <span>Profesjonalne usługi stylizacji brody i zarostu.</span>
-      <!-- <img src="/assets/1.jpg" alt=""> -->
+
+  <div id="nd-view" class="view">
+    <h2 id="nd_h2">Nasze usługi:</h2>
+    <div class="cols3_container">
+      <div class="cols3 c1">
+        <h2>Fryzury</h2>
+        <span>Usługi związane z fryzjerstwem, takie jak strzyżenie i stylizacja włosów.</span>
+        <!-- <img src="/assets/1.jpg" alt=""> -->
+      </div>
+      <div class="cols3 c2">
+        <h2>Koloryzacja</h2>
+        <span> Usługi związane z farbowaniem i koloryzacją włosów.</span>
+        <!-- <img src="/assets/2.jpg" alt=""> -->
+      </div>
+      <div class="cols3 c3">
+        <h2>Manicure</h2>
+        <span>Zabiegi pielęgnacyjne i stylizacyjne dla dłoni i paznokci.</span>
+        <!-- <img src="/assets/3.jpg" alt=""> -->
+      </div>
     </div>
-    <div class="cols3 c2">
-      <h2>Stylizacja brody</h2>
-      <span>Usługi związane z pielęgnacją i odżywianiem włosów.</span>
-      <!-- <img src="/assets/2.jpg" alt=""> -->
+    <div class="cols3_container">
+      <div class="cols3 c1">
+        <h2>Pielęgnacja włosów</h2>
+        <span>Profesjonalne usługi stylizacji brody i zarostu.</span>
+        <!-- <img src="/assets/1.jpg" alt=""> -->
+      </div>
+      <div class="cols3 c2">
+        <h2>Stylizacja brody</h2>
+        <span>Usługi związane z pielęgnacją i odżywianiem włosów.</span>
+        <!-- <img src="/assets/2.jpg" alt=""> -->
+      </div>
+      <div class="cols3 c2">
+        <h2>Pedicure</h2>
+        <span>Zabiegi pielęgnacyjne i stylizacyjne dla stóp i paznokci.</span>
+        <!-- <img src="/assets/2.jpg" alt=""> -->
+      </div>
+
+    </div>
+  </div>
+
+  <app-map></app-map>
+
+  <div #footer id="footer">
+    <div class="privacy-policy">
+      <h4>Informacja o przetwarzaniu danych osobowych</h4>
+      <p>
+        1. Administratorem danych osobowych jest Fryzland, umożliwiający użytkownikom umawianie się na wizyty w salonach
+        barberskich. Kontakt: tel. <a href="tel:+48123123123">123 123 123</a>, email:
+        <a href="mailto:fryzland@gmail.com">fryzland&#64;gmail.com</a>.
+      </p>
+      <p>
+        2. Dane osobowe zbierane są w celu umożliwienia rezerwacji wizyt w salonach barberskich, obsługi rezerwacji,
+        oraz w celach kontaktowych związanych z organizacją usług.
+      </p>
+      <p>
+        3. Dane osobowe, jakie przetwarzamy, to dane podane w formularzu rejestracyjnym, takie jak imię i nazwisko,
+        numer telefonu, adres email, oraz informacje o wybranej usłudze (np. termin wizyty, rodzaj usługi).
+      </p>
+      <p>
+        4. Podstawą prawną przetwarzania danych użytkowników jest art. 6 ust. 1 lit. b rozporządzenia Parlamentu
+        Europejskiego
+        i Rady (UE) 2016/679 z 27 kwietnia 2016 r., tzn. przetwarzanie jest niezbędne do wykonania umowy o świadczenie
+        usług.
+        W przypadku zgody na działania marketingowe podstawą prawną jest art. 6 ust. 1 lit. a RODO.
+      </p>
+      <p>
+        5. Odbiorcami danych osobowych mogą być salony barberskie realizujące wybrane przez użytkownika usługi, a także
+        podmioty
+        wspierające technicznie działanie platformy (np. dostawcy usług IT).
+      </p>
+      <p>
+        6. Dane osobowe będą przechowywane przez okres niezbędny do realizacji umowy, a następnie przez czas wymagany
+        przepisami
+        prawa lub do momentu wycofania zgody na ich przetwarzanie, jeśli była ona podstawą prawną.
+      </p>
+      <p>
+        7. Podanie danych osobowych jest dobrowolne, jednak ich niepodanie może uniemożliwić skorzystanie z usług
+        platformy Fryzland.
+      </p>
+      <p>
+        8. Dane osobowe nie będą przekazywane do państw trzecich ani organizacji międzynarodowych.
+      </p>
+      <p>
+        9. Użytkownicy mają prawo żądać dostępu do swoich danych, ich sprostowania, usunięcia, ograniczenia
+        przetwarzania,
+        a także przenoszenia danych. W celu realizacji swoich praw prosimy o kontakt:
+        <a href="mailto:fryzland@gmail.com">fryzland&#64;gmail.com</a> lub tel. <a href="tel:+48123123123">123 123
+          123</a>.
+      </p>
+      <p>
+        10. Użytkownik ma prawo wniesienia skargi do organu nadzorczego – Prezesa Urzędu Ochrony Danych Osobowych,
+        jeśli uzna, że przetwarzanie danych narusza przepisy prawa.
+      </p>
+    </div>
+
+    <div>
+      Twórcy:
+      <div>Daniel Niezgoda 266510</div>
+      <div>Bartosz Strzecha 266878</div>
+      <div>Jakub Susz 266555</div>
+      <div>Remigiusz Szalek 266890</div>
     </div>
 
   </div>
-</div>
-
-<app-map></app-map>
-
-<div #footer id="footer">
-  <h2>SKONTAKTUJ SIE Z NAMI</h2>
-
-  <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
-    <p>
-      <mat-form-field appearance="outline">
-        <mat-label>Login</mat-label>
-        <input formControlName="login" matInput>
-      </mat-form-field>
-    </p>
-    <p>
-      <mat-form-field appearance="outline">
-        <mat-label>Hasło</mat-label>
-        <input formControlName="password" type="password" matInput>
-      </mat-form-field>
-    </p>
-
-    <div class="example-button-row">
-      <button mat-flat-button>Login</button>
-    </div>
-
-  </form>
-</div>

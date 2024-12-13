@@ -28,7 +28,7 @@
 
 
     <!-- <span *ngIf="isAuthenticated" [routerLink]="'/profile'" mat-raised-button>Twój profil</span> -->
-    <span class="nav_button" [routerLink]="'/contact'" mat-raised-button>Kontakt</span>
+    <!-- <span class="nav_button" [routerLink]="'/contact'" mat-raised-button>Kontakt</span> -->
   </section>
 
 
@@ -39,8 +39,9 @@
   }
 
   <mat-menu #menu="matMenu">
-    <button class="menu" mat-menu-item [routerLink]="'/change_password'">Zmień hasło</button>
+
     @if (userRole == "C") {
+    <button class="menu" mat-menu-item [routerLink]="'/forgotten_password'">Zmień hasło</button>
     <button class="menu" mat-menu-item (click)="openProfileDialog()">Profil</button>
     }
     <button class="menu" mat-menu-item (click)="logout()">Wyloguj się</button>
