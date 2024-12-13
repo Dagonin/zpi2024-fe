@@ -1,4 +1,0 @@
-w panel admin, przy contact info przesyłam cały obiekt barbera z html do TS
-
-
-lista lokali w panelu admina to dynamiczne drzewo, kod to template ze storny materiala, pewnie da się to zrobić w mniej linijek kodu i prosciej
