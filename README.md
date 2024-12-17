@@ -1,4 +1,4 @@
-Frontend aplikacji webowej realizującej stronę dla abstrakcyjnej sieci fryzjerskiej stworzony na ZPI
+Frontend aplikacji webowej realizującej stronę dla abstrakcyjnej sieci fryzjerskiej stworzony na ZPI.
 
 Strona główna:
 
@@ -21,14 +21,18 @@ https://github.com/user-attachments/assets/f7daa419-2969-4aab-ad63-7089324bd6b0
 
 
 
-
-
 Autorzy:
 
 Frontend: 
-  [Daniel Niezgoda](https://github.com/Dagonin)
-[Backend:](https://github.com/Arut3nCodes/zpi2024-be)
-  [Jakub Susz](https://github.com/Arut3nCodes)
-  [Remigiusz Szalek](https://github.com/Freshh0)
-Aplikacja mobilna:
-  Bartosz Strzecha
+
+  [Daniel Niezgoda](https://github.com/Dagonin)  
+  
+[Backend:](https://github.com/Arut3nCodes/zpi2024-be)  
+
+  [Jakub Susz](https://github.com/Arut3nCodes)  
+  
+  [Remigiusz Szalek](https://github.com/Freshh0)  
+  
+Aplikacja mobilna:  
+
+  Bartosz Strzecha  
