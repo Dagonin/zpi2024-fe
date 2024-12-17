@@ -1,27 +1,34 @@
-# Inz
+Frontend aplikacji webowej realizującej stronę dla abstrakcyjnej sieci fryzjerskiej stworzony na ZPI
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.1.1.
+Strona główna:
 
-## Development server
+https://github.com/user-attachments/assets/4a93e169-4f4c-4f11-8472-e0731848143e
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Widok umawiania wizyty:
 
-## Code scaffolding
+https://github.com/user-attachments/assets/6367c582-ce9c-4f3c-9b6a-a9d7736331a0
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Historia wizyt pracownika:
 
-## Build
+https://github.com/user-attachments/assets/d430bd32-dc18-48f5-914e-d6eaa4087949
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Panel pracownika:
 
-## Running unit tests
+https://github.com/user-attachments/assets/f7daa419-2969-4aab-ad63-7089324bd6b0
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
 
-## Further help
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+
+
+Autorzy:
+
+Frontend: 
+  [Daniel Niezgoda](https://github.com/Dagonin)
+[Backend:](https://github.com/Arut3nCodes/zpi2024-be)
+  [Jakub Susz](https://github.com/Arut3nCodes)
+  [Remigiusz Szalek](https://github.com/Freshh0)
+Aplikacja mobilna:
+  Bartosz Strzecha
